@@ -33,6 +33,15 @@ Getroffen beim Bau der Demo (22.10.2026), wo Briefing oder Start-Prompt offen od
 | Service Worker | Nur im Production-Build registriert, Seiten network-first, Assets cache-first | Keine Cache-Überraschungen beim Entwickeln. |
 | E2E | Playwright 1.60 (passt zum lokal installierten Chromium), läuft gegen `next start` auf Port 4317, Desktop + Pixel 7, nacheinander | Port 3100 war auf dem Rechner schon belegt; parallele Läufe teilen sich sonst die Demo-Ablage. |
 
+## Online-Vorschau
+
+| Thema | Entscheidung | Warum |
+|---|---|---|
+| Hosting der Vorschau | GitHub Pages statt Vercel | Wunsch von Nino: alles bei GitHub, kein weiterer Account. |
+| Ohne Server | `STATIC_EXPORT=1`: `output: 'export'` mit basePath `/c-event`. Server-Routen heißen `route.server.ts` und fallen dabei über `pageExtensions` raus. Die Client-API (`apps/web/src/lib/api.ts`) ruft dann die Demo-Services direkt im Browser auf (`@c-event/services-demo/browser`, localStorage). | Dieselbe Logik wie lokal (Validierung, Bepreisung, Mails), nur die Ablage ist eine andere. |
+| Einstellungen | Slogan, Preise und Flags werden clientseitig gelesen (`SiteProvider`, `PriceTag`, `IfFlag`), damit sie auch ohne Server sofort wirken. | Statische Seiten können sonst nicht auf das Cockpit reagieren. |
+| Grenzen | Daten gelten pro Browser; Bilder werden nicht optimiert (`images.unoptimized`). | Gilt nur für die Vorschau, nicht für den späteren Live-Betrieb. |
+
 ## Inhalte
 
 - Alle Texte sind **Vorschläge**, als Platzhalter markiert, bis Celia sie freigibt.

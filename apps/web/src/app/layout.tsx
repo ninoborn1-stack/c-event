@@ -12,7 +12,7 @@ import { Reveals } from '@/components/motion/Reveals';
 import { SmoothScroll } from '@/components/motion/SmoothScroll';
 import { RiderDrawer } from '@/components/rider/RiderDrawer';
 import { JsonLd } from '@/components/JsonLd';
-import { IS_DEMO, SITE_URL } from '@/lib/env';
+import { asset, IS_DEMO, SITE_URL } from '@/lib/env';
 import { organizationLd } from '@/lib/seo';
 import { SiteProvider } from '@/lib/site-context';
 import { getSettings } from '@/server/services';
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   applicationName: brand.name,
   robots: IS_DEMO ? { index: false, follow: false } : { index: true, follow: true },
   appleWebApp: { capable: true, title: brand.short, statusBarStyle: 'black-translucent' },
-  icons: { icon: '/icons/icon-192.png', apple: '/icons/apple-touch-icon.png' },
+  icons: { icon: asset('/icons/icon-192.png'), apple: asset('/icons/apple-touch-icon.png') },
 };
 
 export const viewport: Viewport = { themeColor: tokens.color.ink, width: 'device-width', initialScale: 1, viewportFit: 'cover' };

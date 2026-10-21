@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { formatEuro, isPlaceholder, val } from '@c-event/core';
+import { isPlaceholder, val } from '@c-event/core';
 import { brand, catalog, home, inquiryHref, partners, services } from '@c-event/content';
 import { Hero } from '@/components/home/Hero';
 import { LineUp } from '@/components/home/LineUp';
@@ -11,14 +11,12 @@ import { Media } from '@/components/Media';
 import { Ph, PhText } from '@/components/Ph';
 import { Split } from '@/components/Split';
 import { pageMeta } from '@/lib/seo';
-import { getSettings } from '@/server/services';
+import { PriceTag } from '@/components/catalog/PriceTag';
+import { IfFlag } from '@/lib/site-context';
 
 export const metadata = pageMeta({ ...home.seo, path: '/' });
 
-export default async function HomePage() {
-  const settings = await getSettings();
-  const slogans = val(brand.slogans);
-  const slogan = slogans[settings.sloganVariant % slogans.length] ?? slogans[0]!;
+export default function HomePage() {
   const hl = home.highlights.items;
   const teaserItems = ['mobile-bar', 'neon-schriftzug', 'licht-paket', 'lounge-set']
     .map((id) => catalog.items.find((i) => i.id === id))
@@ -28,8 +26,7 @@ export default async function HomePage() {
     <>
       <Hero
         mediaId={home.hero.media}
-        lines={slogan.lines}
-        second={slogan.second}
+        slogans={val(brand.slogans)}
         eyebrow={home.hero.eyebrow}
         lead={home.hero.lead}
         cta={{ label: home.hero.cta, href: '/anfrage' }}
@@ -38,7 +35,7 @@ export default async function HomePage() {
         countdown={home.intro.countdown}
         doors={home.intro.doors}
         sloganIsPlaceholder={isPlaceholder(brand.slogans)}
-        sloganNote={isPlaceholder(brand.slogans) ? `${brand.slogans.note} (Variante ${settings.sloganVariant + 1}/3)` : undefined}
+        sloganNote={isPlaceholder(brand.slogans) ? brand.slogans.note : undefined}
         behind="360°"
       />
 
@@ -149,7 +146,7 @@ export default async function HomePage() {
                 <li key={it.id}>
                   <div>
                     <strong>{it.name}</strong>
-                    <small>{settings.showPrices ? (p.amountCents === null ? 'auf Anfrage' : `${formatEuro(p.amountCents)} ${p.unit}`) : p.unit}</small>
+                    <PriceTag price={p} as="small" />
                   </div>
                   <AddToRider kind="item" id={it.id} qty={it.minQty ?? 1} />
                 </li>
@@ -180,7 +177,7 @@ export default async function HomePage() {
               </a>
             )}
           </Ph>
-          {settings.bunkerWestCode && (
+          <IfFlag flag="bunkerWestCode">
             <div className="code-stamp">
               <small>{home.bunker.codeLabel}</small>
               <PhText v={partners.bunkerWest.code} className="code-stamp__code" />
@@ -188,7 +185,7 @@ export default async function HomePage() {
                 <PhText v={partners.bunkerWest.discount} /> auf die Location
               </span>
             </div>
-          )}
+          </IfFlag>
         </div>
       </section>
 

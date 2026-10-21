@@ -11,7 +11,7 @@ import { Ph, PhText } from '@/components/Ph';
 import { Split } from '@/components/Split';
 import { SITE_URL } from '@/lib/env';
 import { pageMeta } from '@/lib/seo';
-import { getSettings } from '@/server/services';
+import { IfFlag } from '@/lib/site-context';
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -26,7 +26,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const s = getService((await params).slug);
   if (!s) notFound();
-  const settings = await getSettings();
   const idx = services.findIndex((x) => x.slug === s.slug);
   const next = services[(idx + 1) % services.length]!;
   const items = catalog.items.filter((i) => i.services.includes(s.slug)).slice(0, 8);
@@ -154,12 +153,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
                 </a>
               )}
             </Ph>
-            {settings.bunkerWestCode && (
+            <IfFlag flag="bunkerWestCode">
               <div className="code-stamp">
                 <small>{home.bunker.codeLabel}</small>
                 <PhText v={partners.bunkerWest.code} className="code-stamp__code" />
               </div>
-            )}
+            </IfFlag>
           </div>
         </section>
       )}
@@ -178,13 +177,13 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           {pkgs.length > 0 && (
             <div className="pkgs pkgs--inline">
               {pkgs.map((p) => (
-                <PackageCard key={p.id} pkg={p} showPrices={settings.showPrices} index={catalog.packages.indexOf(p)} />
+                <PackageCard key={p.id} pkg={p} index={catalog.packages.indexOf(p)} />
               ))}
             </div>
           )}
           <div className="items">
             {items.map((i) => (
-              <ItemCard key={i.id} item={i} showPrices={settings.showPrices} />
+              <ItemCard key={i.id} item={i} />
             ))}
           </div>
         </section>

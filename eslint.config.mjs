@@ -5,7 +5,7 @@ import nextPlugin from '@next/eslint-plugin-next';
 import globals from 'globals';
 
 export default tseslint.config(
-  { ignores: ['**/node_modules/**', '**/.next/**', '**/next-env.d.ts', '**/public/**', '**/.demo-data/**'] },
+  { ignores: ['**/node_modules/**', '**/.next/**', '**/next-env.d.ts', '**/public/**', '**/.demo-data/**', '**/out/**', '**/test-results/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

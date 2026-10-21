@@ -2,18 +2,19 @@
 
 import { useEffect, useState } from 'react';
 import type { DayAvailability } from '@c-event/core';
+import { api } from '@/lib/api';
 
-/** Lädt Belegt/Frei über dieselbe API, die später auch eine App nutzt. */
+/** Lädt Belegt/Frei über die API-Schicht (Server-Endpunkt bzw. Browser-Demo). */
 export function useAvailability(from: string, to: string) {
   const [days, setDays] = useState<DayAvailability[] | null>(null);
   const [error, setError] = useState(false);
   useEffect(() => {
     let alive = true;
-    fetch(`/api/availability?from=${from}&to=${to}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
-      .then((d: { days: DayAvailability[] }) => {
+    api
+      .availability(from, to)
+      .then((d) => {
         if (!alive) return;
-        setDays(d.days);
+        setDays(d);
         setError(false);
       })
       .catch(() => alive && setError(true));

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { addDays, formatEuro, toIsoDate, type Inquiry, type PlaceholderEntry, type SentMail, type SiteSettings } from '@c-event/core';
 import { brand, labelFns } from '@c-event/content';
 import { MonthGrid } from '@/components/calendar/MonthCalendar';
+import { api } from '@/lib/api';
 
 interface State {
   mails: SentMail[];
@@ -36,13 +37,7 @@ export function Cockpit({ slogans }: { slogans: string[] }) {
   });
   const [toast, setToast] = useState('');
 
-  const load = useCallback(
-    () =>
-      fetch('/api/demo/state', { cache: 'no-store' })
-        .then((r) => r.json() as Promise<State>)
-        .then(setState),
-    [],
-  );
+  const load = useCallback(() => api.demoState().then(setState), []);
 
   useEffect(() => {
     const fromHash = () => {
@@ -59,8 +54,8 @@ export function Cockpit({ slogans }: { slogans: string[] }) {
     };
   }, [load]);
 
-  const post = async (action: string, body: unknown, msg: string) => {
-    await fetch(`/api/demo/${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const post = async (action: 'toggle-day' | 'settings' | 'reset', body: Record<string, unknown>, msg: string) => {
+    await api.demoAction(action, body);
     await load();
     router.refresh();
     setToast(msg);

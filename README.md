@@ -19,6 +19,18 @@ Danach öffnest du **http://localhost:3000**. Mehr braucht es nicht: Ohne `.env`
 | Anfrage mit Kategorie | http://localhost:3000/anfrage?kategorie=bar-catering |
 | KI-Beschreibung | http://localhost:3000/llms.txt |
 
+## Online-Vorschau (GitHub Pages)
+
+**https://ninoborn1-stack.github.io/c-event/**
+
+Jeder Push auf `main` baut automatisch eine statische Version (`.github/workflows/pages.yml`). Dort gibt es keinen Server: Formular, Postfach, Kalender und Cockpit laufen über dieselben Demo-Services direkt im Browser (localStorage). Alles ist testbar, die Daten gelten aber nur für den jeweiligen Browser. Lokal nachbauen:
+
+```bash
+NEXT_PUBLIC_BASE_PATH=/c-event pnpm build:pages
+```
+
+Das Ergebnis liegt in `apps/web/out`.
+
 ## Demo durchspielen
 
 1. Startseite: Das Intro (Countdown, „C“-Blende, Doors open) läuft beim ersten Besuch pro Tab. Neu abspielen über das Cockpit.
@@ -41,6 +53,7 @@ Im Cockpit kannst du außerdem Tage belegen und freigeben, die Slogan-Variante u
 | `pnpm test:e2e` | Playwright-Smoke-Test (vorher `pnpm build`), Desktop + Handy |
 | `pnpm check` | Typecheck, Lint, Tests und Build am Stück |
 | `pnpm docs:placeholders` | `docs/PLATZHALTER.md` neu erzeugen |
+| `pnpm build:pages` | Statische Vorschau für GitHub Pages nach `apps/web/out` |
 
 ## Struktur
 

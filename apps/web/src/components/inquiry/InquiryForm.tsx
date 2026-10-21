@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import {
   BUDGET_RANGES,
@@ -11,25 +11,29 @@ import {
   formatEuro,
   inquiryInputSchema,
   summarizeCart,
-  type InquiryCategory,
+  isInquiryCategory,
+  isValidIsoDate,
   type Occasion,
 } from '@c-event/core';
 import { budgetLabels, catalog, categoryLabels, occasionLabels, ui } from '@c-event/content';
 import { PickCalendar } from '@/components/calendar/MonthCalendar';
+import { api } from '@/lib/api';
 import { rider, useRider } from '@/lib/rider-store';
 import { useSite } from '@/lib/site-context';
-
-interface Props {
-  initialCategory?: InquiryCategory;
-  initialDate?: string;
-  initialOccasion?: Occasion;
-}
 
 type Values = Record<string, string | boolean>;
 
 /** Das EINE Formular für alle Anfragen. Validiert live mit demselben Schema wie die API. */
-export function InquiryForm({ initialCategory, initialDate, initialOccasion }: Props) {
+export function InquiryForm() {
   const router = useRouter();
+  // Vorauswahl aus der URL: ?kategorie=…&datum=…&anlass=… (clientseitig, damit die Seite statisch bleiben kann)
+  const sp = useSearchParams();
+  const kat = sp.get('kategorie');
+  const datum = sp.get('datum');
+  const anlass = sp.get('anlass') ?? '';
+  const initialCategory = isInquiryCategory(kat) ? kat : undefined;
+  const initialDate = isValidIsoDate(datum) ? datum : undefined;
+  const initialOccasion = (OCCASIONS as readonly string[]).includes(anlass) ? (anlass as Occasion) : undefined;
   const cart = useRider();
   const { settings } = useSite();
   const summary = summarizeCart(cart, catalog);
@@ -82,11 +86,10 @@ export function InquiryForm({ initialCategory, initialDate, initialOccasion }: P
     }
     setSending(true);
     try {
-      const res = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload()) });
-      const data = (await res.json()) as { ok: boolean; id?: string; errors?: Record<string, string> };
-      if (!res.ok || !data.ok || !data.id) {
-        setErrors(data.errors ?? {});
-        setServerError(data.errors?._ ?? 'Bitte prüfe die markierten Felder.');
+      const data = await api.submitInquiry(payload());
+      if (!data.ok) {
+        setErrors(data.errors);
+        setServerError(data.errors._ ?? 'Bitte prüfe die markierten Felder.');
         setSending(false);
         return;
       }

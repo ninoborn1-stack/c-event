@@ -5,9 +5,12 @@ import { useState } from 'react';
 import { formatEuro, summarizeCart } from '@c-event/core';
 import { catalog, ui } from '@c-event/content';
 import { useRider } from '@/lib/rider-store';
+import { useSite } from '@/lib/site-context';
 import { ItemCard } from './ItemCard';
 
-export function Configurator({ showPrices }: { showPrices: boolean }) {
+export function Configurator() {
+  const { settings } = useSite();
+  const showPrices = settings.showPrices;
   const [cat, setCat] = useState<string>('alle');
   const cart = useRider();
   const summary = summarizeCart(cart, catalog);
@@ -29,7 +32,7 @@ export function Configurator({ showPrices }: { showPrices: boolean }) {
         </div>
         <div className="items items--conf" key={cat}>
           {items.map((i) => (
-            <ItemCard key={i.id} item={i} showPrices={showPrices} />
+            <ItemCard key={i.id} item={i} />
           ))}
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { getMedia } from '@c-event/content';
 import { Media } from '@/components/Media';
 import { getLenis } from '@/lib/motion';
+import { asset } from '@/lib/env';
 
 interface Item {
   media: string;
@@ -93,10 +94,10 @@ export function GalleryGrid({ items, services, occasions }: { items: Item[]; ser
           </button>
           <figure>
             {curMedia.kind === 'video' ? (
-              <video src={curMedia.src} poster={curMedia.poster} controls autoPlay muted loop playsInline />
+              <video src={asset(curMedia.src)} poster={curMedia.poster ? asset(curMedia.poster) : undefined} controls autoPlay muted loop playsInline />
             ) : (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={curMedia.src} alt={curMedia.alt} />
+              <img src={asset(curMedia.src)} alt={curMedia.alt} />
             )}
             <figcaption>
               {curMedia.alt} <small>{curMedia.credit}</small>

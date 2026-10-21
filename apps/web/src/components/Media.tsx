@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { getMedia } from '@c-event/content';
+import { asset } from '@/lib/env';
 
 /** Alle Bilder und Videos laufen über die Medien-Registry (Austausch gegen Celias Material per ID). */
 export function Media({
@@ -24,8 +25,8 @@ export function Media({
     return (
       <video
         className={`media${stock} ${className ?? ''}`}
-        src={m.src}
-        poster={m.poster}
+        src={asset(m.src)}
+        poster={m.poster ? asset(m.poster) : undefined}
         muted
         loop
         playsInline
@@ -36,11 +37,11 @@ export function Media({
     );
   }
   return fill ? (
-    <Image className={`media${stock} ${className ?? ''}`} src={m.src} alt={m.alt} fill sizes={sizes} priority={priority} />
+    <Image className={`media${stock} ${className ?? ''}`} src={asset(m.src)} alt={m.alt} fill sizes={sizes} priority={priority} />
   ) : (
     <Image
       className={`media${stock} ${className ?? ''}`}
-      src={m.src}
+      src={asset(m.src)}
       alt={m.alt}
       width={m.width}
       height={m.height}

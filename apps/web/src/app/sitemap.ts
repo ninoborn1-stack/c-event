@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next';
 import { services } from '@c-event/content';
 import { SITE_URL } from '@/lib/env';
 
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const paths: [string, number][] = [

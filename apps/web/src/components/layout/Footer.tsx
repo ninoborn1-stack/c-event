@@ -3,6 +3,7 @@ import { val } from '@c-event/core';
 import { brand, home, legalNav, services, ui } from '@c-event/content';
 import { Ph, PhText } from '@/components/Ph';
 import { Split } from '@/components/Split';
+import { asset } from '@/lib/env';
 
 export function Footer() {
   const wa = val(brand.contact.whatsapp);
@@ -79,7 +80,7 @@ export function Footer() {
               </li>
             ))}
             <li>
-              <a href="/llms.txt">llms.txt</a>
+              <a href={asset('/llms.txt')}>llms.txt</a>
             </li>
           </ul>
         </div>

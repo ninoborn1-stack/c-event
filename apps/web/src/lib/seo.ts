@@ -16,7 +16,7 @@ export function pageMeta(opts: { title: string; description: string; path: strin
       siteName: brand.name,
       locale: 'de_DE',
       type: 'website',
-      images: [{ url: img.kind === 'video' ? (img.poster ?? img.src) : img.src, width: img.width, height: img.height, alt: img.alt }],
+      images: [{ url: `${SITE_URL}${img.kind === 'video' ? (img.poster ?? img.src) : img.src}`, width: img.width, height: img.height, alt: img.alt }],
     },
   };
 }

@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { getMedia } from '@c-event/content';
 import { gsap, prefersReducedMotion } from '@/lib/motion';
+import { useSite } from '@/lib/site-context';
+import { asset } from '@/lib/env';
 
 interface HeroProps {
   mediaId: string;
-  lines: string[];
-  second: string[];
+  slogans: { lines: readonly string[]; second: readonly string[] }[];
   eyebrow: string[];
   lead: string;
   cta: { label: string; href: string };
@@ -38,6 +39,9 @@ export function Hero(p: HeroProps) {
   const root = useRef<HTMLElement>(null);
   const [introDone, setIntroDone] = useState(false);
   const img = getMedia(p.mediaId);
+  const { settings } = useSite();
+  const slogan = p.slogans[settings.sloganVariant % p.slogans.length] ?? p.slogans[0]!;
+  const sloganNote = p.sloganNote ? `${p.sloganNote} (Variante ${(settings.sloganVariant % p.slogans.length) + 1}/${p.slogans.length})` : undefined;
 
   useEffect(() => {
     const el = root.current;
@@ -204,7 +208,7 @@ export function Hero(p: HeroProps) {
                 <div className="hero__zoom">
                   <Image
                     className={`hero__img media${img.stock ? ' is-stock' : ''}`}
-                    src={img.src}
+                    src={asset(img.src)}
                     alt={i === 0 ? img.alt : ''}
                     fill
                     sizes="100vw"
@@ -229,10 +233,10 @@ export function Hero(p: HeroProps) {
           </p>
           <h1
             className={`hero__title${p.sloganIsPlaceholder ? ' ph' : ''}`}
-            data-ph-note={p.sloganNote}
-            aria-label={p.lines.join(' ')}
+            data-ph-note={sloganNote}
+            aria-label={slogan.lines.join(' ')}
           >
-            {p.lines.map((line, li) => (
+            {slogan.lines.map((line, li) => (
               <span key={li} className={`hero__line hero__line--${li}`} aria-hidden="true">
                 {[...line].map((c, ci) => (
                   <span key={ci} className="ch">
@@ -259,7 +263,7 @@ export function Hero(p: HeroProps) {
 
         <div className="hero__second" aria-hidden="true">
           <p>
-            {p.second.map((s, i) => (
+            {slogan.second.map((s, i) => (
               <span key={i} className={i === 0 ? 'serif' : ''}>
                 {s}
               </span>

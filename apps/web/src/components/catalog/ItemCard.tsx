@@ -1,16 +1,11 @@
-import { formatEuro, isPlaceholder, val, type CatalogItem, type CatalogPackage, type Price } from '@c-event/core';
-import { catalog, ui } from '@c-event/content';
+import { isPlaceholder, val, type CatalogItem, type CatalogPackage } from '@c-event/core';
+import { catalog } from '@c-event/content';
 import { AddToRider } from '@/components/rider/AddToRider';
 import { Media } from '@/components/Media';
 import { Ph, PhText } from '@/components/Ph';
+import { DepositTag, PriceTag } from './PriceTag';
 
-export function priceLabel(p: Price, showPrices: boolean): string {
-  if (!showPrices) return p.unit === 'ab' ? ui.rider.onRequest : p.unit;
-  if (p.amountCents === null) return ui.rider.onRequest;
-  return p.unit === 'ab' ? `ab ${formatEuro(p.amountCents)}` : `${formatEuro(p.amountCents)} ${p.unit}`;
-}
-
-export function ItemCard({ item, showPrices }: { item: CatalogItem; showPrices: boolean }) {
+export function ItemCard({ item }: { item: CatalogItem }) {
   const cat = catalog.categories.find((c) => c.id === item.category);
   const dep = item.depositCents === undefined ? 0 : val(item.depositCents);
   return (
@@ -23,12 +18,8 @@ export function ItemCard({ item, showPrices }: { item: CatalogItem; showPrices: 
         <h3>{item.name}</h3>
         <PhText v={item.short} className="item__short" />
         <div className="item__meta">
-          <Ph v={item.price}>{(p) => <strong>{priceLabel(p, showPrices)}</strong>}</Ph>
-          {showPrices && dep > 0 && (
-            <small className={isPlaceholder(item.depositCents) ? 'ph' : ''} data-ph-note={isPlaceholder(item.depositCents) ? item.depositCents.note : undefined}>
-              {ui.rider.deposit} {formatEuro(dep)}
-            </small>
-          )}
+          <Ph v={item.price}>{(p) => <PriceTag price={p} />}</Ph>
+          <DepositTag cents={dep} note={isPlaceholder(item.depositCents) ? item.depositCents.note : undefined} />
           {item.minQty ? <small>min. {item.minQty}</small> : null}
         </div>
         <AddToRider kind="item" id={item.id} qty={item.minQty ?? 1} />
@@ -37,7 +28,7 @@ export function ItemCard({ item, showPrices }: { item: CatalogItem; showPrices: 
   );
 }
 
-export function PackageCard({ pkg, showPrices, index }: { pkg: CatalogPackage; showPrices: boolean; index: number }) {
+export function PackageCard({ pkg, index }: { pkg: CatalogPackage; index: number }) {
   return (
     <article className={`pkg pkg--${index}`}>
       <div className="pkg__img">
@@ -59,7 +50,7 @@ export function PackageCard({ pkg, showPrices, index }: { pkg: CatalogPackage; s
           })}
         </ul>
         <div className="pkg__foot">
-          <Ph v={pkg.price}>{(p) => <strong>{priceLabel(p, showPrices)}</strong>}</Ph>
+          <Ph v={pkg.price}>{(p) => <PriceTag price={p} />}</Ph>
           <AddToRider kind="package" id={pkg.id} />
         </div>
       </div>

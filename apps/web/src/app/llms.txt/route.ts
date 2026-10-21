@@ -2,6 +2,8 @@ import { val } from '@c-event/core';
 import { brand, services, socialMedia } from '@c-event/content';
 import { SITE_URL } from '@/lib/env';
 
+export const dynamic = 'force-static';
+
 /** llms.txt: klare Agenturbeschreibung für KI-Crawler und Assistenten. */
 export function GET() {
   const lines = [

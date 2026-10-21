@@ -3,12 +3,10 @@ import { PackageCard } from '@/components/catalog/ItemCard';
 import { Configurator } from '@/components/catalog/Configurator';
 import { Split } from '@/components/Split';
 import { pageMeta } from '@/lib/seo';
-import { getSettings } from '@/server/services';
 
 export const metadata = pageMeta({ ...configuratorPage.seo, path: '/konfigurator', image: 'bar-lichter' });
 
-export default async function ConfiguratorPage() {
-  const settings = await getSettings();
+export default function ConfiguratorPage() {
   return (
     <>
       <header className="page-head page-head--ink">
@@ -24,12 +22,12 @@ export default async function ConfiguratorPage() {
         <Split as="h2" className="display-m" text={configuratorPage.packagesTitle} />
         <div className="pkgs">
           {catalog.packages.map((p, i) => (
-            <PackageCard key={p.id} pkg={p} index={i} showPrices={settings.showPrices} />
+            <PackageCard key={p.id} pkg={p} index={i} />
           ))}
         </div>
       </section>
       <section className="sec sec--cream sec--tight">
-        <Configurator showPrices={settings.showPrices} />
+        <Configurator />
       </section>
     </>
   );

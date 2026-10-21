@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { getLenis, prefersReducedMotion, ScrollTrigger } from '@/lib/motion';
+import { BASE_PATH } from '@/lib/env';
 
 const CLOSE_MS = 680;
 
@@ -35,12 +36,15 @@ export function Curtain() {
       e.stopPropagation();
       const text = (a.dataset.label || a.textContent || '').replace(/\s+/g, ' ').replace('→', '').trim().slice(0, 26);
       setLabel(text);
-      setAct(url.pathname === '/' ? 'Main Stage' : `Next up · ${url.pathname.split('/').filter(Boolean).join(' / ')}`);
+      const shown = url.pathname.replace(BASE_PATH, '') || '/';
+      setAct(shown === '/' ? 'Main Stage' : `Next up · ${shown.split('/').filter(Boolean).join(' / ')}`);
       root.classList.remove('is-entering');
       void root.offsetWidth;
       root.classList.add('is-leaving');
       leaving.current = true;
-      window.setTimeout(() => router.push(url.pathname + url.search + url.hash, { scroll: false }), CLOSE_MS);
+      // a.href enthält den basePath, router.push setzt ihn selbst davor.
+      const path = BASE_PATH && url.pathname.startsWith(BASE_PATH) ? url.pathname.slice(BASE_PATH.length) || '/' : url.pathname;
+      window.setTimeout(() => router.push(path + url.search + url.hash, { scroll: false }), CLOSE_MS);
       window.clearTimeout(fallback.current);
       fallback.current = window.setTimeout(() => {
         if (leaving.current) {

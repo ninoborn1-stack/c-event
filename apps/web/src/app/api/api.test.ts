@@ -13,7 +13,7 @@ const post = (body: unknown) =>
 
 describe('Anfrage-API', () => {
   it('nimmt eine gültige Anfrage an und legt zwei Mails ab', async () => {
-    const { POST } = await import('./inquiries/route');
+    const { POST } = await import('./inquiries/route.server');
     const res = await POST(
       post({
         category: 'event-organisation',
@@ -29,7 +29,7 @@ describe('Anfrage-API', () => {
     expect(res.status).toBe(201);
     const data = (await res.json()) as { ok: boolean; id: string };
     expect(data.ok).toBe(true);
-    const { GET } = await import('./demo/[action]/route');
+    const { GET } = await import('./demo/[action]/route.server');
     const state = (await (await GET(new Request('http://localhost/api/demo/state'), { params: Promise.resolve({ action: 'state' }) })).json()) as {
       inquiries: { id: string; cart: unknown[] }[];
       mails: { kind: string }[];
@@ -40,7 +40,7 @@ describe('Anfrage-API', () => {
   });
 
   it('liefert Feldfehler mit Status 422', async () => {
-    const { POST } = await import('./inquiries/route');
+    const { POST } = await import('./inquiries/route.server');
     const res = await POST(post({ category: 'catering', name: '', email: 'kaputt' }));
     expect(res.status).toBe(422);
     const data = (await res.json()) as { errors: Record<string, string> };
@@ -48,13 +48,13 @@ describe('Anfrage-API', () => {
   });
 
   it('lehnt kaputtes JSON ab', async () => {
-    const { POST } = await import('./inquiries/route');
+    const { POST } = await import('./inquiries/route.server');
     const res = await POST(new Request('http://localhost/api/inquiries', { method: 'POST', body: '{nope' }));
     expect(res.status).toBe(400);
   });
 
   it('Verfügbarkeit gibt nur Datum und Status zurück', async () => {
-    const { GET } = await import('./availability/route');
+    const { GET } = await import('./availability/route.server');
     const res = await GET(new Request('http://localhost/api/availability?from=2030-01-01&to=2030-01-31'));
     const data = (await res.json()) as { days: Record<string, unknown>[] };
     expect(data.days).toHaveLength(31);

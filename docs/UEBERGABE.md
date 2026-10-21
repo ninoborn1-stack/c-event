@@ -22,6 +22,10 @@ packages/content  ──►  packages/core  ◄──  packages/services-demo
 | `GET` | `/api/catalog` | Kategorien, Artikel, Pakete (ohne Platzhalter-Markierung) |
 | `GET/POST` | `/api/demo/*` | Nur im Demo-Modus: Cockpit-Daten, Kalender umschalten, Einstellungen, Reset |
 
+## Online-Vorschau
+
+`pnpm build:pages` erzeugt eine statische Version, die GitHub Pages per Workflow bei jedem Push auf `main` veröffentlicht. Die Demo-Services laufen dort im Browser. Für den echten Livegang braucht es ein Node-Hosting (Server-Routen unter `route.server.ts`), siehe unten.
+
 ## Demo → Live
 
 1. **Inhalte einsetzen** (ohne Code-Änderung an der UI):

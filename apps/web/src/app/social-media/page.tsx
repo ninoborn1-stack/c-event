@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { inquiryHref, socialMedia } from '@c-event/content';
 import { Btn } from '@/components/Btn';
 import { JsonLd } from '@/components/JsonLd';
@@ -91,10 +92,10 @@ export default function SocialPage() {
         </Ph>
       </section>
       <section className="svc-cta">
-        <a href={inquiryHref('social-media')} className="svc-cta__big" data-label="Booking">
+        <Link href={inquiryHref('social-media')} className="svc-cta__big" data-label="Booking">
           <span className="micro">Kategorie vorausgewählt: Social Media</span>
           <strong>{socialMedia.cta} →</strong>
-        </a>
+        </Link>
       </section>
     </>
   );

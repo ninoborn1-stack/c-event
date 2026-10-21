@@ -1,4 +1,4 @@
-import { isInquiryCategory, isValidIsoDate, OCCASIONS, type Occasion } from '@c-event/core';
+import { Suspense } from 'react';
 import { brand, inquiryPage } from '@c-event/content';
 import { InquiryForm } from '@/components/inquiry/InquiryForm';
 import { Ph, PhText } from '@/components/Ph';
@@ -7,12 +7,7 @@ import { pageMeta } from '@/lib/seo';
 
 export const metadata = pageMeta({ ...inquiryPage.seo, path: '/anfrage', image: 'anstossen-nachts' });
 
-export default async function InquiryPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const sp = await searchParams;
-  const one = (k: string) => (Array.isArray(sp[k]) ? sp[k][0] : sp[k]);
-  const kat = one('kategorie');
-  const datum = one('datum');
-  const anlass = one('anlass');
+export default function InquiryPage() {
   return (
     <>
       <header className="page-head page-head--signal">
@@ -21,11 +16,9 @@ export default async function InquiryPage({ searchParams }: { searchParams: Prom
         <p className="page-head__lead">{inquiryPage.lead}</p>
       </header>
       <section className="sec sec--cream sec--tight inquiry">
-        <InquiryForm
-          initialCategory={isInquiryCategory(kat) ? kat : undefined}
-          initialDate={isValidIsoDate(datum) ? datum : undefined}
-          initialOccasion={(OCCASIONS as readonly string[]).includes(anlass ?? '') ? (anlass as Occasion) : undefined}
-        />
+        <Suspense fallback={<p className="muted">Formular lädt …</p>}>
+          <InquiryForm />
+        </Suspense>
         <aside className="inquiry__aside">
           <span className="micro">Lieber direkt?</span>
           <Ph v={brand.contact.phone}>{(p) => <a href={`tel:${p.replace(/\s/g, '')}`}>{p}</a>}</Ph>

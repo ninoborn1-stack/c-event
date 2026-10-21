@@ -9,6 +9,7 @@ import { catalog, getMedia, ui } from '@c-event/content';
 import { rider, useRider } from '@/lib/rider-store';
 import { useSite } from '@/lib/site-context';
 import { getLenis } from '@/lib/motion';
+import { asset } from '@/lib/env';
 
 /** Seitliche Rider-Ansicht, erreichbar von überall. Öffnet sich per Event „rider:open“. */
 export function RiderDrawer() {
@@ -78,7 +79,7 @@ export function RiderDrawer() {
                 {summary.lines.map((l) => (
                   <li key={`${l.kind}-${l.id}`}>
                     <div className="drawer__thumb">
-                      <Image src={getMedia(l.media).poster ?? getMedia(l.media).src} alt="" fill sizes="80px" />
+                      <Image src={asset(getMedia(l.media).poster ?? getMedia(l.media).src)} alt="" fill sizes="80px" />
                     </div>
                     <div>
                       <strong>{l.name}</strong>
