@@ -1,0 +1,21 @@
+{
+  "name": "@c-event/content",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p .",
+    "test": "vitest run",
+    "docs:placeholders": "WRITE_DOCS=1 vitest run src/placeholders-doc.test.ts"
+  },
+  "dependencies": {
+    "@c-event/core": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "^5.0.5",
+    "@types/node": "^26.6.5"
+  }
+}
