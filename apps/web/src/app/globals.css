@@ -942,14 +942,33 @@ html.is-leaving .curtain__label {
 
 /* ---------- Intro (Laden als Event) ---------- */
 .intro {
-  display: none;
-}
-html.js .intro {
-  display: block;
   position: fixed;
   inset: 0;
   z-index: 130;
   pointer-events: none;
+  /* Notbremse: falls JavaScript hängt, verschwindet das Overlay trotzdem */
+  animation: introFailsafe 0.4s 9s forwards;
+}
+/* Buchstaben, die während des Intros neu gerendert werden (z. B. Slogan-Wechsel aus dem Cockpit), bleiben verdeckt */
+.hero.is-intro .ch:not([style]) {
+  transform: translateY(125%);
+  animation: chFailsafe 0s 9s forwards;
+}
+@keyframes chFailsafe {
+  to {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero.is-intro .ch {
+    transform: none !important;
+  }
+}
+@keyframes introFailsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 .intro__svg {
   position: absolute;

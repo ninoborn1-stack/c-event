@@ -101,6 +101,7 @@ export function Hero(p: HeroProps) {
       intro = gsap.timeline({
         paused: true,
         onComplete: () => {
+          el.classList.remove('is-intro'); // vor clearProps, sonst greift die CSS-Verdeckung einen Frame lang
           gsap.set(q(introTargets), { clearProps: 'all' });
           // Nur transform zurücksetzen: next/image hält Layout-Styles (fill) inline am <img>.
           gsap.set(q('.hero__img'), { clearProps: 'transform,scale' });
@@ -196,7 +197,7 @@ export function Hero(p: HeroProps) {
   }, []);
 
   return (
-    <section ref={root} className="hero" aria-label="Willkommen">
+    <section ref={root} className={`hero${introDone ? '' : ' is-intro'}`} aria-label="Willkommen">
       <div className="hero__stage">
         <div className="hero__behind" aria-hidden="true">
           <span className="hero__behind-in">{p.behind}</span>

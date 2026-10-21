@@ -52,6 +52,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {`try{if('scrollRestoration' in history&&!location.hash)history.scrollRestoration='manual';document.documentElement.classList.add('js')}catch(e){}`}
         </Script>
         <JsonLd data={organizationLd()} />
+        <noscript>
+          <style>{'.intro{display:none!important}.hero.is-intro .ch{transform:none!important}'}</style>
+        </noscript>
       </head>
       <body>
         <SiteProvider value={{ settings, isDemo: IS_DEMO }}>
