@@ -1,3 +1,4 @@
+import os from 'node:os';
 import path from 'node:path';
 import { connection } from 'next/server';
 import { DEFAULT_SETTINGS, val, type MailContext, type Services, type SiteSettings } from '@c-event/core';
@@ -17,9 +18,12 @@ export function getServices(): AppServices {
   if (g.__cevServices) return g.__cevServices;
   if (DATA_MODE === 'demo') {
     // Demo-Ablage liegt außerhalb des Bundles; turbopackIgnore verhindert, dass das ganze Projekt getraced wird.
+    // Auf Vercel ist nur /tmp beschreibbar; die Demo-Daten sind dort flüchtig (pro Instanz).
     const dir = process.env.DEMO_DATA_DIR
       ? path.resolve(/* turbopackIgnore: true */ process.cwd(), process.env.DEMO_DATA_DIR)
-      : path.join(/* turbopackIgnore: true */ process.cwd(), '.demo-data');
+      : process.env.VERCEL
+        ? path.join(os.tmpdir(), 'cevent-demo')
+        : path.join(/* turbopackIgnore: true */ process.cwd(), '.demo-data');
     g.__cevServices = createDemoServices({ dir });
     return g.__cevServices;
   }
