@@ -50,6 +50,14 @@ Getroffen beim Bau der Demo (22.10.2026), wo Briefing oder Start-Prompt offen od
 | Effekte | Filmkorn statisch und nur Viewport-groß, Cursor ohne `mix-blend-mode`, bewegte Großflächen mit `will-change`, ScrollTrigger-Refresh nach Fonts und Bildern | Weniger Arbeit pro Frame beim Scrollen. |
 | Bilder statisch | `scripts/stock-variants.mjs` erzeugt WebP-Varianten (480/960/1600/2200 px), ein eigener Loader wählt die passende. | GitHub Pages hat keinen Bild-Optimierer; vorher wurden überall die Originale (bis 2400 px) geladen. |
 
+## Afterhour Arcade
+
+| Thema | Entscheidung | Warum |
+|---|---|---|
+| Maus-Follower | Entfernt | Wunsch von Nino. |
+| Minispiele | Eigene Seite `/arcade` mit drei Retro-Spielen passend zu den Leistungen: Shaker Rush (Bar), DJ Drop (Musik/Regie), Türsteher (Personal/Einlass). Teaser auf der Startseite, Link im Footer und auf der 404-Seite, nicht in der Hauptnavigation. | Event-Gefühl ohne die geforderte 6-Punkte-Navigation aufzubrechen. |
+| Technik | Eigene Mini-Engine (Canvas 240×180, Pixel-Skalierung, WebAudio-Chiptune), keine Spiel-Bibliothek. Tastatur nur, wenn der Automat fokussiert ist; Touch per Ziehen/Tippen. Auto-Pause bei Tab-Wechsel oder wenn der Automat aus dem Bild scrollt. Highscores nur lokal im Browser. Pixel-Schrift „Press Start 2P“ ohne Preload. | Leicht, offline-fähig, keine Daten an Dritte. |
+
 ## Inhalte
 
 - Alle Texte sind **Vorschläge**, als Platzhalter markiert, bis Celia sie freigibt.

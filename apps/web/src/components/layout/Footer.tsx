@@ -37,6 +37,9 @@ export function Footer() {
             <li>
               <Link href="/social-media">Social Media & Content</Link>
             </li>
+            <li>
+              <Link href="/arcade">Afterhour Arcade</Link>
+            </li>
           </ul>
         </div>
         <div>

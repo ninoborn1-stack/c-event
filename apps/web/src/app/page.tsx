@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { isPlaceholder, val } from '@c-event/core';
-import { brand, catalog, home, inquiryHref, partners, services } from '@c-event/content';
+import { arcade, brand, catalog, home, inquiryHref, partners, services } from '@c-event/content';
 import { Hero } from '@/components/home/Hero';
 import { LineUp } from '@/components/home/LineUp';
 import { Highlights } from '@/components/home/Highlights';
@@ -88,7 +88,6 @@ export default function HomePage() {
           <Split as="h2" className="display-l" text={home.lineup.title} />
         </header>
         <LineUp
-          more={home.lineup.more}
           items={[
             ...services.map((s) => ({ href: `/leistungen/${s.slug}`, name: s.name, line: s.line, media: s.hero })),
             { href: '/social-media', name: 'Social Media', line: 'Strategie & Content für Brands, die Events machen.', media: 'crowd-handy-licht' },
@@ -231,6 +230,27 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Arcade-Teaser */}
+      <Link href="/arcade" className="arcade-teaser" data-label="Arcade">
+        <div className="arcade-teaser__screen" aria-hidden="true">
+          <span>{arcade.ui.start}</span>
+        </div>
+        <div className="arcade-teaser__copy">
+          <span className="micro">{arcade.teaser.kicker}</span>
+          <Split as="h2" className="display-l" text={arcade.teaser.title} />
+          <p>{arcade.teaser.text}</p>
+          <span className="arcade-teaser__games">
+            {arcade.games.map((g) => (
+              <b key={g.id}>{g.title}</b>
+            ))}
+          </span>
+          <span className="btn btn--gold">
+            <span className="btn__text">{arcade.teaser.cta}</span>
+            <span className="btn__arrow">→</span>
+          </span>
+        </div>
+      </Link>
+
       {/* 10 Finale */}
       <section className="finale">
         <h2 className="finale__title" aria-label={home.finale.lines.join(' ')}>
@@ -238,7 +258,7 @@ export default function HomePage() {
             <Split key={i} text={i === 1 ? `*${l}*` : l} className="finale__line" />
           ))}
         </h2>
-        <Link href={inquiryHref()} className="finale__btn" data-label="Booking" data-cursor="Los">
+        <Link href={inquiryHref()} className="finale__btn" data-label="Booking">
           <span>{home.finale.cta}</span>
         </Link>
       </section>

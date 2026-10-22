@@ -245,7 +245,7 @@ export function InquiryForm() {
             {serverError}
           </p>
         )}
-        <button type="submit" className="btn btn--signal btn--xl" disabled={sending} data-cursor="Ab!">
+        <button type="submit" className="btn btn--signal btn--xl" disabled={sending}>
           <span className="btn__text">{sending ? 'Wird gesendet …' : 'Anfrage senden'}</span>
           <span className="btn__arrow">→</span>
         </button>

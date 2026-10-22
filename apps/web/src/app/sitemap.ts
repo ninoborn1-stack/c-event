@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ['/anfrage', 0.8],
     ['/galerie', 0.6],
     ['/ueber-uns', 0.6],
+    ['/arcade', 0.4],
     ['/impressum', 0.2],
     ['/datenschutz', 0.2],
     ['/agb', 0.2],

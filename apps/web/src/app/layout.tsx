@@ -1,13 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { Archivo, Cormorant_Garamond, DM_Sans } from 'next/font/google';
+import { Archivo, Cormorant_Garamond, DM_Sans, Press_Start_2P } from 'next/font/google';
 import { brand, home, listPlaceholders, tokens, tokensToCss } from '@c-event/content';
 import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
 import { DemoBadge } from '@/components/layout/DemoBadge';
 import { PwaRegister } from '@/components/layout/PwaRegister';
 import { Curtain } from '@/components/motion/Curtain';
-import { Cursor } from '@/components/motion/Cursor';
 import { Reveals } from '@/components/motion/Reveals';
 import { SmoothScroll } from '@/components/motion/SmoothScroll';
 import { RiderDrawer } from '@/components/rider/RiderDrawer';
@@ -22,6 +21,8 @@ import './globals.css';
 const display = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--ff-display', display: 'swap' });
 const serif = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500'], style: ['italic', 'normal'], variable: '--ff-serif', display: 'swap' });
 const sans = DM_Sans({ subsets: ['latin'], variable: '--ff-sans', display: 'swap' });
+// Pixel-Schrift nur für die Arcade; kein Preload, damit sie die übrigen Seiten nicht bremst.
+const pixel = Press_Start_2P({ subsets: ['latin'], weight: '400', variable: '--ff-pixel', display: 'swap', preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -41,7 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="de"
-      className={`${display.variable} ${serif.variable} ${sans.variable}`}
+      className={`${display.variable} ${serif.variable} ${sans.variable} ${pixel.variable}`}
       data-ph={IS_DEMO && settings.showPlaceholders ? 'on' : 'off'}
       suppressHydrationWarning
     >
@@ -66,7 +67,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <main id="main">{children}</main>
           <Footer />
           <RiderDrawer />
-          <Cursor />
           <SmoothScroll />
           <Reveals />
           <PwaRegister />

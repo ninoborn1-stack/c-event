@@ -13,7 +13,7 @@ interface Item {
 }
 
 /** Leistungen als „Line-up“: große Namen, das Bild folgt der Maus wie ein Spot. */
-export function LineUp({ items, more }: { items: Item[]; more: string }) {
+export function LineUp({ items }: { items: Item[] }) {
   const [active, setActive] = useState(-1);
   const wrap = useRef<HTMLDivElement>(null);
   const float = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ export function LineUp({ items, more }: { items: Item[]; more: string }) {
       <ol className="lineup__list">
         {items.map((it, i) => (
           <li key={it.href} onPointerEnter={() => setActive(i)} className={active === i ? 'is-active' : active >= 0 ? 'is-dim' : ''}>
-            <Link href={it.href} data-label={it.name} data-cursor={more}>
+            <Link href={it.href} data-label={it.name}>
               <em className="lineup__no">{String(i + 1).padStart(2, '0')}</em>
               <span className="lineup__name">{it.name}</span>
               <span className="lineup__line">{it.line}</span>

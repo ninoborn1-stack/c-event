@@ -20,6 +20,7 @@ export const tokens = {
     display: "var(--ff-display), 'Arial Narrow', sans-serif",
     serif: "var(--ff-serif), Georgia, serif",
     sans: 'var(--ff-sans), system-ui, sans-serif',
+    pixel: 'var(--ff-pixel), ui-monospace, monospace',
   },
   space: { gutter: 'clamp(16px, 4vw, 64px)', section: 'clamp(96px, 16vw, 220px)' },
   ease: { out: 'cubic-bezier(.16,1,.3,1)', inOut: 'cubic-bezier(.76,0,.24,1)' },

@@ -323,62 +323,6 @@ html[data-ph='on'] .stock-tag {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ---------- Cursor ---------- */
-.cursor {
-  display: none;
-}
-.has-cursor .cursor {
-  display: grid;
-  place-items: center;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 160;
-  width: 14px;
-  height: 14px;
-  margin: -7px 0 0 -7px;
-  border-radius: 50%;
-  background: var(--color-gold-hot);
-  box-shadow: 0 0 0 1.5px rgba(12, 10, 8, 0.55);
-  pointer-events: none;
-  will-change: transform;
-  transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out), opacity 0.3s, background 0.3s;
-}
-.cursor span {
-  font: 700 10px/1 var(--font-sans);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-  opacity: 0;
-}
-.cursor.is-hover {
-  width: 46px;
-  height: 46px;
-  margin: -23px 0 0 -23px;
-  background: rgba(242, 195, 107, 0.35);
-}
-.cursor.has-label {
-  width: 84px;
-  height: 84px;
-  margin: -42px 0 0 -42px;
-  background: var(--color-signal);
-}
-.cursor.has-label span {
-  opacity: 1;
-}
-.cursor.is-text {
-  width: 3px;
-  height: 28px;
-  margin: -14px 0 0 -1px;
-  border-radius: 2px;
-}
-.cursor.is-down {
-  transform: scale(0.8);
-}
-.cursor.is-gone {
-  opacity: 0;
-}
-
 /* ---------- Vorhang ---------- */
 .curtain {
   position: fixed;

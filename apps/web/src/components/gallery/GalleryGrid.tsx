@@ -73,7 +73,7 @@ export function GalleryGrid({ items, services, occasions }: { items: Item[]; ser
         {list.map((it, i) => {
           const m = getMedia(it.media);
           return (
-            <button key={`${it.media}-${i}`} type="button" className={`gal__item gal__item--${i % 7}`} onClick={() => setOpen(i)} data-cursor={m.kind === 'video' ? 'Play' : 'Zoom'}>
+            <button key={`${it.media}-${i}`} type="button" className={`gal__item gal__item--${i % 7}`} onClick={() => setOpen(i)}>
               <Media id={it.media} sizes="(min-width: 1000px) 33vw, 50vw" />
               {m.kind === 'video' && <span className="gal__play">▶ Video</span>}
               <span className="gal__cap">

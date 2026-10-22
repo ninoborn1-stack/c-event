@@ -266,7 +266,7 @@ export function Hero(p: HeroProps) {
           <div className="hero__foot">
             <p className="hero__lead">{p.lead}</p>
             <div className="hero__ctas">
-              <Link href={p.cta.href} className="btn btn--signal btn--xl" data-label="Booking" data-cursor="Los">
+              <Link href={p.cta.href} className="btn btn--signal btn--xl" data-label="Booking">
                 <span className="btn__text">{p.cta.label}</span>
                 <span className="btn__arrow">→</span>
               </Link>

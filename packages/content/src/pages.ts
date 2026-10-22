@@ -206,6 +206,45 @@ export const gallery = {
   ] as { media: MediaId; services: string[]; occasion: string }[],
 };
 
+export const arcade = {
+  seo: {
+    title: 'Afterhour Arcade: Retro-Minispiele',
+    description: 'Drei Retro-Minispiele rund ums Event: Shaker Rush an der Bar, DJ Drop am Pult und Türsteher am Einlass. Spielbar im Browser, auf Handy und Desktop.',
+  },
+  kicker: 'Afterhour Arcade',
+  h1: 'Insert *Coin.*',
+  lead: 'Bevor du dein Event anfragst: drei Runden aus dem Nachtleben. Bar, Pult, Tür. Dein Highscore bleibt in deinem Browser.',
+  ui: { start: 'Press Start', again: 'Nochmal', pause: 'Weiter', highscore: 'Best', newHigh: 'Neuer Highscore!' },
+  games: [
+    {
+      id: 'shaker-rush' as const,
+      title: 'Shaker Rush',
+      tagline: 'Fang die Zutaten für den Signature-Drink.',
+      howTo: 'Bewege den Shaker, fang die Zutaten aus dem Rezept oben links und weich den Bomben aus.',
+      controls: ['← → / A D', 'Touch: Finger ziehen'],
+      service: 'bar-catering',
+    },
+    {
+      id: 'dj-drop' as const,
+      title: 'DJ Drop',
+      tagline: 'Halt die Crowd am Tanzen.',
+      howTo: 'Triff die Noten genau auf der Linie. Jeder Treffer pusht die Crowd, jeder Fehler kostet Energie.',
+      controls: ['D F J K oder Pfeiltasten', 'Touch: auf die Spur tippen'],
+      service: 'event-management',
+    },
+    {
+      id: 'tuersteher' as const,
+      title: 'Türsteher',
+      tagline: 'Nur mit dem richtigen Armband.',
+      howTo: 'Oben steht, welche Armbänder heute rein dürfen. Entscheide schnell: rein oder nicht. Die Regel ändert sich.',
+      controls: ['← Nein · Rein →', 'Touch: linke / rechte Hälfte'],
+      service: 'personalvermittlung',
+    },
+  ],
+  teaser: { kicker: 'Afterhour Arcade', title: 'Drei Runden *Nachtleben.*', text: 'Bar, Pult, Tür: drei Retro-Minispiele, die zeigen, was bei uns am Abend passiert. Spielbar auf Handy und Desktop.', cta: 'Zur Arcade' },
+  outro: { title: 'Genug geübt?', cta: 'Echtes Event anfragen' },
+};
+
 export const inquiryPage = {
   seo: { title: 'Event anfragen', description: 'Unverbindlich anfragen: Bar-Catering, Catering, Personal, Deko, Equipment, Event-Organisation oder Social Media. Persönliches Angebot von Celia.' },
   kicker: 'Booking',

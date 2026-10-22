@@ -9,9 +9,14 @@ export default function NotFound() {
         <br />
         <span className="serif">heute</span> nichts.
       </h1>
-      <Btn href="/" variant="gold" label="Main Stage">
-        Zur Hauptbühne
-      </Btn>
+      <div className="nf__ctas">
+        <Btn href="/" variant="gold" label="Main Stage">
+          Zur Hauptbühne
+        </Btn>
+        <Btn href="/arcade" variant="ghost" label="Arcade">
+          Oder eine Runde spielen
+        </Btn>
+      </div>
     </section>
   );
 }

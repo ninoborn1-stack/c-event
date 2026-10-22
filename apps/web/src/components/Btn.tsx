@@ -16,7 +16,7 @@ export function Btn({
   className?: string;
 }) {
   return (
-    <Link href={href} className={`btn btn--${variant} ${className ?? ''}`} data-label={label} data-cursor="Los">
+    <Link href={href} className={`btn btn--${variant} ${className ?? ''}`} data-label={label}>
       <span className="btn__text">{children}</span>
       <span className="btn__arrow" aria-hidden="true">
         →

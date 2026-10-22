@@ -32,6 +32,7 @@ export function GET() {
     '## Optional',
     `- [Galerie](${SITE_URL}/galerie)`,
     `- [Über uns](${SITE_URL}/ueber-uns)`,
+    `- [Afterhour Arcade](${SITE_URL}/arcade): drei Retro-Minispiele (Bar, DJ, Türsteher)`,
     `- [Impressum](${SITE_URL}/impressum)`,
   ];
   return new Response(lines.join('\n'), { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });

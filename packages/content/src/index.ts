@@ -2,7 +2,7 @@ import { collectPlaceholders } from '@c-event/core';
 import { brand, partners } from './brand';
 import { catalog } from './catalog';
 import { media } from './media';
-import { about, configuratorPage, gallery, home, inquiryPage, legal, socialMedia } from './pages';
+import { about, arcade, configuratorPage, gallery, home, inquiryPage, legal, socialMedia } from './pages';
 import { services } from './services';
 
 export * from './brand';
@@ -25,6 +25,7 @@ export const allContent = {
   gallery,
   inquiryPage,
   configuratorPage,
+  arcade,
   catalog,
   legal,
   media,
