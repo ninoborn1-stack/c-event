@@ -1,6 +1,6 @@
 # Offene Platzhalter
 
-Automatisch erzeugt aus `packages/content` (alles, was mit `ph()` markiert ist). Stand: 22.10.2026. **176 Einträge.**
+Automatisch erzeugt aus `packages/content` (alles, was mit `ph()` markiert ist). Stand: 22.10.2026. **212 Einträge.**
 
 Neu erzeugen: `pnpm docs:placeholders`. Dieselbe Liste zeigt das Demo-Cockpit unter `/demo#platzhalter`.
 
@@ -91,6 +91,6 @@ Neu erzeugen: `pnpm docs:placeholders`. Dieselbe Liste zeigt das Demo-Cockpit un
 | Datenschutzerklärung vor Livegang prüfen (Hosting, Mail-Anbieter, Kalender) | `legal.datenschutz.note` | 1 |
 | Mietbedingungen und AGB fehlen | `legal.agb.note` | 1 |
 
-## Medien (48)
+## Medien (84)
 
-Alle 48 Bilder/Videos sind Stockmaterial bzw. Demo-Loops und werden 1:1 über die IDs in `packages/content/src/media.ts` gegen Celias Material getauscht.
+Alle 84 Bilder/Videos sind Stockmaterial bzw. Demo-Loops und werden 1:1 über die IDs in `packages/content/src/media.ts` gegen Celias Material getauscht.

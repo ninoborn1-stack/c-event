@@ -58,7 +58,7 @@ export const services: ServicePage[] = [
     ),
     occasions: ['Weihnachtsfeier', 'Sommerfest', 'Release-Night', 'Hochzeit', 'Vernissage', 'Afterwork'],
     process: processFor('Bar, Crew, Karte, Menge.', 'Wir bauen auf, mixen bis zum letzten Gast und räumen wieder ab.'),
-    gallery: ['cocktails-drei', 'bar-lichter', 'cocktail-dunkel', 'bar-tresen-regal', 'anstossen-nachts', 'bar-flaschen-rot'],
+    gallery: ['mobile-bar-anhaenger', 'barkeeper-strainer', 'cocktails-drei', 'champagner-turm-gold', 'cocktail-dunkel', 'bar-lichter'],
     faq: ph(
       [
         { q: 'Ab wie vielen Gästen lohnt sich eine mobile Bar?', a: 'Ab etwa 30 Gästen. Nach oben gibt es keine Grenze, ab 150 Gästen planen wir mehrere Stationen.' },
@@ -86,7 +86,7 @@ export const services: ServicePage[] = [
       'Gute Events sieht man an den Leuten, die man kaum bemerkt. Wir stellen dir Crew zusammen, die schon zusammen gearbeitet hat: Service, Bar, Einlass, Garderobe, Auf- und Abbau. Gebrieft, pünktlich, passend gekleidet.',
       TEXT_NOTE,
     ),
-    hero: 'tanzende-gaeste',
+    hero: 'service-kellnerin',
     points: ph(
       [
         { title: 'Service & Runner', text: 'Für Dinner, Flying Buffet und Empfang, mit Erfahrung bei 20 bis 800 Gästen.' },
@@ -98,7 +98,7 @@ export const services: ServicePage[] = [
     ),
     occasions: ['Firmenfeier', 'Messe', 'Konferenz', 'Gala', 'Private Feier', 'Produktion'],
     process: processFor('Rollen, Stunden, Stundensätze.', 'Eine Crew-Leitung von uns ist vor Ort und dein einziger Ansprechpartner.'),
-    gallery: ['dinner-gesellschaft', 'firmenfeier-festsaal', 'weinglaeser-anstossen', 'talk-publikum'],
+    gallery: ['barcrew-team', 'kellner-tablett', 'eingang-einlass', 'aufbau-open-air', 'dinner-gesellschaft'],
     faq: ph(
       [
         { q: 'Wie kurzfristig kann ich Personal buchen?', a: 'Oft innerhalb einer Woche. Für Dezember empfehlen wir, bis Ende Oktober anzufragen.' },
@@ -125,7 +125,7 @@ export const services: ServicePage[] = [
       'Essen muss zum Abend passen. Beim Stehempfang will niemand mit Messer und Gabel kämpfen, beim Dinner niemand Häppchen jagen. Wir planen Food nach Format: was, wann, in welchem Tempo, und mit Partnerküchen, die wir seit Jahren kennen.',
       TEXT_NOTE,
     ),
-    hero: 'fine-dining',
+    hero: 'buffet-gaeste',
     points: ph(
       [
         { title: 'Fingerfood & Flying Dinner', text: 'Kleine Gänge, die herumgereicht werden. Ideal, wenn Leute reden und sich bewegen sollen.' },
@@ -137,7 +137,7 @@ export const services: ServicePage[] = [
     ),
     occasions: ['Weihnachtsfeier', 'Empfang', 'Hochzeit', 'Produktion am Set', 'Sommerfest'],
     process: processFor('Menü, Mengen, Preis pro Person.', 'Unsere Partnerküche liefert, unser Service serviert.'),
-    gallery: ['buffet-catering', 'dessert-beeren', 'dinner-tafel-blumen', 'fine-dining'],
+    gallery: ['canapes-auswahl', 'koch-anrichten', 'buffet-catering', 'dessert-beeren', 'burger-late-night', 'fine-dining'],
     faq: ph(
       [
         { q: 'Kocht ihr selbst?', a: 'Wir arbeiten mit festen Partnerküchen in Berlin und übernehmen Planung, Service und Ablauf.' },
@@ -164,7 +164,7 @@ export const services: ServicePage[] = [
       'Der Tag X ist ein Live-Auftritt ohne zweite Chance. Wir übernehmen die Regie: Ablaufplan, Timing, Dienstleister, Technik-Cues, und den einen Anruf, wenn der DJ im Stau steht. Du bist Gastgeber:in, nicht Feuerwehr.',
       TEXT_NOTE,
     ),
-    hero: 'buehne-gelbes-licht',
+    hero: 'buehne-traversen',
     points: ph(
       [
         { title: 'Ablaufplan & Regie', text: 'Minutengenauer Run-of-Show, den alle Beteiligten vorher kennen.' },
@@ -176,7 +176,7 @@ export const services: ServicePage[] = [
     ),
     occasions: ['Gala', 'Konferenz', 'Release-Event', 'Konzert', 'Musikvideo-Dreh'],
     process: processFor('Leistungsumfang und Tagessatz.', 'Wir sind ab Aufbau vor Ort und gehen als Letzte.'),
-    gallery: ['buehne-gegenlicht-rauch', 'mikrofon-publikum', 'keynote-leinwand', 'club-buehne-dunkel'],
+    gallery: ['regie-silhouette', 'buehne-gegenlicht-rauch', 'keynote-leinwand', 'buehne-lila-licht', 'mikrofon-publikum'],
     faq: ph(
       [
         { q: 'Was ist der Unterschied zur Event-Organisation?', a: 'Organisation ist die Planung davor, Management die Steuerung am Tag selbst. Beides gibt es einzeln oder zusammen.' },
@@ -215,7 +215,7 @@ export const services: ServicePage[] = [
     ),
     occasions: ['Firmen-Weihnachtsfeier', 'Sommerfest', 'Jubiläum', 'Release-Event', 'Konzert', 'Hochzeit'],
     process: processFor('Konzept, Zeitplan, Budget.', 'Wir organisieren alles bis zum Tag X und übernehmen auf Wunsch auch die Regie.'),
-    gallery: ['konfetti-buehne-crowd', 'gartenparty-crowd', 'firmenfeier-festsaal', 'crowd-herz-haende', 'weihnachtsbaum-kugeln'],
+    gallery: ['moodboard-bilder', 'gala-tafel-kerzen', 'weihnachtstafel-lichter', 'party-lichterketten', 'konfetti-buehne-crowd'],
     faq: ph(
       [
         { q: 'Wie früh sollten wir eine Weihnachtsfeier planen?', a: 'Idealerweise im Sommer. Für Dezember-Termine sind gute Locations ab Oktober knapp.' },
@@ -256,7 +256,7 @@ export const services: ServicePage[] = [
     ),
     occasions: ['Hochzeit', 'Weihnachtsfeier', 'Brand-Event', 'Geburtstag', 'Gala'],
     process: processFor('Moodboard, Stückliste, Preis.', 'Wir dekorieren vor Ort und bauen danach alles wieder ab.'),
-    gallery: ['dinner-tafel-blumen', 'hochzeit-tafel', 'ballons-bunt', 'bar-lichter', 'weihnachtsbaum-kugeln'],
+    gallery: ['deko-pink-tafel', 'tischdeko-blumen', 'neon-lets-party', 'lounge-sofas-gruen', 'hochzeit-tafel', 'weihnachtsbaum-kugeln'],
     faq: ph(
       [
         { q: 'Kann ich Deko auch nur mieten?', a: 'Ja, viele Stücke findest du direkt im Konfigurator. Styling vor Ort buchst du optional dazu.' },
@@ -283,7 +283,7 @@ export const services: ServicePage[] = [
       'Kein Katalog mit 4.000 Positionen, sondern das, was wir selbst auf unseren Events einsetzen. Ausgesucht, gepflegt, getestet. Stell dir im Konfigurator zusammen, was du brauchst, wir prüfen Verfügbarkeit und schicken dir ein Angebot.',
       TEXT_NOTE,
     ),
-    hero: 'dj-party-crowd',
+    hero: 'lichtshow-buehne',
     points: ph(
       [
         { title: 'Bar & Gastro', text: 'Mobile Bar-Module, Champagner-Turm, Kühlung.' },
@@ -295,7 +295,7 @@ export const services: ServicePage[] = [
     ),
     occasions: ['Firmenfeier', 'Private Party', 'Pop-up', 'Produktion', 'Hochzeit'],
     process: processFor('Verfügbarkeit, Mietpreis, Kaution.', 'Lieferung, Aufbau und Abholung auf Wunsch, sonst Abholung bei uns.'),
-    gallery: ['stuhl-design', 'dj-party-crowd', 'bar-vintage', 'club-buehne-dunkel'],
+    gallery: ['pa-line-array', 'dj-mixer', 'stehtische-saal', 'lounge-sofas-gruen', 'scheinwerfer-stativ', 'stuhl-design'],
     faq: ph(
       [
         { q: 'Gibt es eine Kaution?', a: 'Bei einigen Artikeln ja. Sie steht direkt am Artikel und wird nach Rückgabe erstattet.' },

@@ -50,5 +50,41 @@ Alle Fotos stammen von [Unsplash](https://unsplash.com) und stehen unter der [Un
 | `stock/bar-vintage.jpg` | Vintage-Bar mit Holztresen und Lichtern | https://unsplash.com/photos/1574096079513-d8259312b785 (photo-1574096079513-d8259312b785) |
 | `stock/stuhl-design.jpg` | Gepolsterter Designstuhl vor hellem Hintergrund | https://unsplash.com/photos/1598300042247-d088f8ab3a91 (photo-1598300042247-d088f8ab3a91) |
 | `stock/fine-dining.jpg` | Gedeckter Tisch mit Speisen und Weingläsern | https://unsplash.com/photos/1414235077428-338989a2e8c0 (photo-1414235077428-338989a2e8c0) |
+| `stock/mobile-bar-anhaenger.jpg` | Mobile Bar in einem Anhänger mit Lichterketten bei Nacht | https://unsplash.com/photos/1759415343170-6debcde7eb6d (photo-1759415343170-6debcde7eb6d) |
+| `stock/barkeeper-strainer.jpg` | Barkeeper gießt einen Drink durch das Barsieb in ein Coupe-Glas | https://unsplash.com/photos/1644809818390-9a441722ae24 (photo-1644809818390-9a441722ae24) |
+| `stock/champagner-turm-gold.jpg` | Pyramide aus Champagnergläsern mit goldenem Sekt | https://unsplash.com/photos/1780435167958-184d3f2cb7aa (photo-1780435167958-184d3f2cb7aa) |
+| `stock/kellner-tablett.jpg` | Kellner trägt ein Tablett mit Drinks durch den Raum | https://unsplash.com/photos/1516788875874-c5912cae7b43 (photo-1516788875874-c5912cae7b43) |
+| `stock/eingang-einlass.jpg` | Verzierter Eingang einer Location, an dem Gäste begrüßt werden | https://unsplash.com/photos/1742753751080-72b78bde2513 (photo-1742753751080-72b78bde2513) |
+| `stock/aufbau-open-air.jpg` | Aufgebaute Tischreihen und Bühnentraversen vor einem Open-Air-Event | https://unsplash.com/photos/1759306221569-028a35bc8c66 (photo-1759306221569-028a35bc8c66) |
+| `stock/canapes-auswahl.jpg` | Auswahl an Canapés und Fingerfood auf einer Platte | https://unsplash.com/photos/1771154136172-0633db70b7dc (photo-1771154136172-0633db70b7dc) |
+| `stock/koch-anrichten.jpg` | Fein angerichteter Teller mit Fisch und Gemüse | https://unsplash.com/photos/1676471926534-d5c9771909fa (photo-1676471926534-d5c9771909fa) |
+| `stock/burger-late-night.jpg` | Burger mit Pommes als Late-Night-Snack | https://unsplash.com/photos/1610440042657-612c34d95e9f (photo-1610440042657-612c34d95e9f) |
+| `stock/deko-pink-tafel.jpg` | Festlich dekorierter Saal mit pinkem Licht und runden Tischen | https://unsplash.com/photos/1653821355736-0c2598d0a63e (photo-1653821355736-0c2598d0a63e) |
+| `stock/tischdeko-blumen.jpg` | Gedeckter Tisch mit Blumenarrangement und Gläsern | https://unsplash.com/photos/1758810743028-6b8e150ec98f (photo-1758810743028-6b8e150ec98f) |
+| `stock/neon-lets-party.jpg` | Pinker Neon-Schriftzug „Let’s Party“ vor Glitzervorhang | https://unsplash.com/photos/1640103856233-833930665307 (photo-1640103856233-833930665307) |
+| `stock/stehtische-saal.jpg` | Leerer Veranstaltungsraum mit eingedeckten Stehtischen | https://unsplash.com/photos/1768851244529-39180171a168 (photo-1768851244529-39180171a168) |
+| `stock/lounge-sofas-gruen.jpg` | Grüne Chesterfield-Sofas als Lounge mit Blumen | https://unsplash.com/photos/1769812343786-c8cdbd73f3cd (photo-1769812343786-c8cdbd73f3cd) |
+| `stock/pa-line-array.jpg` | Hängender Line-Array-Lautsprecher an einer Bühnentraverse | https://unsplash.com/photos/1563680401337-b77b5e0be9f7 (photo-1563680401337-b77b5e0be9f7) |
+| `stock/dj-mixer.jpg` | DJ-Setup mit Mixer und Laptop im Clublicht | https://unsplash.com/photos/1571266028243-d220c6a7edbf (photo-1571266028243-d220c6a7edbf) |
+| `stock/lichtshow-buehne.jpg` | Bühnenbeleuchtung mit blauen und orangen Lichtstrahlen | https://unsplash.com/photos/1758706552632-64ab529c2631 (photo-1758706552632-64ab529c2631) |
+| `stock/scheinwerfer-stativ.jpg` | Moving Head Scheinwerfer im Rauch | https://unsplash.com/photos/1681149341674-45fd772fd463 (photo-1681149341674-45fd772fd463) |
+| `stock/buehne-lila-licht.jpg` | Leere Bühne mit lila Licht und Nebel | https://unsplash.com/photos/1576514129883-2f1d47a65da6 (photo-1576514129883-2f1d47a65da6) |
+| `stock/regie-silhouette.jpg` | Silhouette einer Person mit Stativ vor der beleuchteten Bühne | https://unsplash.com/photos/1777671291459-111add7d4e72 (photo-1777671291459-111add7d4e72) |
+| `stock/moodboard-bilder.jpg` | Moodboard mit Fotos und Materialien auf einem Tisch | https://unsplash.com/photos/1690733546457-029606fbc0e6 (photo-1690733546457-029606fbc0e6) |
+| `stock/weihnachtstafel-lichter.jpg` | Festliche Weihnachtstafel unter Lichterketten | https://unsplash.com/photos/1763463608554-1a1d7ec7147b (photo-1763463608554-1a1d7ec7147b) |
+| `stock/gala-tafel-kerzen.jpg` | Lange Gala-Tafel mit Kerzen und Blumen | https://unsplash.com/photos/1536392706976-e486e2ba97af (photo-1536392706976-e486e2ba97af) |
+| `stock/sneaker-wand.jpg` | Wand mit Sneakern in einem Store | https://unsplash.com/photos/1633464129147-777bdcc97c1d (photo-1633464129147-777bdcc97c1d) |
+| `stock/sneaker-store-sw.jpg` | Sneaker-Regal in einem Store, schwarz-weiß | https://unsplash.com/photos/1708088641654-d096243830c1 (photo-1708088641654-d096243830c1) |
+| `stock/party-lichterketten.jpg` | Gäste feiern unter Lichterketten auf einer Sommerparty | https://unsplash.com/photos/1517456793572-1d8efd6dc135 (photo-1517456793572-1d8efd6dc135) |
+| `stock/filmset-kamera.jpg` | Professionelle Filmkamera am Set eines Drehs | https://unsplash.com/photos/1594394489098-74ac04c0fc2e (photo-1594394489098-74ac04c0fc2e) |
+| `stock/videograf.jpg` | Videograf mit Kamera im roten Licht | https://unsplash.com/photos/1611784728558-6c7d9b409cdf (photo-1611784728558-6c7d9b409cdf) |
+| `stock/hochzeit-loft.jpg` | Hochzeitstafeln in einem Loft mit Lichterketten | https://unsplash.com/photos/1723832348105-2e69f948135a (photo-1723832348105-2e69f948135a) |
+| `stock/ballons-nacht.jpg` | Leuchtende Heißluftballons in der Nacht über dem Wasser | https://unsplash.com/photos/1756839413014-70f8f9b17875 (photo-1756839413014-70f8f9b17875) |
+| `stock/planerin-notizbuch.jpg` | Frau schreibt in ein Notizbuch und plant | https://unsplash.com/photos/1621606676970-fc3a0a39aa96 (photo-1621606676970-fc3a0a39aa96) |
+| `stock/barcrew-team.jpg` | Drei lächelnde Barkeeper:innen hinter der Bar | https://unsplash.com/photos/1758526348403-b729c700d675 (photo-1758526348403-b729c700d675) |
+| `stock/bunker-beton.jpg` | Brutalistischer Betonbunker mit begrüntem Dach | https://unsplash.com/photos/1783667598871-f052152df9f1 (photo-1783667598871-f052152df9f1) |
+| `stock/buffet-gaeste.jpg` | Gäste am Buffet bei einem Event | https://unsplash.com/photos/1768508663341-ed48fd1e69d8 (photo-1768508663341-ed48fd1e69d8) |
+| `stock/buehne-traversen.jpg` | Bühne mit Traversen und Lichtstrahlen im Dunkeln | https://unsplash.com/photos/1598387992836-7e365d21602a (photo-1598387992836-7e365d21602a) |
+| `stock/service-kellnerin.jpg` | Kellnerin serviert Drinks auf einem vollen Event | https://unsplash.com/photos/1776603174157-bf286ef86149 (photo-1776603174157-bf286ef86149) |
 
 Videos in `stock/video/` sind Ken-Burns-Loops, die lokal aus den Fotos `dj-party-crowd` und `funken-buehne-crowd` erzeugt wurden, nur damit die Video-Unterstützung testbar ist.
