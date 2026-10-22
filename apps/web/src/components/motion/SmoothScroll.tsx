@@ -13,7 +13,12 @@ export function SmoothScroll() {
     const tick = (t: number) => lenis.raf(t * 1000);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
+    // Nach Webfonts und Bildern stimmen Höhen erst final: ScrollTrigger-Positionen einmal neu berechnen.
+    const refresh = () => ScrollTrigger.refresh();
+    void document.fonts?.ready.then(refresh);
+    window.addEventListener('load', refresh);
     return () => {
+      window.removeEventListener('load', refresh);
       gsap.ticker.remove(tick);
       lenis.destroy();
       setLenis(null);

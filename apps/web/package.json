@@ -10,7 +10,7 @@
     "typecheck": "tsc -p . --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "build:pages": "STATIC_EXPORT=1 NEXT_PUBLIC_STATIC_DEMO=1 next build && touch out/.nojekyll"
+    "build:pages": "node scripts/stock-variants.mjs && STATIC_EXPORT=1 NEXT_PUBLIC_STATIC_DEMO=1 next build && touch out/.nojekyll"
   },
   "dependencies": {
     "@c-event/content": "workspace:*",
@@ -27,6 +27,7 @@
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.2.0",
+    "sharp": "0.35.5",
     "vitest": "^5.0.5"
   }
 }

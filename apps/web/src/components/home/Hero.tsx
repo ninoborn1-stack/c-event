@@ -90,11 +90,13 @@ export function Hero(p: HeroProps) {
           return false;
         }
       })();
-      if (location.hash) {
+      // Mit Anker oder im Hintergrund-Tab geladen: kein Intro, sofort der fertige Zustand.
+      if (location.hash || document.visibilityState === 'hidden') {
         setIntroDone(true);
         return;
       }
       window.scrollTo(0, 0);
+      document.documentElement.classList.add('intro-on');
       const full = !seen;
       const introTargets = '.intro, .intro__c, .intro__zoomc, .ch, .hero__eyebrow > *, .hero__foot > *, .hero__bar-in';
       const nav = document.querySelector('.nav');
@@ -102,6 +104,7 @@ export function Hero(p: HeroProps) {
         paused: true,
         onComplete: () => {
           el.classList.remove('is-intro'); // vor clearProps, sonst greift die CSS-Verdeckung einen Frame lang
+          document.documentElement.classList.remove('intro-on');
           gsap.set(q(introTargets), { clearProps: 'all' });
           // Nur transform zurücksetzen: next/image hält Layout-Styles (fill) inline am <img>.
           gsap.set(q('.hero__img'), { clearProps: 'transform,scale' });
@@ -117,7 +120,8 @@ export function Hero(p: HeroProps) {
       const counter = { v: 0 };
       const loadNum = q('.intro__load b')[0];
       gsap.set(q('.hero__img'), { scale: 1.6 });
-      if (nav) gsap.set(nav, { autoAlpha: 0, y: -30 });
+      // Titel, Eyebrow, Lead, Buttons, Leiste und Navigation verdeckt bis zu ihrem Auftritt nur CSS (.is-intro / .intro-on).
+      // Ihre Tweens setzen den Startzustand erst, wenn sie dran sind (immediateRender: false).
 
       if (full) {
         intro.to(counter, {
@@ -156,11 +160,11 @@ export function Hero(p: HeroProps) {
         .to(q('.intro__doors'), { autoAlpha: 0, scale: 1.4, duration: 0.3, ease: 'power2.in' }, '<')
         .to(q('.hero__img'), { scale: 1.12, duration: 2, ease: 'expo.out' }, '<0.55')
         .set(q('.intro'), { autoAlpha: 0 }, '<0.5')
-        .fromTo(q('.ch'), { yPercent: 125, rotate: 9 }, { yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out' }, '<0.05')
-        .fromTo(q('.hero__eyebrow > *'), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power3.out' }, '<0.3')
-        .fromTo(q('.hero__foot > *'), { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out' }, '<0.1')
-        .fromTo(q('.hero__bar-in'), { yPercent: 110 }, { yPercent: 0, duration: 0.8, ease: 'expo.out' }, '<0.1');
-      if (nav) intro.to(nav, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '<');
+        .fromTo(q('.ch'), { yPercent: 125, rotate: 9 }, { yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out', immediateRender: false }, '<0.05')
+        .fromTo(q('.hero__eyebrow > *'), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power3.out', immediateRender: false }, '<0.3')
+        .fromTo(q('.hero__foot > *'), { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out', immediateRender: false }, '<0.1')
+        .fromTo(q('.hero__bar-in'), { autoAlpha: 0, yPercent: 110 }, { autoAlpha: 1, yPercent: 0, duration: 0.8, ease: 'expo.out', immediateRender: false }, '<0.1');
+      if (nav) intro.fromTo(nav, { autoAlpha: 0, y: -30 }, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power3.out', immediateRender: false }, '<');
 
       const image = q('.hero__strip img')[0] as HTMLImageElement | undefined;
       const ready = image
@@ -178,6 +182,15 @@ export function Hero(p: HeroProps) {
     function finish() {
       if (intro && intro.progress() < 1 && intro.timeScale() < 6) intro.timeScale(6).play();
     }
+    // Wächter mit normalem Timer: läuft auch, wenn requestAnimationFrame steht (Hintergrund-Tab, hängender Browser).
+    // progress(1) rendert den Endzustand synchron und löst onComplete aus – Buttons & Navigation sind dann garantiert da.
+    const watchdog = window.setTimeout(() => {
+      if (intro && intro.progress() < 1) intro.progress(1);
+    }, 10000);
+    const onHide = () => {
+      if (document.visibilityState === 'hidden' && intro && intro.progress() < 1) intro.progress(1);
+    };
+    document.addEventListener('visibilitychange', onHide);
     const opts = { once: true, passive: true } as const;
     window.addEventListener('wheel', finish, opts);
     window.addEventListener('touchmove', finish, opts);
@@ -186,6 +199,9 @@ export function Hero(p: HeroProps) {
 
     return () => {
       cancelled = true;
+      window.clearTimeout(watchdog);
+      document.removeEventListener('visibilitychange', onHide);
+      document.documentElement.classList.remove('intro-on');
       window.removeEventListener('wheel', finish);
       window.removeEventListener('touchmove', finish);
       window.removeEventListener('pointerdown', finish);

@@ -316,20 +316,11 @@ html[data-ph='on'] .stock-tag {
 /* ---------- Grain ---------- */
 .grain {
   position: fixed;
-  inset: -50%;
+  inset: 0;
   z-index: 140;
   pointer-events: none;
-  opacity: 0.07;
+  opacity: 0.06;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain 1.2s steps(6) infinite;
-}
-@keyframes grain {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-3%, 2%); }
-  40% { transform: translate(2%, -4%); }
-  60% { transform: translate(-4%, 1%); }
-  80% { transform: translate(3%, 3%); }
-  100% { transform: translate(0, 0); }
 }
 
 /* ---------- Cursor ---------- */
@@ -347,10 +338,11 @@ html[data-ph='on'] .stock-tag {
   height: 14px;
   margin: -7px 0 0 -7px;
   border-radius: 50%;
-  background: var(--color-cream);
-  mix-blend-mode: difference;
+  background: var(--color-gold-hot);
+  box-shadow: 0 0 0 1.5px rgba(12, 10, 8, 0.55);
   pointer-events: none;
-  transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out), opacity 0.3s;
+  will-change: transform;
+  transition: width 0.35s var(--ease-out), height 0.35s var(--ease-out), margin 0.35s var(--ease-out), opacity 0.3s, background 0.3s;
 }
 .cursor span {
   font: 700 10px/1 var(--font-sans);
@@ -363,12 +355,12 @@ html[data-ph='on'] .stock-tag {
   width: 46px;
   height: 46px;
   margin: -23px 0 0 -23px;
+  background: rgba(242, 195, 107, 0.35);
 }
 .cursor.has-label {
   width: 84px;
   height: 84px;
   margin: -42px 0 0 -42px;
-  mix-blend-mode: normal;
   background: var(--color-signal);
 }
 .cursor.has-label span {
@@ -949,19 +941,38 @@ html.is-leaving .curtain__label {
   /* Notbremse: falls JavaScript hängt, verschwindet das Overlay trotzdem */
   animation: introFailsafe 0.4s 9s forwards;
 }
-/* Buchstaben, die während des Intros neu gerendert werden (z. B. Slogan-Wechsel aus dem Cockpit), bleiben verdeckt */
-.hero.is-intro .ch:not([style]) {
+/* Während des Intros verdeckt nur CSS die Hero-Inhalte; die Intro-Tweens übernehmen per Inline-Style, sobald sie dran sind.
+   Notbremse: nach 9 s ist alles sichtbar, auch wenn JavaScript hängt. */
+.hero.is-intro .ch {
   transform: translateY(125%);
   animation: chFailsafe 0s 9s forwards;
+}
+.hero.is-intro .hero__eyebrow > *,
+.hero.is-intro .hero__foot > *,
+.hero.is-intro .hero__bar-in,
+html.intro-on .nav {
+  opacity: 0;
+  animation: uiFailsafe 0s 9s forwards;
 }
 @keyframes chFailsafe {
   to {
     transform: none;
   }
 }
+@keyframes uiFailsafe {
+  to {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .hero.is-intro .ch {
+  .hero.is-intro .ch,
+  .hero.is-intro .hero__eyebrow > *,
+  .hero.is-intro .hero__foot > *,
+  .hero.is-intro .hero__bar-in {
     transform: none !important;
+    opacity: 1 !important;
   }
 }
 @keyframes introFailsafe {
@@ -2220,4 +2231,14 @@ html.is-leaving .curtain__label {
 
 .bunker--compact {
   min-height: 80svh;
+}
+
+/* Performance: bewegte Großflächen auf eigene Ebenen, damit Scroll/Parallax nur noch compositet wird */
+[data-parallax],
+.hero__zoom,
+.hl__track {
+  will-change: transform;
+}
+.hero__strip {
+  contain: paint;
 }

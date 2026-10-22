@@ -16,7 +16,8 @@ const config: NextConfig = {
         output: 'export',
         basePath: basePath || undefined,
         trailingSlash: true,
-        images: { unoptimized: true },
+        // Kein Bild-Server auf GitHub Pages: vorab erzeugte WebP-Varianten (scripts/stock-variants.mjs)
+        images: { loader: 'custom', loaderFile: './src/lib/image-loader.ts', deviceSizes: [640, 960, 1440, 1920, 2200], imageSizes: [96, 256, 480] },
       }
     : {
         images: { formats: ['image/avif', 'image/webp'], deviceSizes: [640, 828, 1080, 1440, 1920, 2400] },

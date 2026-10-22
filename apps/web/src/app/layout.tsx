@@ -53,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </Script>
         <JsonLd data={organizationLd()} />
         <noscript>
-          <style>{'.intro{display:none!important}.hero.is-intro .ch{transform:none!important}'}</style>
+          <style>{'.intro{display:none!important}.hero.is-intro .ch,.hero.is-intro .hero__eyebrow>*,.hero.is-intro .hero__foot>*,.hero.is-intro .hero__bar-in{transform:none!important;opacity:1!important}'}</style>
         </noscript>
       </head>
       <body>

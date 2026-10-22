@@ -42,6 +42,14 @@ Getroffen beim Bau der Demo (22.10.2026), wo Briefing oder Start-Prompt offen od
 | Einstellungen | Slogan, Preise und Flags werden clientseitig gelesen (`SiteProvider`, `PriceTag`, `IfFlag`), damit sie auch ohne Server sofort wirken. | Statische Seiten können sonst nicht auf das Cockpit reagieren. |
 | Grenzen | Daten gelten pro Browser; Bilder werden nicht optimiert (`images.unoptimized`). | Gilt nur für die Vorschau, nicht für den späteren Live-Betrieb. |
 
+## Stabilität & Performance (Hero und Scroll)
+
+| Thema | Entscheidung | Warum |
+|---|---|---|
+| Hero-Intro | Hero-Inhalte und Navigation verdeckt während des Intros nur CSS (`.is-intro`, `html.intro-on`). Die Tweens setzen ihren Startzustand erst, wenn sie dran sind. Ein Wächter mit `setTimeout` springt nach spätestens 10 s auf den Endzustand, eine CSS-Notbremse nach 9 s. Im Hintergrund-Tab geladen → kein Intro. | Vorher konnten Buttons und Navigation unsichtbar bleiben, wenn `requestAnimationFrame` stand (Hintergrund-Tab, stockender Browser). |
+| Effekte | Filmkorn statisch und nur Viewport-groß, Cursor ohne `mix-blend-mode`, bewegte Großflächen mit `will-change`, ScrollTrigger-Refresh nach Fonts und Bildern | Weniger Arbeit pro Frame beim Scrollen. |
+| Bilder statisch | `scripts/stock-variants.mjs` erzeugt WebP-Varianten (480/960/1600/2200 px), ein eigener Loader wählt die passende. | GitHub Pages hat keinen Bild-Optimierer; vorher wurden überall die Originale (bis 2400 px) geladen. |
+
 ## Inhalte
 
 - Alle Texte sind **Vorschläge**, als Platzhalter markiert, bis Celia sie freigibt.
