@@ -108,7 +108,7 @@ export interface DayAvailability {
 // ---------- Einstellungen (Demo-Cockpit bzw. Live-Config) ----------
 
 /** Drei Varianten für den Hero-Übergang „Doors open → 360°“ (Celia wählt im Admin-Demo-Tab). */
-export const HERO_TRANSITIONS = ['vorhang', 'blende', 'ticket'] as const;
+export const HERO_TRANSITIONS = ['tiefe', 'blende', 'ticket'] as const;
 export type HeroTransition = (typeof HERO_TRANSITIONS)[number];
 
 export interface SiteSettings {
@@ -124,7 +124,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   showPrices: true,
   bunkerWestCode: false,
   showPlaceholders: true,
-  heroTransition: 'vorhang',
+  heroTransition: 'tiefe',
 };
 
 // ---------- Social Feed & Rezensionen ----------

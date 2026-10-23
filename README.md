@@ -41,7 +41,7 @@ Das Ergebnis liegt in `apps/web/out`.
 4. Im Kalender einen freien Tag anklicken, Formular ausfüllen, abschicken → Danke-Seite.
 5. **Admin** (`/admin`, Demo-Login): Anfrage mit Warenkorb und Notizen, Status ändern, Antwort aus Vorlage senden; unter „Mails“ alle System-Mails.
 
-Unter **Admin → Demo**: Hero-Übergang (Vorhang/Blende/Ticket), Slogan, Feature-Flags (Preise, Bunker-West-Code, Platzhalter-Markierung), Intro neu abspielen, Reset und alle Platzhalter nach P1/P2.
+Unter **Admin → Demo**: Hero-Übergang (Tiefe/Blende/Ticket), Slogan, Feature-Flags (Preise, Bunker-West-Code, Platzhalter-Markierung), Intro neu abspielen, Reset und alle Platzhalter nach P1/P2.
 
 ## Befehle
 

@@ -84,6 +84,7 @@ Getroffen beim Bau der Demo (22.10.2026), wo Briefing oder Start-Prompt offen od
 | Maus-Follower | Entfernt | Wunsch von Nino. |
 | Minispiele | Eigene Seite `/arcade` mit drei Retro-Spielen passend zu den Leistungen: Shaker Rush (Bar), DJ Drop (Musik/Regie), Türsteher (Personal/Einlass). Teaser auf der Startseite, Link im Footer und auf der 404-Seite, nicht in der Hauptnavigation. | Event-Gefühl ohne die geforderte 6-Punkte-Navigation aufzubrechen. |
 | Technik | Eigene Mini-Engine (Canvas 240×180, Pixel-Skalierung, WebAudio-Chiptune), keine Spiel-Bibliothek. Tastatur nur, wenn der Automat fokussiert ist; Touch per Ziehen/Tippen. Auto-Pause bei Tab-Wechsel oder wenn der Automat aus dem Bild scrollt. Highscores nur lokal im Browser. Pixel-Schrift „Press Start 2P“ ohne Preload. | Leicht, offline-fähig, keine Daten an Dritte. |
+| Hero-Übergang (23.10.) | Vorhang-Bahnen im Hero ersetzt durch „Tiefe“: Bild kippt per 3D nach hinten, „360°“ dreht sich nach vorn. 3D-Zahl aus 16 gestaffelten Text-Ebenen (CSS 3D, keine WebGL-Bibliothek), folgt der Maus per `gsap.quickTo`, auf Touch langsames Schwingen. Headline-Größe richtet sich nach Breite **und** Höhe, damit Lead und Ticket immer im ersten Fenster stehen. Demo-Kennzeichen als Lasche am rechten Rand. | Der Seitenvorhang soll das einzige Bahnen-Motiv bleiben; „hart“ als harte Extrusion ohne Weichzeichnung gelesen. |
 
 ## Inhalte
 

@@ -809,15 +809,45 @@ html.is-leaving .curtain__label {
   display: grid;
   place-items: center;
   color: var(--color-ink);
+  perspective: 1400px;
 }
 .hero__behind-in {
+  grid-area: 1 / 1;
+  transform-style: preserve-3d;
+}
+/* 3D-Zahl: gestaffelte Kopien nach hinten = harte Extrusion (ohne Weichzeichnung), vorne eine Fläche mit Glanzlicht.
+   Kein opacity/filter auf .hero__behind-in oder .num3d, sonst wird die 3D-Ebene flachgedrückt. */
+.num3d {
+  --depth: 0.2em;
+  --gx: 32%;
+  --gy: 26%;
+  display: grid;
+  transform-style: preserve-3d;
   font-family: var(--font-display);
   font-weight: 900;
   font-variation-settings: 'wdth' 62;
-  font-size: 44vw;
+  font-size: min(44vw, 78svh);
   line-height: 0.8;
   letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.num3d > span {
   grid-area: 1 / 1;
+}
+.num3d__layer {
+  transform: translateZ(calc(var(--l) * var(--depth) / -16));
+  color: color-mix(in oklab, var(--color-red-deep) calc(100% - var(--l) * 4%), var(--color-ink));
+}
+.num3d__layer:first-child {
+  /* hinterste Ebene: harter Schlagschatten */
+  color: var(--color-ink);
+}
+.num3d__face {
+  background: radial-gradient(circle at var(--gx) var(--gy), var(--color-paper) 0, var(--color-amber-hot) 14%, var(--color-amber) 38%, var(--color-red) 82%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.006em var(--color-red-deep);
 }
 .hero__ring {
   grid-area: 1 / 1;
@@ -841,21 +871,9 @@ html.is-leaving .curtain__label {
 .hero__strip-inner {
   position: absolute;
 }
-/* Vorhang: 5 senkrechte Bahnen */
-.hero__strips--vorhang .hero__strip {
-  top: 0;
-  bottom: 0;
-  left: calc(var(--i) * 20%);
-  width: calc(20% + 1px);
-  border-right: 1px solid rgba(217, 160, 78, 0.25);
-}
-.hero__strips--vorhang .hero__strip-inner {
-  top: 0;
-  bottom: 0;
-  width: calc(500% - 5px);
-  left: calc(var(--i) * -100%);
-}
-/* Blende: ein Stück */
+/* Tiefe und Blende: ein Stück */
+.hero__strips--tiefe .hero__strip,
+.hero__strips--tiefe .hero__strip-inner,
 .hero__strips--blende .hero__strip,
 .hero__strips--blende .hero__strip-inner {
   inset: 0;
@@ -915,6 +933,8 @@ html.is-leaving .curtain__label {
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: 110px var(--space-gutter) 96px;
+  /* Platz, den alles außer der Headline braucht (Nav, Eyebrow, Lead + Ticket, Leiste) */
+  --hero-rest: 380px;
 }
 .hero__eyebrow {
   flex-wrap: wrap;
@@ -933,7 +953,8 @@ html.is-leaving .curtain__label {
 .hero__title {
   align-self: end;
   margin: 0 0 28px;
-  font-size: clamp(4.2rem, 15vw, 16.5rem);
+  /* Breite UND Höhe begrenzen: drei Zeilen à ~0.84em müssen samt CTA ins erste Fenster passen */
+  font-size: max(2.6rem, min(15vw, 16.5rem, calc((100svh - var(--hero-rest)) / 2.6)));
   line-height: 0.8;
   letter-spacing: -0.025em;
   display: grid;
@@ -1030,6 +1051,13 @@ html.is-leaving .curtain__label {
   }
   .hero__content {
     padding-bottom: 84px;
+    --hero-rest: 470px;
+  }
+  .hero__title {
+    font-size: max(2.6rem, min(22vw, calc((100svh - var(--hero-rest)) / 2.6)));
+  }
+  .num3d {
+    font-size: min(60vw, 70svh);
   }
 }
 
@@ -1932,14 +1960,17 @@ a.rail__item:hover .rail__img img {
 
 /* ---------- Demo-Badge ---------- */
 .demo-badge {
+  /* senkrechte Lasche am rechten Rand: verdeckt weder Hero-CTA noch die Leiste unten */
   position: fixed;
-  left: 64px;
-  bottom: 16px;
+  right: 0;
+  top: 50%;
   z-index: 110;
-  display: grid;
-  gap: 0;
-  padding: 10px 14px;
-  border-radius: 12px;
+  display: flex;
+  gap: 8px;
+  padding: 14px 7px;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
+  border-radius: 0 10px 10px 0;
   background: var(--color-cream);
   color: var(--color-ink);
   font: 700 0.72rem/1.25 var(--font-sans);

@@ -6,8 +6,8 @@ Vorgabe: „Consistency is key“ – nur die drei bis vier besten Effekte behal
 
 | # | Effekt | Wo | Warum |
 |---|---|---|---|
-| 1 | **Hero-Intro mit CN-Blende** – Ladezähler, Countdown 3-2-1, Lichtblitz, das Bild öffnet sich durch „CN“, Kamerafahrt durchs N, Headline steigt Buchstabe für Buchstabe auf. Dazu der **Übergang „Doors open → 360°“** in drei Varianten (Vorhang · Blende · Ticket, im Admin → Demo umschaltbar). | Startseite | Von Celia ausdrücklich gewünscht („komplette Hero-Animation inkl. C“). |
-| 2 | **Vorhang zwischen Seiten** – fünf Bahnen fallen, Linktext als Label, öffnen sich auf der neuen Seite. | überall | Event-Gefühl bei jedem Seitenwechsel, gleiches Bild wie die Vorhang-Variante im Hero. |
+| 1 | **Hero-Intro mit CN-Blende** – Ladezähler, Countdown 3-2-1, Lichtblitz, das Bild öffnet sich durch „CN“, Kamerafahrt durchs N, Headline steigt Buchstabe für Buchstabe auf. Dazu der **Übergang „Doors open → 360°“** in drei Varianten (Tiefe · Blende · Ticket, im Admin → Demo umschaltbar; Standard „Tiefe“: das Bild kippt nach hinten in den Raum, die „360°“ dreht sich einmal um sich selbst nach vorn). Die „360°“ ist eine **3D-Zahl** mit harter Extrusion und Glanzlicht, die sich zur Maus neigt (Touch: langsames Schwingen). | Startseite | Von Celia ausdrücklich gewünscht („komplette Hero-Animation inkl. C“). |
+| 2 | **Vorhang zwischen Seiten** – fünf Bahnen fallen, Linktext als Label, öffnen sich auf der neuen Seite. | überall | Event-Gefühl bei jedem Seitenwechsel. Bewusst nur hier: Der Hero-Übergang nutzt keine Bahnen mehr (Review 23.10.). |
 | 3 | **Foto-Leiste (horizontaler Foto-Scroll)** – Bilder laufen seitlich durch, während man scrollt. Komponente `PhotoRail`. | Hero (Leistungen), jede Leistungsseite (Eindrücke) | Celias Highlight von Bar-Catering, jetzt wiederverwendbar. |
 | 4 | **Reveal** – Headlines steigen wortweise aus einer Kante (`data-reveal="words"`), Karten/Absätze gleiten hoch (`data-reveal="up"`). | überall | Ruhige, einheitliche Bewegung für alle übrigen Inhalte. |
 

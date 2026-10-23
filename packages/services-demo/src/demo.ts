@@ -2,6 +2,7 @@ import {
   addDays,
   buildAvailability,
   DEFAULT_SETTINGS,
+  HERO_TRANSITIONS,
   toIsoDate,
   type Inquiry,
   type SentMail,
@@ -129,7 +130,14 @@ export function createDemoServicesWithStore(store: DemoStore): DemoServices {
       getRange: async (from, to) => buildAvailability(from, to, new Set((await read()).booked)),
     },
     catalog: { getCatalog: async () => catalog },
-    settings: { get: async () => ({ ...DEFAULT_SETTINGS, ...(await read()).settings }) },
+    settings: {
+      get: async () => {
+        const s = { ...DEFAULT_SETTINGS, ...(await read()).settings };
+        // Alte Ablagen kennen noch entfernte Varianten (z. B. „vorhang“)
+        if (!HERO_TRANSITIONS.includes(s.heroTransition)) s.heroTransition = DEFAULT_SETTINGS.heroTransition;
+        return s;
+      },
+    },
     social: {
       getFeed: async (limit = 9) => {
         const f = demoFeed();

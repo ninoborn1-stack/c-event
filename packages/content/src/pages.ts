@@ -411,7 +411,7 @@ export const adminUi = {
   demo: {
     hint: 'Nur im Demo-Modus. Im Live-Modus ist dieser Tab aus.',
     transition: 'Hero-Übergang „Doors open → 360°“',
-    transitions: { vorhang: 'Vorhang – fünf Bahnen fallen nach oben weg', blende: 'Blende – das Bild schließt sich wie eine Kamerablende', ticket: 'Ticket – das Bild reißt an der Perforation auf' },
+    transitions: { tiefe: 'Tiefe – das Bild kippt nach hinten weg, die 3D-360° fliegt nach vorn', blende: 'Blende – das Bild schließt sich wie eine Kamerablende', ticket: 'Ticket – das Bild reißt an der Perforation auf' },
     slogan: 'Slogan-Variante (Hero)',
     flags: 'Feature-Flags',
     flagLabels: {
