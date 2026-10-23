@@ -1,33 +1,25 @@
 import Link from 'next/link';
 import { val } from '@c-event/core';
-import { brand, home, legalNav, services, ui } from '@c-event/content';
+import { brand, home, legalNav, services, shop, ui } from '@c-event/content';
 import { Ph, PhText } from '@/components/Ph';
-import { Split } from '@/components/Split';
+import { Logo } from '@/components/brand/Logo';
+import { TicketLink } from '@/components/ui/Ticket';
 import { asset } from '@/lib/env';
 
 export function Footer() {
   const wa = val(brand.contact.whatsapp);
   return (
     <footer className="footer">
-      <div className="footer__marquee" aria-hidden="true">
-        <div data-marquee="">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <span key={i}>
-              {ui.footer.bigLine} <i>✺</i>{' '}
-            </span>
-          ))}
-        </div>
-      </div>
       <div className="footer__grid">
         <div className="footer__brand">
-          <Split as="p" className="footer__claim" text={`${brand.claim.replace('–', '—')}`} />
-          <Link href="/anfrage" className="btn btn--gold" data-label="Booking">
-            <span className="btn__text">{home.finale.cta}</span>
-            <span className="btn__arrow">→</span>
-          </Link>
+          <Logo size={72} />
+          <p className="footer__claim">{brand.claim}</p>
+          <TicketLink href={shop.path} label={val(shop.label)} tone="cream">
+            {home.finale.cta}
+          </TicketLink>
         </div>
         <div>
-          <h3 className="micro">{ui.nav.services}</h3>
+          <h2 className="eyebrow">{ui.nav.services}</h2>
           <ul className="footer__list">
             {services.map((s) => (
               <li key={s.slug}>
@@ -38,12 +30,15 @@ export function Footer() {
               <Link href="/social-media">Social Media & Content</Link>
             </li>
             <li>
+              <Link href={shop.path}>{val(shop.label)}</Link>
+            </li>
+            <li>
               <Link href="/arcade">Afterhour Arcade</Link>
             </li>
           </ul>
         </div>
         <div>
-          <h3 className="micro">{ui.footer.contact}</h3>
+          <h2 className="eyebrow">{ui.footer.contact}</h2>
           <ul className="footer__list">
             <li>
               <Ph v={brand.contact.email}>{(m) => <a href={`mailto:${m}`}>{m}</a>}</Ph>
@@ -75,7 +70,7 @@ export function Footer() {
           </Ph>
         </div>
         <div>
-          <h3 className="micro">{ui.footer.legal}</h3>
+          <h2 className="eyebrow">{ui.footer.legal}</h2>
           <ul className="footer__list">
             {legalNav.map((l) => (
               <li key={l.href}>

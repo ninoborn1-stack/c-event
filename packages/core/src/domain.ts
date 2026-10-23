@@ -43,11 +43,23 @@ export interface CatalogCategory {
   label: string;
 }
 
-/** Preis in Cent. `null` = „auf Anfrage“. */
+/**
+ * Preis in Cent. Drei Anzeige-Modi (pro Artikel):
+ *  fixed   = fester Richtpreis, „450 € pro Event“
+ *  from    = Einstiegspreis, „ab 1.490 €“
+ *  request = „auf Anfrage“ (amountCents = null)
+ */
+export type PriceMode = 'fixed' | 'from' | 'request';
 export interface Price {
   amountCents: number | null;
   /** z. B. „pro Abend“, „pro Stunde“, „pro Person“ */
   unit: string;
+  mode?: PriceMode;
+}
+
+export function priceMode(p: Price): PriceMode {
+  if (p.amountCents === null) return 'request';
+  return p.mode ?? 'fixed';
 }
 
 export interface CatalogItem {
@@ -63,6 +75,8 @@ export interface CatalogItem {
   stock: Maybe<number>;
   minQty?: number;
   media: string;
+  /** Längere Beschreibung für die Detailansicht im Shop. */
+  details?: Maybe<string[]>;
 }
 
 export interface CatalogPackage {
@@ -93,11 +107,16 @@ export interface DayAvailability {
 
 // ---------- Einstellungen (Demo-Cockpit bzw. Live-Config) ----------
 
+/** Drei Varianten für den Hero-Übergang „Doors open → 360°“ (Celia wählt im Admin-Demo-Tab). */
+export const HERO_TRANSITIONS = ['vorhang', 'blende', 'ticket'] as const;
+export type HeroTransition = (typeof HERO_TRANSITIONS)[number];
+
 export interface SiteSettings {
   sloganVariant: number;
   showPrices: boolean;
   bunkerWestCode: boolean;
   showPlaceholders: boolean;
+  heroTransition: HeroTransition;
 }
 
 export const DEFAULT_SETTINGS: SiteSettings = {
@@ -105,4 +124,48 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   showPrices: true,
   bunkerWestCode: false,
   showPlaceholders: true,
+  heroTransition: 'vorhang',
 };
+
+// ---------- Social Feed & Rezensionen ----------
+
+export interface SocialPost {
+  id: string;
+  /** Bild-URL oder Medien-ID (Demo) */
+  image: string;
+  caption: string;
+  permalink: string;
+  postedAt: string;
+  kind: 'image' | 'video' | 'carousel';
+}
+
+export interface SocialFeed {
+  source: 'demo' | 'instagram';
+  handle: string;
+  profileUrl: string;
+  posts: SocialPost[];
+}
+
+export interface Review {
+  id: string;
+  author: string;
+  authorUrl?: string;
+  rating: number;
+  text: string;
+  /** relative Zeitangabe, wie die Quelle sie liefert (z. B. „vor 2 Wochen“) */
+  when: string;
+  /** Link zur Originalrezension (Pflicht bei Google) */
+  url?: string;
+}
+
+export interface ReviewSummary {
+  /** demo = Beispieldaten, nie im Live-Modus anzeigen */
+  source: 'demo' | 'google-places' | 'google-business';
+  rating: number;
+  count: number;
+  reviews: Review[];
+  /** „Alle Bewertungen auf Google“ */
+  allUrl: string;
+  /** Pflichthinweis der Quelle, z. B. Sortierung/Filter */
+  notice?: string;
+}

@@ -11,7 +11,7 @@ export default function InquiryPage() {
   return (
     <>
       <header className="page-head page-head--signal">
-        <span className="micro">{inquiryPage.kicker}</span>
+        <span className="eyebrow">{inquiryPage.kicker}</span>
         <Split as="h1" className="page-head__title" text={inquiryPage.h1} />
         <p className="page-head__lead">{inquiryPage.lead}</p>
       </header>
@@ -20,7 +20,7 @@ export default function InquiryPage() {
           <InquiryForm />
         </Suspense>
         <aside className="inquiry__aside">
-          <span className="micro">Lieber direkt?</span>
+          <span className="eyebrow">Lieber direkt?</span>
           <Ph v={brand.contact.phone}>{(p) => <a href={`tel:${p.replace(/\s/g, '')}`}>{p}</a>}</Ph>
           <Ph v={brand.contact.email}>{(m) => <a href={`mailto:${m}`}>{m}</a>}</Ph>
           <Ph v={brand.contact.whatsapp}>{(w) => <a href={`https://wa.me/${w}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>}</Ph>

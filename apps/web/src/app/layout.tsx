@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { Archivo, Cormorant_Garamond, DM_Sans, Press_Start_2P } from 'next/font/google';
+import { Archivo, DM_Sans, Press_Start_2P } from 'next/font/google';
 import { brand, home, listPlaceholders, tokens, tokensToCss } from '@c-event/content';
 import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
@@ -9,7 +9,7 @@ import { PwaRegister } from '@/components/layout/PwaRegister';
 import { Curtain } from '@/components/motion/Curtain';
 import { Reveals } from '@/components/motion/Reveals';
 import { SmoothScroll } from '@/components/motion/SmoothScroll';
-import { RiderDrawer } from '@/components/rider/RiderDrawer';
+import { CartDrawer } from '@/components/cart/CartDrawer';
 import { JsonLd } from '@/components/JsonLd';
 import { asset, IS_DEMO, SITE_URL } from '@/lib/env';
 import { organizationLd } from '@/lib/seo';
@@ -18,8 +18,8 @@ import { getSettings } from '@/server/services';
 import './globals.css';
 
 // Schriften werden von Next beim Build heruntergeladen und selbst ausgeliefert (kein Google-Aufruf im Browser).
+// Archivo (variabel, schmaler Schnitt) = die blockige Hero-Schrift aus „Ideen auf die Bühne“ – einzige Headline-Schrift.
 const display = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--ff-display', display: 'swap' });
-const serif = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500'], style: ['italic', 'normal'], variable: '--ff-serif', display: 'swap' });
 const sans = DM_Sans({ subsets: ['latin'], variable: '--ff-sans', display: 'swap' });
 // Pixel-Schrift nur für die Arcade; kein Preload, damit sie die übrigen Seiten nicht bremst.
 const pixel = Press_Start_2P({ subsets: ['latin'], weight: '400', variable: '--ff-pixel', display: 'swap', preload: false });
@@ -42,7 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="de"
-      className={`${display.variable} ${serif.variable} ${sans.variable} ${pixel.variable}`}
+      className={`${display.variable} ${sans.variable} ${pixel.variable}`}
       data-ph={IS_DEMO && settings.showPlaceholders ? 'on' : 'off'}
       suppressHydrationWarning
     >
@@ -66,12 +66,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Nav />
           <main id="main">{children}</main>
           <Footer />
-          <RiderDrawer />
+          <CartDrawer />
           <SmoothScroll />
           <Reveals />
           <PwaRegister />
           {IS_DEMO && <DemoBadge placeholders={phCount} />}
-          <div className="grain" aria-hidden="true" />
         </SiteProvider>
       </body>
     </html>

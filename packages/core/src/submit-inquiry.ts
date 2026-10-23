@@ -35,6 +35,7 @@ export async function submitInquiry(
       unit: l.unit,
       unitCents: l.unitCents,
       totalCents: l.totalCents,
+      ...(l.note ? { note: l.note } : {}),
     })),
     cartSubtotalCents: summary.subtotalCents,
     cartHasOnRequest: summary.hasOnRequest,

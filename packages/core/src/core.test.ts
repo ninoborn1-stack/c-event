@@ -6,7 +6,9 @@ import {
   inquiryInputSchema,
   looksLikeSpam,
   ph,
+  priceMode,
   removeFromCart,
+  setNote,
   setQty,
   summarizeCart,
   val,
@@ -73,6 +75,20 @@ describe('Warenkorb', () => {
   });
 });
 
+describe('Preis-Modi & Notizen', () => {
+  it('erkennt fest / ab / auf Anfrage', () => {
+    expect(priceMode({ amountCents: 100, unit: 'x' })).toBe('fixed');
+    expect(priceMode({ amountCents: 100, unit: 'x', mode: 'from' })).toBe('from');
+    expect(priceMode({ amountCents: null, unit: 'x', mode: 'from' })).toBe('request');
+  });
+  it('speichert Notizen pro Position und gibt sie in der Zusammenfassung weiter', () => {
+    let c = addToCart([], { kind: 'item', id: 'bar', qty: 1 }, catalog);
+    c = setNote(c, 'item', 'bar', 'Bar in Weiß');
+    expect(summarizeCart(c, catalog).lines[0]?.note).toBe('Bar in Weiß');
+    expect(setNote(c, 'item', 'bar', '')[0]?.note).toBeUndefined();
+  });
+});
+
 describe('Anfrage-Schema', () => {
   const base = { category: 'bar-catering', name: 'Max Muster', email: 'max@example.com', privacy: true };
   it('akzeptiert eine minimale Anfrage', () => {
@@ -100,7 +116,11 @@ describe('Anfrage-Schema', () => {
 describe('Platzhalter', () => {
   it('sammelt verschachtelte Platzhalter mit Pfad', () => {
     const list = collectPlaceholders({ a: { b: ph('x', 'fehlt', 'Texte') }, c: [1, ph(2, 'zahl', 'Pakete')] });
-    expect(list.map((p) => p.path)).toEqual(['a.b', 'c[1]']);
+    // sortiert nach Priorität, dann Gruppe (Pakete vor Texte)
+    expect(list.map((p) => p.path)).toEqual(['c[1]', 'a.b']);
+    expect(list.every((p) => p.priority === 'P1')).toBe(true);
+    expect(ph('x', 'Impressum', 'Rechtliches').priority).toBe('P2');
+    expect(ph('x', 'Empfänger', 'Kontakt & Social', 'P1').priority).toBe('P1');
     expect(val(ph('wert', 'n'))).toBe('wert');
   });
 });

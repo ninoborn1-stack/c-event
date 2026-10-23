@@ -10,7 +10,11 @@ export interface Placeholder<T> {
   readonly note: string;
   /** Grobe Zuordnung für die Liste im Cockpit. */
   readonly group: PlaceholderGroup;
+  /** P1 = vor dem Bau nötig, P2 = nach und nach (für den Livegang nur Domain + Impressum zwingend). */
+  readonly priority: Priority;
 }
+
+export type Priority = 'P1' | 'P2';
 
 export type PlaceholderGroup =
   | 'Marke & Logo'
@@ -23,13 +27,34 @@ export type PlaceholderGroup =
   | 'Kontakt & Social'
   | 'Einsatzgebiet'
   | 'Partner'
-  | 'Medien';
+  | 'Medien'
+  | 'Shop'
+  | 'Technik & Konten'
+  | 'Organisation';
+
+/** Standard-Priorität je Gruppe (Briefing 2); einzelne Platzhalter können abweichen. */
+const DEFAULT_PRIORITY: Record<PlaceholderGroup, Priority> = {
+  'Marke & Logo': 'P1',
+  Texte: 'P1',
+  'Equipment & Preise': 'P1',
+  Pakete: 'P1',
+  Team: 'P1',
+  Medien: 'P1',
+  Shop: 'P1',
+  Referenzen: 'P2',
+  Rechtliches: 'P2',
+  'Kontakt & Social': 'P2',
+  Einsatzgebiet: 'P2',
+  Partner: 'P2',
+  'Technik & Konten': 'P2',
+  Organisation: 'P2',
+};
 
 /** Ein Wert, der fertig sein kann oder noch ein Platzhalter ist. */
 export type Maybe<T> = T | Placeholder<T>;
 
-export function ph<T>(value: T, note: string, group: PlaceholderGroup = 'Texte'): Placeholder<T> {
-  return { __placeholder: true, value, note, group };
+export function ph<T>(value: T, note: string, group: PlaceholderGroup = 'Texte', priority?: Priority): Placeholder<T> {
+  return { __placeholder: true, value, note, group, priority: priority ?? DEFAULT_PRIORITY[group] };
 }
 
 export function isPlaceholder<T>(v: Maybe<T> | unknown): v is Placeholder<T> {
@@ -45,6 +70,7 @@ export interface PlaceholderEntry {
   path: string;
   note: string;
   group: PlaceholderGroup;
+  priority: Priority;
   preview: string;
 }
 
@@ -57,7 +83,7 @@ export function collectPlaceholders(root: unknown, rootPath = ''): PlaceholderEn
     if (seen.has(node)) return;
     seen.add(node);
     if (isPlaceholder(node)) {
-      out.push({ path, note: node.note, group: node.group, preview: previewOf(node.value) });
+      out.push({ path, note: node.note, group: node.group, priority: node.priority, preview: previewOf(node.value) });
       return;
     }
     if (Array.isArray(node)) {
@@ -69,7 +95,8 @@ export function collectPlaceholders(root: unknown, rootPath = ''): PlaceholderEn
     }
   };
   walk(root, rootPath);
-  return out;
+  // Sortiert: erst P1, dann P2, jeweils nach Gruppe
+  return out.sort((a, b) => a.priority.localeCompare(b.priority) || a.group.localeCompare(b.group, 'de'));
 }
 
 function previewOf(v: unknown): string {

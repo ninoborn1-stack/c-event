@@ -20,7 +20,12 @@ packages/content  ──►  packages/core  ◄──  packages/services-demo
 | `POST` | `/api/inquiries` | Anfrage senden. Body = `inquiryInputSchema` (Zod, `packages/core/src/inquiry.ts`). Antwort `201 { ok, id }` oder `422 { errors }` |
 | `GET` | `/api/availability?from=YYYY-MM-DD&to=YYYY-MM-DD` | Nur `{ date, status: free \| booked \| past }`, keine Details |
 | `GET` | `/api/catalog` | Kategorien, Artikel, Pakete (ohne Platzhalter-Markierung) |
-| `GET/POST` | `/api/demo/*` | Nur im Demo-Modus: Cockpit-Daten, Kalender umschalten, Einstellungen, Reset |
+| `GET` | `/api/inquiries/:id` | Eine Anfrage (Danke-Seite; zufällige, nicht erratbare ID) |
+| `POST` | `/api/admin/login` · `/api/admin/logout` · `GET /api/admin/me` | Admin-Sitzung (Cookie) |
+| `GET` | `/api/admin/data` | Dashboard: Anfragen, Mails, Posts, Rezensionen, Kalender, Einstellungen |
+| `PATCH` | `/api/admin/inquiries/:id` | Status (`neu`, `in-bearbeitung`, `angebot-raus`, `gebucht`, `abgesagt`) und interne Notizen |
+| `POST` | `/api/admin/inquiries/:id/reply` | Antwort-Mail an den Kunden (Vorlage aus `replyTemplate()`) |
+| `POST` | `/api/demo/*` | Nur im Demo-Modus: Kalender umschalten, Einstellungen, Reset |
 
 ## Online-Vorschau
 
@@ -44,7 +49,7 @@ packages/content  ──►  packages/core  ◄──  packages/services-demo
    | Variable | Live-Wert |
    |---|---|
    | `DATA_MODE` | `live` |
-   | `NEXT_PUBLIC_SITE_URL` | `https://<domain>` (im Januar ggf. neue C-Event-Domain) |
+   | `NEXT_PUBLIC_SITE_URL` | `https://<domain>` (im Januar ggf. neue CN Event Agency-Domain) |
    | `MAIL_PROVIDER`, `MAIL_API_KEY`, `MAIL_FROM` | Mailversand |
    | `INQUIRY_RECIPIENT` | Celias Anfrage-Postfach |
    | `AVAILABILITY_ICAL_URL` | Kalender-Quelle |
@@ -54,9 +59,34 @@ packages/content  ──►  packages/core  ◄──  packages/services-demo
 5. **Rechtliches**: Impressum-Daten, Datenschutz (Hosting, Mail-Anbieter, Kalender) und Mietbedingungen in `packages/content/src/pages.ts` (`legal`) einsetzen und prüfen lassen.
 6. **SEO**: Search Console, Sitemap einreichen, Google-Unternehmensprofil verknüpfen. Beim Domainwechsel im Januar 301-Weiterleitungen.
 
+
+## Social Feed (Instagram)
+
+- Interface `SocialFeedService` (`packages/core/src/services.ts`), Live-Adapter `createInstagramFeed()` in `packages/services-live/src/instagram.ts`.
+- **Voraussetzung:** Die Instagram Basic Display API ist seit 4.12.2024 abgeschaltet. Nötig ist ein **Business- oder Creator-Account** und die „Instagram API with Instagram Login“ (Meta-App, Produkt „Instagram“, Berechtigung `instagram_business_basic`).
+- **Token:** Kurzlebiges Token aus dem Login gegen ein **langlebiges Token (60 Tage)** tauschen und in `INSTAGRAM_ACCESS_TOKEN` hinterlegen. Vor Ablauf (frühestens nach 24 h) mit `refreshInstagramToken()` verlängern, z. B. per wöchentlichem Cron (GitHub Action oder Hosting-Cron) und das neue Token im Secret-Store des Hostings speichern. Das Token nie ins Repo.
+- **Caching:** Der Adapter cached 30 Minuten im Speicher, die Seite trifft die API also nicht bei jedem Aufruf. Beim Hosting mit ISR zusätzlich `revalidate` setzen.
+
+## Google-Rezensionen
+
+- Interface `ReviewsService`, Live-Adapter in `packages/services-live/src/google-reviews.ts`.
+- **Places API (New)** – `createPlacesReviews({ apiKey, placeId })`: maximal 5 Rezensionen. **Pflicht:** Autor nennen (mit Link, wenn vorhanden), Link zur Originalrezension, Hinweis auf Auswahl/Sortierung (macht die Komponente). **Inhalte nicht speichern** – deshalb kein Cache im Adapter; gespeichert wird nur die Place-ID (`GOOGLE_PLACE_ID`).
+- **Business Profile API** – `createBusinessProfileReviews(...)`: alle Rezensionen, braucht die **OAuth-Freigabe des verifizierten Inhabers** (Scope `https://www.googleapis.com/auth/business.manage`). Einmalig OAuth durchlaufen, Refresh-Token sicher speichern, Account- und Location-ID eintragen. Der API-Zugang muss bei Google beantragt werden.
+- **Niemals erfundene Rezensionen live:** Den Demo-Adapter gibt es nur in `services-demo`; im Live-Modus wird er nicht verdrahtet.
+
+## Admin & Login
+
+- Interface `AuthService` (login/verify/logout). Demo: fester Demo-User (`demo@cn-event.de` / `demo`). Live: z. B. Auth.js, Clerk oder Supabase Auth als Implementierung desselben Interfaces – die Admin-UI (`components/admin/AdminApp.tsx`) und die Endpunkte (`/api/admin/*`) bleiben gleich.
+- Sitzung im Server-Modus als httpOnly-Cookie `cev_admin`; jeder Admin-Endpunkt prüft sie über `server/admin-auth.ts`.
+- Der Tab „Demo“ und `/api/demo/*` existieren nur mit `DATA_MODE=demo`.
+
+## Design drehen (Celias CI)
+
+Alles in `packages/content/src/design-tokens.ts`: Farben (`color`), Schriften (`font`), **Ticket-Stil** (`ticket`: Radius, Kerben, Perforation, Farben, Schatten) und Radien. Die Headline-Schrift wird in `apps/web/src/app/layout.tsx` geladen (next/font).
+
 ## Namenswechsel im Januar
 
-`packages/content/src/brand.ts` → `name: 'C-Event'`. Der Name steht sonst nirgends hart im Code (Titel, Mails, JSON-LD, Manifest, llms.txt lesen alle daraus). Logo-Datei austauschen und die Domain in `NEXT_PUBLIC_SITE_URL` umstellen.
+`packages/content/src/brand.ts` → `name`/`short` (z. B. „CN Event“), `brand.nameStatus` als erledigt markieren (Platzhalter entfernen). Der Name steht sonst nirgends hart im Code (Titel, Mails, JSON-LD, Manifest, llms.txt lesen alle daraus). Logo-Datei austauschen und die Domain in `NEXT_PUBLIC_SITE_URL` umstellen.
 
 ## Corporate-Strecke (später)
 

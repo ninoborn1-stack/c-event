@@ -1,8 +1,9 @@
+import Link from 'next/link';
 import { about, partners } from '@c-event/content';
-import { Btn } from '@/components/Btn';
 import { Media } from '@/components/Media';
 import { Ph, PhText } from '@/components/Ph';
 import { Split } from '@/components/Split';
+import { TicketLink } from '@/components/ui/Ticket';
 import { pageMeta } from '@/lib/seo';
 
 export const metadata = pageMeta({ ...about.seo, path: '/ueber-uns', image: about.hero.media });
@@ -11,19 +12,42 @@ export default function AboutPage() {
   return (
     <>
       <header className="page-hero">
-        <div className="page-hero__img" data-reveal="clip">
+        <div className="page-hero__img">
           <Media id={about.hero.media} priority sizes="100vw" />
         </div>
         <div className="page-hero__body">
-          <span className="micro">{about.hero.kicker}</span>
-          <Split as="h1" className="page-head__title" text={about.hero.h1.replace('einfach machen', '*einfach machen*')} />
+          <span className="eyebrow">{about.hero.kicker}</span>
+          <Split as="h1" className="page-head__title" text={about.hero.h1} />
         </div>
       </header>
+
+      <section className="sec">
+        <header className="sec__head">
+          <span className="eyebrow">01</span>
+          <Split as="h2" className="h-l" text={about.whatWeDo.title} />
+        </header>
+        <div className="tiles tiles--4">
+          {about.whatWeDo.items.map((w) => (
+            <article key={w.title} className="tile">
+              <Link href={w.href} className="tile__img" tabIndex={-1} aria-hidden="true">
+                <Media id={w.media} sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw" />
+              </Link>
+              <h3>
+                <Link href={w.href} data-label={w.title}>
+                  {w.title}
+                </Link>
+              </h3>
+              <p>{w.text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="sec sec--cream story">
         <PhText v={about.story} className="story__text" />
-        <div className="values" data-reveal="stagger">
+        <div className="values">
           {about.values.map((v, i) => (
-            <div key={v.title}>
+            <div key={v.title} data-reveal="up">
               <em>{String(i + 1).padStart(2, '0')}</em>
               <h2>{v.title}</h2>
               <p>{v.text}</p>
@@ -31,28 +55,30 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
-      <section className="sec sec--ink">
+
+      <section className="sec">
         <header className="sec__head">
-          <span className="micro">Team</span>
-          <Split as="h2" className="display-l" text="Die Crew hinter der Crew." />
+          <span className="eyebrow">02</span>
+          <Split as="h2" className="h-l" text={about.teamTitle} />
         </header>
         <Ph v={about.team} as="div" className="team">
           {(team) =>
-            team.map((t) => (
-              <article key={t.name} className="team__card" data-reveal="up">
+            team.map((t, i) => (
+              <article key={`${t.name}-${i}`} className="team__card" data-reveal="up">
                 <div className="team__img">
-                  <Media id={t.media} sizes="(min-width: 900px) 33vw, 100vw" />
+                  <Media id={t.media} sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw" />
                 </div>
                 <h3>{t.name}</h3>
-                <span className="micro">{t.role}</span>
+                <span className="eyebrow">{t.role}</span>
                 <p>{t.text}</p>
               </article>
             ))
           }
         </Ph>
       </section>
+
       <section className="sec sec--night network">
-        <span className="micro">Netzwerk & Partner</span>
+        <span className="eyebrow">{about.networkTitle}</span>
         <Ph v={about.network} as="div" className="network__list">
           {(list) =>
             list.map((n) => (
@@ -62,9 +88,9 @@ export default function AboutPage() {
             ))
           }
         </Ph>
-        <Btn href="/anfrage" variant="gold" label="Booking">
-          Lass uns reden
-        </Btn>
+        <TicketLink href="/anfrage" label="Anfrage">
+          {about.cta}
+        </TicketLink>
       </section>
     </>
   );

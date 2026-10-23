@@ -1,11 +1,10 @@
 import Link from 'next/link';
 
-/** Kleines Demo-Kennzeichen mit Sprung ins Cockpit. Nur im Demo-Modus gerendert. */
+/** Kleines Demo-Kennzeichen mit Sprung in den Admin-Bereich. Nur im Demo-Modus gerendert. */
 export function DemoBadge({ placeholders }: { placeholders: number }) {
   return (
-    <Link href="/demo" className="demo-badge" data-no-curtain>
-      <i className="live-dot" aria-hidden="true" />
-      Demo · Cockpit
+    <Link href="/admin" className="demo-badge" data-no-curtain>
+      Demo · Admin
       <small>{placeholders} Platzhalter</small>
     </Link>
   );

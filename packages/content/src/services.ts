@@ -3,6 +3,8 @@ import type { MediaId } from './media';
 
 export interface ServicePage {
   slug: ServiceSlug;
+  /** Passende Shop-Kategorie („Zum Event hinzufügen“ springt direkt dorthin) */
+  shopCategory: string;
   name: string;
   /** Ein Satz für das Leistungs-Raster auf der Startseite. */
   line: string;
@@ -32,6 +34,7 @@ const processFor = (offer: string, dayX: string) => [
 export const services: ServicePage[] = [
   {
     slug: 'bar-catering',
+    shopCategory: 'bar',
     name: 'Bar-Catering',
     line: 'Mobile Bar, Crew und Signature-Drinks, aufgebaut wo immer du feierst.',
     seo: {
@@ -72,6 +75,7 @@ export const services: ServicePage[] = [
   },
   {
     slug: 'personalvermittlung',
+    shopCategory: 'personal',
     name: 'Personalvermittlung',
     line: 'Service, Bar, Hosts und Aufbau-Crew, eingespielt statt zusammengewürfelt.',
     seo: {
@@ -111,6 +115,7 @@ export const services: ServicePage[] = [
   },
   {
     slug: 'catering',
+    shopCategory: 'catering',
     name: 'Catering',
     line: 'Food, das zum Format passt: Flying Dinner, Buffet oder Late-Night-Snack.',
     seo: {
@@ -150,6 +155,7 @@ export const services: ServicePage[] = [
   },
   {
     slug: 'event-management',
+    shopCategory: 'leistung',
     name: 'Event-Management',
     line: 'Am Tag X hält eine Person alle Fäden. Du feierst, wir steuern.',
     seo: {
@@ -189,6 +195,7 @@ export const services: ServicePage[] = [
   },
   {
     slug: 'event-organisation',
+    shopCategory: 'leistung',
     name: 'Event-Organisation',
     line: 'Von der ersten Idee bis zum letzten Song: Konzept, Location, Programm, alles.',
     seo: {
@@ -230,6 +237,7 @@ export const services: ServicePage[] = [
   },
   {
     slug: 'dekoration',
+    shopCategory: 'deko',
     name: 'Dekoration',
     line: 'Licht, Floristik, Möbel, Neon: Atmosphäre, die man fotografieren will.',
     seo: {
@@ -259,7 +267,7 @@ export const services: ServicePage[] = [
     gallery: ['deko-pink-tafel', 'tischdeko-blumen', 'neon-lets-party', 'lounge-sofas-gruen', 'hochzeit-tafel', 'weihnachtsbaum-kugeln'],
     faq: ph(
       [
-        { q: 'Kann ich Deko auch nur mieten?', a: 'Ja, viele Stücke findest du direkt im Konfigurator. Styling vor Ort buchst du optional dazu.' },
+        { q: 'Kann ich Deko auch nur mieten?', a: 'Ja, viele Stücke findest du direkt im Shop. Styling vor Ort buchst du optional dazu.' },
         { q: 'Macht ihr auch Branding?', a: 'Ja: Neon-Logos, Fotowände, Tischaufsteller im CI deiner Marke.' },
         { q: 'Wie lange vorher baut ihr auf?', a: 'Je nach Umfang zwei bis acht Stunden. Wir stimmen das mit der Location ab.' },
       ],
@@ -269,6 +277,7 @@ export const services: ServicePage[] = [
   },
   {
     slug: 'equipment-mieten',
+    shopCategory: 'technik',
     name: 'Equipment-Vermietung',
     line: 'Ausgesuchtes Sortiment statt Lagerhalle: Bar, Licht, Sound, Möbel.',
     seo: {
@@ -280,7 +289,7 @@ export const services: ServicePage[] = [
     },
     kicker: 'Act 07 · Das Equipment',
     intro: ph(
-      'Kein Katalog mit 4.000 Positionen, sondern das, was wir selbst auf unseren Events einsetzen. Ausgesucht, gepflegt, getestet. Stell dir im Konfigurator zusammen, was du brauchst, wir prüfen Verfügbarkeit und schicken dir ein Angebot.',
+      'Kein Katalog mit 4.000 Positionen, sondern das, was wir selbst auf unseren Events einsetzen. Ausgesucht, gepflegt, getestet. Stell dir im Shop zusammen, was du brauchst, wir prüfen Verfügbarkeit und schicken dir ein Angebot.',
       TEXT_NOTE,
     ),
     hero: 'lichtshow-buehne',

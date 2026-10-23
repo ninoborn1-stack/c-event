@@ -1,5 +1,32 @@
 # Entscheidungen
 
+## Review 22.10. umgesetzt (23.10.2026)
+
+| Thema | Entscheidung | Warum |
+|---|---|---|
+| Name | Überall **„CN Event Agency“** (laut Instagram @cneventagency), Claim **„Event Concept & Production“**. Steht nur in `packages/content/src/brand.ts`; zusätzlich als P1-Platzhalter `brand.nameStatus`, weil im Januar ein neuer Name kommt. Die internen Paketnamen `@c-event/*` und der Repo-/URL-Name `c-event` bleiben. | Code-Namen sind unsichtbar; ein Umbenennen hätte nur Risiko (Imports, Pages-URL) ohne Nutzen. |
+| Logo | Typografischer SVG-Platzhalter (`components/brand/Logo.tsx`): „CN“ geometrisch auf schwarzem Kreis, darunter „EVENT AGENCY“, als Platzhalter markiert. | Bis das Vektor-Logo kommt. |
+| Intro | Die Blende zeigt jetzt **„CN“** (C-Ring + N), die Kamerafahrt geht durch den linken N-Schaft. | Logo-Bezug wie vorher beim „C“. |
+| Headline-Schrift | **Archivo** (variabel, `wdth 62`, Weight 900) – das ist die blockige Schrift aus „Ideen auf die Bühne“ und jetzt die einzige Headline-Schrift. Cormorant ist entfernt, Akzentwörter sind Bernstein. | Celias Lieblingsschrift. |
+| Farben | Dunkel `#15110F`, Creme `#F2ECE3`, Rot `#9E2B25` (Tickets/CTAs), Bernstein `#D9A04E` (Highlights/Eyebrows), auf Hell `#8A5A1C`. Alle in `design-tokens.ts`, Kontraste dort dokumentiert. | Vorschlag aus ihrer Bildsprache bis zur CI. |
+| CTAs | **Eine** Komponente `TicketLink`/`TicketButton`: Hauptteil, Perforation, Abriss-Stub, weiche Radien. Stil komplett in `tokens.ticket` (Radius, Kerbe, Farben, Schatten). | „Alle CTAs in einem Stil“; „ein bisschen weiblich“ ist schnell drehbar. |
+| Navbar | Leistungen (Dropdown) · Shop · Galerie · Über uns · Social Media + **Warenkorb-Ticket** mit Zähler. „Anfrage“ ist kein Navbar-Punkt mehr. Shop-Label und Warenkorb-Begriff sind Config-Werte (`shop.label` = „Shop“, `shop.cartLabel` = „Dein Event“). | Review. |
+| Warenkorb sichtbar halten | Nach „Zum Event hinzufügen“ fährt die Navigation für 3,5 s ein (auch beim Scrollen nach unten) und das Ticket wackelt kurz. | Sonst sah man tief auf der Seite nicht, dass etwas im Warenkorb gelandet ist. |
+| Shop | `/shop` mit Paketen + Artikeln, Kategorie-Filter (auch per `?kategorie=`), Detailseiten `/shop/<id>`, Warenkorb als Drawer und `/warenkorb`, Notiz pro Position. `/konfigurator` leitet weiter. | Review: „wie Produkte“. |
+| Preise | Pro Artikel `mode`: fest / ab / auf Anfrage (`priceMode()` in core). Global per Flag „Preise anzeigen“. | Celia entscheidet noch. |
+| Startseite | Hero (mit Foto-Leiste der Leistungen) → Leistungen als Kacheln (Unterseite + „Im Shop“) → Shop-Einstieg mit Paketen → Highlights → Stimmen (Google + Instagram) → Abschluss. Bunker West, Kalender, Zielgruppen, Arcade-Teaser und Laufbänder sind von der Startseite runter (Bunker West bleibt auf Event-Organisation, Arcade im Footer). | „Viel minimalistischer, eine Aufgabe pro Sektion“. |
+| Übergang „Doors open → 360°“ | Drei Varianten: **Vorhang** (5 Bahnen fallen gekippt nach oben weg), **Blende** (Bild schließt sich wie eine Kamerablende, Ring, 360° dreht ein), **Ticket** (Bild reißt an der Perforation in zwei Hälften). Umschaltbar unter Admin → Demo. Standard: Vorhang. | Celia wählt. |
+| Foto-Leiste | `PhotoRail` (scroll-gekoppelt, ohne Pinning; ohne Bewegung normal wischbar). Im Hero mit den Leistungen, auf jeder Leistungsseite als „Eindrücke“. | Highlight aus dem Review. |
+| Social Feed | `SocialFeedService`: Demo-Adapter (8 Posts, Stockbilder, „Demo“-Badge), Live-Adapter Instagram Graph API in `packages/services-live` (30-Min.-Cache). Kompakt als eine wischbare Reihe + „Folge uns auf Instagram“. | ~12 Beiträge im Account. |
+| Google-Rezensionen | `ReviewsService`: Demo-Adapter mit sichtbarem „Demo“-Badge und Hinweis. Live: Places API (max. 5, ohne Cache, Autor + Original-Link + Hinweis zur Auswahl) oder Business Profile API (alle, OAuth des Inhabers, 60-Min.-Cache). Demo-Rezensionen werden im Live-Modus nie gezeigt (dort gibt es keinen Demo-Adapter). | Google-Richtlinien. |
+| Admin | `/admin` mit Auth-Interface + Demo-Login (`demo@cn-event.de` / `demo`, öffentlich bekannt, nur Demo-Daten). Server: httpOnly-Cookie, alle Admin-Endpunkte prüfen die Sitzung. Statische Vorschau: Token im Browser. Tabs: Anfragen (5 Status, Detail, Notizen, Antwort aus Vorlage), Mails, Posts, Rezensionen, Kalender, Demo. | Review. |
+| Demo-Reset ohne Login | `POST /api/demo/reset` geht im Demo-Modus auch ohne Login (für den E2E-Test). Im Live-Modus gibt es den Endpunkt nicht. | Testbarkeit. |
+| Platzhalter-Prioritäten | `ph(wert, notiz, gruppe, prio?)` – Standard-Priorität je Gruppe, einzeln überschreibbar. Briefing-2-Punkte ohne festen Ort stehen in `packages/content/src/briefing.ts`. Liste sortiert P1 → P2. | Briefing 2. |
+| Medien-Motive | Jede Medien-ID hat ein `motif` (Wunschmotiv) – explizit für Hero, Leistungs-Heros, Bunker, Team; sonst aus dem Alt-Text. | 1:1-Zuordnung von Celias Material. |
+| Unterseiten-Bug | Ursache: Das Leistungen-Dropdown schloss, sobald die Maus die 8-px-Lücke zum Panel überquerte (Links danach unsichtbar), und ein Klick auf „Leistungen“ klappte ein per Hover geöffnetes Menü wieder zu. Fix: Brücke über die Lücke, Schließen mit 220 ms Verzögerung, Klick lässt offen, Esc/Klick daneben schließt. Tests: alle Leistungsseiten direkt und über Dropdown bzw. Burger-Menü. | Review. |
+| Lighthouse | Desktop 99–100 Performance, Mobil (gedrosselt) 85–91. SEO zeigt 66–69, weil die Demo bewusst `noindex` hat (nur „is-crawlable“ schlägt fehl). Rest ≥ 96. | Siehe Abschnitt „Bekannte Grenzen“. |
+
+
 Getroffen beim Bau der Demo (22.10.2026), wo Briefing oder Start-Prompt offen oder widersprüchlich waren.
 
 ## Design
@@ -67,6 +94,8 @@ Getroffen beim Bau der Demo (22.10.2026), wo Briefing oder Start-Prompt offen od
 - Gastro-Content ist bewusst ausgeschlossen (Hinweis auf der Social-Media-Seite).
 
 ## Bekannte Grenzen der Demo
+
+- Mobile Performance (Lighthouse, gedrosseltes 4G): Startseite ~85, weil das Intro bewusst ~4 s läuft und Lighthouse den Hero-Text erst danach als „größtes Element“ misst; Unterseiten ~89 wegen Webfonts + CSS auf langsamer Leitung. Hebel, falls nötig: Intro nur beim ersten Besuch überhaupt (statt pro Tab), Archivo auf die genutzten Achsen beschneiden, kritisches CSS.
 
 - Es werden keine echten Mails verschickt (Demo-Postfach im Cockpit).
 - Der Kalender ist nicht an Celias Kalender angebunden.

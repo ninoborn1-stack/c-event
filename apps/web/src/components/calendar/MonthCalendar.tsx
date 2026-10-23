@@ -42,9 +42,9 @@ export function MonthGrid({
           →
         </button>
       </div>
-      <div className="cal__grid" role="grid">
+      <div className="cal__grid">
         {WD.map((w) => (
-          <span key={w} className="cal__wd" role="columnheader">
+          <span key={w} className="cal__wd" aria-hidden="true">
             {w}
           </span>
         ))}
@@ -57,7 +57,6 @@ export function MonthGrid({
             <button
               key={iso}
               type="button"
-              role="gridcell"
               className={`cal__day cal__day--${st}${inMonth ? '' : ' is-out'}${selected === iso ? ' is-sel' : ''}`}
               disabled={!can}
               aria-pressed={selected === iso}
@@ -69,7 +68,7 @@ export function MonthGrid({
           );
         })}
       </div>
-      <div className="cal__legend micro">
+      <div className="cal__legend eyebrow">
         <span className="lg lg--free">Frei</span>
         <span className="lg lg--booked">Belegt</span>
       </div>

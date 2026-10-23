@@ -1,11 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { formatEuro, type Inquiry } from '@c-event/core';
 import { inquiryPage, labelFns } from '@c-event/content';
-import { Btn } from '@/components/Btn';
+import { TicketLink } from '@/components/ui/Ticket';
 import { api } from '@/lib/api';
 
 export function ThanksView({ isDemo }: { isDemo: boolean }) {
@@ -28,9 +27,9 @@ export function ThanksView({ isDemo }: { isDemo: boolean }) {
     return (
       <>
         <h1 className="page-head__title">Anfrage nicht gefunden.</h1>
-        <Btn href="/anfrage" variant="gold" label="Booking">
+        <TicketLink href="/anfrage"  label="Booking">
           Zum Formular
-        </Btn>
+        </TicketLink>
       </>
     );
 
@@ -44,7 +43,7 @@ export function ThanksView({ isDemo }: { isDemo: boolean }) {
   ];
   return (
     <>
-      <span className="micro">Anfrage-Nr. {inq.id}</span>
+      <span className="eyebrow">Anfrage-Nr. {inq.id}</span>
       <h1 className="page-head__title">{inquiryPage.thanks.h1}</h1>
       <p className="page-head__lead">{inquiryPage.thanks.lead}</p>
       <div className="thanks__ticket">
@@ -70,14 +69,13 @@ export function ThanksView({ isDemo }: { isDemo: boolean }) {
         )}
       </div>
       <div className="thanks__ctas">
-        <Btn href="/" variant="gold" label="Main Stage">
+        <TicketLink href="/"  label="Main Stage">
           Zur Startseite
-        </Btn>
+        </TicketLink>
         {isDemo && (
-          <Link href="/demo#postfach" className="btn btn--ghost" data-label="Cockpit">
-            <span className="btn__text">Demo: Mails im Postfach ansehen</span>
-            <span className="btn__arrow">→</span>
-          </Link>
+          <TicketLink href="/admin#mails" label="Admin" tone="outline">
+            Demo: Mails im Admin ansehen
+          </TicketLink>
         )}
       </div>
     </>

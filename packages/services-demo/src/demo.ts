@@ -9,6 +9,7 @@ import {
   type SiteSettings,
 } from '@c-event/core';
 import { catalog } from '@c-event/content';
+import { DEMO_ADMIN, demoFeed, demoReviews } from './demo-data';
 
 /** Demo-Logik ohne Node- oder Browser-Abhängigkeiten. Die Ablage wird von außen hereingereicht. */
 export interface DemoDb {
@@ -18,6 +19,7 @@ export interface DemoDb {
   mails: SentMail[];
   booked: string[];
   settings: SiteSettings;
+  sessions?: { token: string; expiresAt: string }[];
 }
 
 export interface DemoStore {
@@ -104,6 +106,15 @@ export function createDemoServicesWithStore(store: DemoStore): DemoServices {
         }),
       get: async (id) => (await read()).inquiries.find((i) => i.id === id) ?? null,
       list: async () => (await read()).inquiries,
+      update: (id, patch) =>
+        mutate((db) => {
+          const inq = db.inquiries.find((i) => i.id === id);
+          if (!inq) return null;
+          if (patch.status) inq.status = patch.status;
+          if (patch.adminNotes !== undefined) inq.adminNotes = patch.adminNotes.slice(0, 4000);
+          inq.updatedAt = new Date().toISOString();
+          return inq;
+        }),
     },
     mail: {
       send: (mail) =>
@@ -119,6 +130,32 @@ export function createDemoServicesWithStore(store: DemoStore): DemoServices {
     },
     catalog: { getCatalog: async () => catalog },
     settings: { get: async () => ({ ...DEFAULT_SETTINGS, ...(await read()).settings }) },
+    social: {
+      getFeed: async (limit = 9) => {
+        const f = demoFeed();
+        return { ...f, posts: f.posts.slice(0, limit) };
+      },
+    },
+    reviews: { getSummary: async () => demoReviews() },
+    auth: {
+      login: async (email, password) => {
+        if (email.trim().toLowerCase() !== DEMO_ADMIN.email || password !== DEMO_ADMIN.password) return null;
+        const token = `S-${randomHex(16)}`;
+        const expiresAt = new Date(Date.now() + 12 * 3600e3).toISOString();
+        await mutate((db) => {
+          db.sessions = [...(db.sessions ?? []).filter((s) => s.expiresAt > new Date().toISOString()), { token, expiresAt }];
+        });
+        return { token, expiresAt, user: { id: 'demo', name: DEMO_ADMIN.name, email: DEMO_ADMIN.email } };
+      },
+      verify: async (token) => {
+        const s = (await read()).sessions?.find((x) => x.token === token && x.expiresAt > new Date().toISOString());
+        return s ? { id: 'demo', name: DEMO_ADMIN.name, email: DEMO_ADMIN.email } : null;
+      },
+      logout: (token) =>
+        mutate((db) => {
+          db.sessions = (db.sessions ?? []).filter((s) => s.token !== token);
+        }),
+    },
     demo: {
       toggleDay: (date) =>
         mutate((db) => {
@@ -133,7 +170,9 @@ export function createDemoServicesWithStore(store: DemoStore): DemoServices {
         }),
       reset: () =>
         mutate((db) => {
-          Object.assign(db, freshDb());
+          // Anmeldung bleibt bestehen, alles andere wird neu angelegt
+          const sessions = db.sessions;
+          Object.assign(db, freshDb(), { sessions });
         }),
     },
   };

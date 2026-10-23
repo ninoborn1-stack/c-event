@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { services } from '@c-event/content';
+import { catalog, services, shop } from '@c-event/content';
 import { SITE_URL } from '@/lib/env';
 
 export const dynamic = 'force-static';
@@ -10,7 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ['/', 1],
     ...services.map((s) => [`/leistungen/${s.slug}`, 0.9] as [string, number]),
     ['/social-media', 0.8],
-    ['/konfigurator', 0.8],
+    [shop.path, 0.8],
+    ...[...catalog.packages, ...catalog.items].map((x) => [`${shop.path}/${x.id}`, 0.5] as [string, number]),
     ['/anfrage', 0.8],
     ['/galerie', 0.6],
     ['/ueber-uns', 0.6],

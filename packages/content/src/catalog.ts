@@ -1,10 +1,10 @@
 import { ph, type Catalog, type CatalogItem, type CatalogPackage, type Price } from '@c-event/core';
 
-const PRICE_NOTE = 'Preis-Vorschlag. Echte Mietpreise aus Celias Equipment-Liste fehlen';
+const PRICE_NOTE = 'Artikel-Liste: Mietpreis aus Celias Liste (Name, Foto, Stückzahl, Mietpreis, Kaution)';
 const STOCK_NOTE = 'Stückzahl fehlt';
 const DEPOSIT_NOTE = 'Kaution fehlt';
 
-const eur = (euro: number | null, unit: string): Price => ({ amountCents: euro === null ? null : euro * 100, unit });
+const eur = (euro: number | null, unit: string, mode?: Price['mode']): Price => ({ amountCents: euro === null ? null : euro * 100, unit, ...(mode ? { mode } : {}) });
 const price = (euro: number | null, unit: string) => ph(eur(euro, unit), PRICE_NOTE, 'Equipment & Preise');
 const stock = (n: number) => ph(n, STOCK_NOTE, 'Equipment & Preise');
 const deposit = (euro: number) => ph(euro * 100, DEPOSIT_NOTE, 'Equipment & Preise');
@@ -47,7 +47,7 @@ const packages: CatalogPackage[] = [
       { itemId: 'stehtisch', qty: 6 },
       { itemId: 'licht-paket', qty: 1 },
     ],
-    price: ph(eur(1490, 'ab'), 'Paketpreis-Vorschlag, Pakete und Preise kommen von Celia', 'Pakete'),
+    price: ph(eur(1490, 'pro Event', 'from'), 'Paketpreis-Vorschlag; Pakete und Preise kommen von Celia', 'Pakete', 'P1'),
     media: 'anstossen-nachts',
     services: ['bar-catering', 'equipment-mieten'],
   },
@@ -64,7 +64,7 @@ const packages: CatalogPackage[] = [
       { itemId: 'tischdeko-floral', qty: 10 },
       { itemId: 'pa-anlage', qty: 1 },
     ],
-    price: ph(eur(6900, 'ab'), 'Paketpreis-Vorschlag, Pakete und Preise kommen von Celia', 'Pakete'),
+    price: ph(eur(6900, 'pro Event', 'from'), 'Paketpreis-Vorschlag; Pakete und Preise kommen von Celia', 'Pakete', 'P1'),
     media: 'weihnachtstafel-lichter',
     services: ['event-organisation', 'catering', 'bar-catering'],
   },
@@ -83,7 +83,7 @@ const packages: CatalogPackage[] = [
       { itemId: 'dj-setup', qty: 1 },
       { itemId: 'licht-paket', qty: 2 },
     ],
-    price: ph(eur(null, 'auf Anfrage'), 'Paketpreis fehlt, Pakete und Preise kommen von Celia', 'Pakete'),
+    price: ph(eur(null, 'pro Event'), 'Paketpreis fehlt, Pakete und Preise kommen von Celia', 'Pakete'),
     media: 'funken-buehne-crowd',
     services: ['event-organisation', 'event-management'],
   },

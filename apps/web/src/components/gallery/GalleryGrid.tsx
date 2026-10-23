@@ -55,7 +55,7 @@ export function GalleryGrid({ items, services, occasions }: { items: Item[]; ser
           ))}
         </div>
         <label className="gfilter__select">
-          <span className="micro">Leistung</span>
+          <span className="eyebrow">Leistung</span>
           <select
             value={filter.type === 'service' ? filter.value : ''}
             onChange={(e) => setFilter(e.target.value ? { type: 'service', value: e.target.value } : { type: 'all' })}

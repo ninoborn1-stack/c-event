@@ -1,21 +1,21 @@
-import { Btn } from '@/components/Btn';
+import { TicketLink } from '@/components/ui/Ticket';
 
 export default function NotFound() {
   return (
     <section className="nf">
-      <span className="micro">Fehler 404 · Falscher Eingang</span>
+      <span className="eyebrow">Fehler 404 · Falscher Eingang</span>
       <h1 className="nf__title">
         Hier läuft
         <br />
-        <span className="serif">heute</span> nichts.
+        <span className="accent">heute</span> nichts.
       </h1>
       <div className="nf__ctas">
-        <Btn href="/" variant="gold" label="Main Stage">
+        <TicketLink href="/"  label="Main Stage">
           Zur Hauptbühne
-        </Btn>
-        <Btn href="/arcade" variant="ghost" label="Arcade">
+        </TicketLink>
+        <TicketLink href="/arcade" tone="outline" label="Arcade">
           Oder eine Runde spielen
-        </Btn>
+        </TicketLink>
       </div>
     </section>
   );

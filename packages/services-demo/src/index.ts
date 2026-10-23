@@ -4,6 +4,7 @@ import { randomBytes } from 'node:crypto';
 import { createDemoServicesWithStore, type DemoDb, type DemoServices } from './demo';
 
 export * from './demo';
+export * from './demo-data';
 
 /** Demo-Services mit JSON-Datei als Ablage (lokaler Server, `pnpm dev`). */
 export function createDemoServices(opts: { dir: string }): DemoServices {

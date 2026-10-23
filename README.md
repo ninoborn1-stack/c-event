@@ -1,6 +1,6 @@
-# C-Event · Demo-Website
+# CN Event Agency · Demo-Website
 
-Präsentations-, Konfigurator- und Anfrageseite für die 360°-Eventagentur von Celia.
+Präsentations-, Shop- und Anfrageseite für CN Event Agency (Event Concept & Production), die Agentur von Celia.
 Die Demo läuft komplett lokal, alle Flows sind durchklickbar. Fehlende Inhalte sind als **Platzhalter** markiert.
 
 ## Starten
@@ -15,7 +15,9 @@ Danach öffnest du **http://localhost:3000**. Mehr braucht es nicht: Ohne `.env`
 | Was | Wo |
 |---|---|
 | Website | http://localhost:3000 |
-| Demo-Cockpit (Postfach, Anfragen, Kalender, Einstellungen, Platzhalter) | http://localhost:3000/demo |
+| Shop | http://localhost:3000/shop |
+| Warenkorb | http://localhost:3000/warenkorb |
+| Admin (Demo-Login `demo@cn-event.de` / `demo`) | http://localhost:3000/admin |
 | Anfrage mit Kategorie | http://localhost:3000/anfrage?kategorie=bar-catering |
 | KI-Beschreibung | http://localhost:3000/llms.txt |
 
@@ -33,13 +35,13 @@ Das Ergebnis liegt in `apps/web/out`.
 
 ## Demo durchspielen
 
-1. Startseite: Das Intro (Countdown, „C“-Blende, Doors open) läuft beim ersten Besuch pro Tab. Neu abspielen über das Cockpit.
-2. Eine Leistung öffnen, z. B. `/leistungen/bar-catering`, und Artikel oder Paket „In den Rider“ legen.
-3. Rider unten rechts öffnen, „Anfrage senden“ klicken. Die Kategorie ist vorausgewählt.
-4. Im Kalender einen freien Tag anklicken, Formular ausfüllen, abschicken.
-5. Danke-Seite mit Zusammenfassung, dann im **Cockpit → Postfach**: Bestätigung an den Kunden und Benachrichtigung an die Agentur.
+1. Startseite: Das Intro (Countdown, „CN“-Blende, Doors open) läuft beim ersten Besuch pro Tab.
+2. Eine Leistung öffnen (Kachel oder Navbar → Leistungen) und einen Artikel „Zum Event hinzufügen“.
+3. Oben rechts das Warenkorb-Ticket öffnen → „Zur Übersicht“ → Notizen ergänzen → „Unverbindliches Angebot anfragen“.
+4. Im Kalender einen freien Tag anklicken, Formular ausfüllen, abschicken → Danke-Seite.
+5. **Admin** (`/admin`, Demo-Login): Anfrage mit Warenkorb und Notizen, Status ändern, Antwort aus Vorlage senden; unter „Mails“ alle System-Mails.
 
-Im Cockpit kannst du außerdem Tage belegen und freigeben, die Slogan-Variante umschalten, die Feature-Flags setzen (Preise, Bunker-West-Code, Platzhalter-Markierung) und alles zurücksetzen.
+Unter **Admin → Demo**: Hero-Übergang (Vorhang/Blende/Ticket), Slogan, Feature-Flags (Preise, Bunker-West-Code, Platzhalter-Markierung), Intro neu abspielen, Reset und alle Platzhalter nach P1/P2.
 
 ## Befehle
 
@@ -61,10 +63,11 @@ Im Cockpit kannst du außerdem Tage belegen und freigeben, die Slogan-Variante u
 apps/web/                 Next.js 16 (App Router): UI, Routing, API-Endpunkte, SEO, PWA
 packages/core/            Domain: Typen, Zod-Schemas, Warenkorb, Anfrage-Ablauf, Verfügbarkeit, Mail-Templates, Service-Interfaces
 packages/content/         Alle Inhalte als typisierte Daten: Marke, Leistungen, Katalog, Seiten, Medien-Registry, Design-Tokens
-packages/services-demo/   Demo-Implementierungen: JSON-Ablage, Mail-Postfach, Kalender
+packages/services-demo/   Demo-Implementierungen: JSON-/Browser-Ablage, Mail-Postfach, Kalender, Feed, Rezensionen, Demo-Login
+packages/services-live/   Vorbereitete Live-Adapter: Instagram Graph API, Google Places API, Business Profile API
 docs/                     Bauplan, Entscheidungen, Platzhalter, Übergabe
 ```
 
-Mehr dazu steht in [docs/UEBERGABE.md](docs/UEBERGABE.md) (Demo → Live, App) und [docs/ENTSCHEIDUNGEN.md](docs/ENTSCHEIDUNGEN.md).
+Mehr dazu: [docs/UEBERGABE.md](docs/UEBERGABE.md) (Demo → Live, App, Live-Adapter), [docs/ENTSCHEIDUNGEN.md](docs/ENTSCHEIDUNGEN.md), [docs/EFFEKTE.md](docs/EFFEKTE.md), [docs/PLATZHALTER.md](docs/PLATZHALTER.md).
 
 Bildnachweise: [apps/web/public/stock/CREDITS.md](apps/web/public/stock/CREDITS.md)

@@ -6,7 +6,7 @@ export function LegalPage({ title, note, children }: { title: string; note?: May
   return (
     <article className="legal">
       <header className="page-head page-head--ink page-head--small">
-        <span className="micro">Rechtliches</span>
+        <span className="eyebrow">Rechtliches</span>
         <h1 className="page-head__title">{title}</h1>
         {note && <PhText v={note} className="legal__note" />}
       </header>

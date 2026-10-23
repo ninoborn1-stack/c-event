@@ -3,7 +3,7 @@ import { val } from '@c-event/core';
 import { brand, getMedia, type MediaId } from '@c-event/content';
 import { SITE_URL } from './env';
 
-export function pageMeta(opts: { title: string; description: string; path: string; image?: MediaId }): Metadata {
+export function pageMeta(opts: { title: string; description: string; path: string; image?: MediaId | string }): Metadata {
   const img = getMedia(opts.image ?? 'konfetti-buehne-crowd');
   return {
     title: opts.title,

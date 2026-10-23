@@ -8,11 +8,30 @@ export interface MediaAsset {
   kind: 'image' | 'video';
   poster?: string;
   credit: string;
+  /** Gewünschtes Motiv – damit Celias Material 1:1 zugeordnet werden kann */
+  motif: string;
   /** Stockmaterial = Platzhalter, bis Celias echte Fotos und Videos da sind. */
   stock: Placeholder<true> | false;
 }
 
 const STOCK_NOTE = 'Stockfoto, gegen echtes Event-Material von Celia tauschen';
+
+/** Wunschmotive für die wichtigsten Positionen (Rest: aus dem Alt-Text abgeleitet) */
+const MOTIFS: Record<string, string> = {
+  'konfetti-buehne-crowd': 'HERO: Clip 10–30 s, quer + hochkant – Höhepunkt eines Abends (Konfetti, volle Tanzfläche, Bühne)',
+  'whisky-pour-bar': 'Bar-Catering Hero: Bar in Aktion, warmes Licht, Hände beim Mixen',
+  'service-kellnerin': 'Personal Hero: Service-Crew im Einsatz auf vollem Event',
+  'buffet-gaeste': 'Catering Hero: Gäste am Buffet / Flying Dinner, warmes Licht',
+  'buehne-traversen': 'Event-Management Hero: Bühne/Technik beim Aufbau oder Show-Moment',
+  'konfetti-blau-crowd': 'Event-Organisation Hero: Gesamtbild eines eurer Events',
+  'hochzeit-tafel': 'Dekoration Hero: dekorierte Tafel oder Raum im Detail',
+  'lichtshow-buehne': 'Equipment Hero: euer Equipment im Einsatz (Licht, Sound, Bar)',
+  'bunker-beton': 'Bunker West: Außen- oder Innenansicht der Location',
+  'planerin-notizbuch': 'Team: Porträt Celia',
+  'videograf': 'Team: Porträt Josh',
+  'barcrew-team': 'Team: Porträt Bar & Crew-Leitung',
+  'regie-silhouette': 'Team: Porträt Produktion & Technik',
+};
 
 const img = (file: string, alt: string, width: number, height: number, unsplashId: string): MediaAsset => ({
   src: `/stock/${file}.jpg`,
@@ -21,7 +40,8 @@ const img = (file: string, alt: string, width: number, height: number, unsplashI
   height,
   kind: 'image',
   credit: `Unsplash, Foto ${unsplashId} (Unsplash-Lizenz)`,
-  stock: ph(true as const, STOCK_NOTE, 'Medien'),
+  motif: MOTIFS[file] ?? `Eigenes Foto: ${alt}`,
+  stock: ph(true as const, STOCK_NOTE, 'Medien', 'P1'),
 });
 
 /** Zentrale Medien-Registry. Alle Bilder und Videos laufen hierüber, Austausch 1:1 per ID. */
@@ -116,6 +136,7 @@ export const media = {
     height: 720,
     kind: 'video',
     credit: 'Aus Unsplash-Foto 1496337589254 erzeugter Demo-Loop',
+    motif: 'Video: DJ / Tanzfläche, 10–30 s, hochkant für Social',
     stock: ph(true as const, 'Demo-Video, gegen echte Event-Videos tauschen', 'Medien'),
   },
   'video-funken-loop': {
@@ -126,6 +147,7 @@ export const media = {
     height: 720,
     kind: 'video',
     credit: 'Aus Unsplash-Foto 1533174072545 erzeugter Demo-Loop',
+    motif: 'Video: Show-Moment (Funken, Bühne), 10–30 s, quer',
     stock: ph(true as const, 'Demo-Video, gegen echte Event-Videos tauschen', 'Medien'),
   },
 } satisfies Record<string, MediaAsset>;

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { inquiryHref, socialMedia } from '@c-event/content';
-import { Btn } from '@/components/Btn';
+import { TicketLink } from '@/components/ui/Ticket';
 import { JsonLd } from '@/components/JsonLd';
 import { Media } from '@/components/Media';
 import { Ph, PhText } from '@/components/Ph';
@@ -31,20 +31,19 @@ export default function SocialPage() {
           </div>
         </div>
         <div className="social-hero__body">
-          <span className="micro">
-            <i className="live-dot" /> {socialMedia.hero.kicker}
+          <span className="eyebrow"> {socialMedia.hero.kicker}
           </span>
           <Split as="h1" className="page-head__title" text={socialMedia.hero.h1.replace('Events machen', '*Events machen*')} />
           <PhText v={socialMedia.hero.lead} className="page-head__lead" />
-          <Btn href={inquiryHref('social-media')} variant="signal" label="Booking">
+          <TicketLink href={inquiryHref('social-media')}  label="Booking">
             {socialMedia.cta}
-          </Btn>
+          </TicketLink>
         </div>
       </header>
       <section className="sec sec--cream">
         <header className="sec__head">
-          <span className="micro">Bausteine</span>
-          <Split as="h2" className="display-l" text="Von der Strategie bis zum *fertigen Post*." />
+          <span className="eyebrow">Bausteine</span>
+          <Split as="h2" className="h-l" text="Von der Strategie bis zum *fertigen Post*." />
         </header>
         <Ph v={socialMedia.blocks} as="div" className="points points--5">
           {(blocks) =>
@@ -61,7 +60,7 @@ export default function SocialPage() {
       </section>
       <section className="sec sec--night">
         <header className="sec__head">
-          <span className="micro">Ablauf</span>
+          <span className="eyebrow">Ablauf</span>
         </header>
         <ol className="steps steps--4">
           {socialMedia.process.map((st, i) => (
@@ -75,7 +74,7 @@ export default function SocialPage() {
       </section>
       <section className="sec sec--ink">
         <header className="sec__head">
-          <span className="micro">Referenzen</span>
+          <span className="eyebrow">Referenzen</span>
         </header>
         <Ph v={socialMedia.references} as="div" className="refs">
           {(refs) =>
@@ -93,7 +92,7 @@ export default function SocialPage() {
       </section>
       <section className="svc-cta">
         <Link href={inquiryHref('social-media')} className="svc-cta__big" data-label="Booking">
-          <span className="micro">Kategorie vorausgewählt: Social Media</span>
+          <span className="eyebrow">Kategorie vorausgewählt: Social Media</span>
           <strong>{socialMedia.cta} →</strong>
         </Link>
       </section>

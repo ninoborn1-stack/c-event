@@ -1,23 +1,16 @@
-import { notFound } from 'next/navigation';
-import { val } from '@c-event/core';
-import { brand } from '@c-event/content';
-import { Cockpit } from '@/components/demo/Cockpit';
-import { IS_DEMO } from '@/lib/env';
+import Link from 'next/link';
+import { asset } from '@/lib/env';
 
-export const metadata = { title: 'Demo-Cockpit', robots: { index: false, follow: false } };
+/** Alte Adresse aus der ersten Demo: Das Cockpit ist jetzt Teil von /admin (Tab „Demo“). */
+export const metadata = { title: 'Weiterleitung', robots: { index: false } };
 
-export default function DemoPage() {
-  if (!IS_DEMO) notFound();
+export default function OldCockpit() {
   return (
-    <section className="demo-page">
-      <header className="page-head page-head--ink page-head--small">
-        <span className="micro">
-          <i className="live-dot" /> Nur im Demo-Modus · DATA_MODE=demo
-        </span>
-        <h1 className="page-head__title">Demo-Cockpit</h1>
-        <p className="page-head__lead">Postfach, Anfragen, Kalender, Einstellungen und alle offenen Platzhalter an einem Ort.</p>
-      </header>
-      <Cockpit slogans={val(brand.slogans).map((s) => s.lines.join(' '))} />
+    <section className="page-head page-head--small">
+      <meta httpEquiv="refresh" content={`0;url=${asset('/admin')}`} />
+      <p className="page-head__lead">
+        Das Demo-Cockpit ist jetzt im <Link href="/admin">Admin-Bereich</Link>.
+      </p>
     </section>
   );
 }

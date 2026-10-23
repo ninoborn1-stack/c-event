@@ -485,7 +485,7 @@ const bouncer: GameFactory = (sfx: Sfx) => {
       // Club-Fassade
       g.rect(56, 30, 88, H - 50, PAL.ink);
       g.rect(60, 34, 80, 6, PAL.ash);
-      g.text('C-CLUB', 100, 46, Math.floor(g.t * 2) % 2 ? PAL.signal : PAL.goldHot, 8, 'center');
+      g.text('CN CLUB', 100, 46, Math.floor(g.t * 2) % 2 ? PAL.signal : PAL.goldHot, 8, 'center');
       g.rect(84, 70, 32, H - 90, guest?.state === 'in' ? PAL.goldHot : PAL.smoke);
       // Absperrkordel
       g.rect(150, H - 40, 2, 20, PAL.gold);

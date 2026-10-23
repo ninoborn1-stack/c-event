@@ -1,6 +1,7 @@
 import { createDemoServicesWithStore, type DemoDb, type DemoServices } from './demo';
 
 export * from './demo';
+export * from './demo-data';
 
 const KEY = 'cev-demo-db';
 

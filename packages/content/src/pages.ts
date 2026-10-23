@@ -5,59 +5,65 @@ const REF_NOTE = 'Referenz-Platzhalter. Echte Events mit Freigabe der Kunden von
 
 export const home = {
   seo: {
-    title: 'Eventagentur Berlin für Firmenfeiern, Releases & alles dazwischen',
+    title: 'Event Concept & Production in Berlin – Firmenfeiern, Releases, Private Events',
     description:
-      'C-Event ist die 360°-Eventagentur aus Berlin: Bar-Catering, Catering, Personal, Deko, Equipment, Event-Organisation und Social Media. Vom Firmen-Weihnachtsfest bis zum Konzert im Heißluftballon.',
+      'CN Event Agency – Event Concept & Production aus Berlin. Bar-Catering, Catering, Personal, Deko, Equipment, Event-Organisation und Social Media. Event selbst zusammenstellen und unverbindlich anfragen.',
   },
   hero: {
     media: 'konfetti-buehne-crowd' as MediaId,
-    eyebrow: ['360° Event Agency', 'Berlin', 'Seit Tag eins live'],
-    lead: 'Weihnachtsfeier, Release-Night, Musikvideo oder Konzert im Heißluftballon. Du hast die Idee, wir machen den Abend daraus.',
-    cta: 'Event anfragen',
-    ctaSecondary: 'Rider bauen',
+    eyebrow: ['Event Concept & Production', 'Berlin'],
+    lead: 'Firmenfeier, Release-Night, Hochzeit oder Produktion: Stell dein Event selbst zusammen, wir machen den Abend daraus.',
+    cta: 'Event zusammenstellen',
+    ctaSecondary: 'Leistungen ansehen',
     bar: ['Jetzt buchbar für Dezember', 'Antwort in 48 h', 'Berlin & Brandenburg'],
+    /** Foto-Leiste im Hero: die Bilder sind die Leistungen */
+    railTitle: 'Was wir machen',
   },
   intro: {
     countdown: ['3', '2', '1'],
     doors: 'Doors open',
+    behind: '360°',
   },
-  manifesto: {
-    kicker: 'Positionierung',
-    big: '360° – die Umsetzer für alle Ideen.',
-    text: 'Wir sind keine Agentur, die dir zehn Moodboards schickt und dann verschwindet. Wir bauen auf, mixen, kochen, steuern, filmen. Eine Agentur, ein Ansprechpartner, alle Gewerke.',
-    ring: '360° · BAR · CREW · FOOD · REGIE · IDEE · DEKO · EQUIPMENT · CONTENT · ',
+  services: {
+    kicker: 'Leistungen',
+    title: 'Alles für deinen Abend.',
+    text: 'Jede Leistung hat ihre eigene Seite – und alles davon kannst du direkt in dein Event legen.',
+    more: 'Ansehen',
+    toShop: 'Im Shop',
   },
-  ticker: ['Bar-Catering', 'Personal', 'Catering', 'Event-Management', 'Event-Organisation', 'Dekoration', 'Equipment', 'Social Media'],
-  lineup: { kicker: 'Das Line-up', title: 'Alles, was ein Abend braucht.', more: 'Ansehen' },
+  shopEntry: {
+    kicker: 'Shop',
+    title: 'Stell dein Event *zusammen.*',
+    text: 'Pakete als Startpunkt, Bar, Crew, Food, Licht und Möbel einzeln dazu. Am Ende fragst du unverbindlich an – ohne Bezahlung, ohne Login.',
+    cta: 'Zum Shop',
+  },
   highlights: {
-    kicker: 'Running Order',
-    title: 'Abende, die schon gelaufen sind.',
+    kicker: 'Galerie',
+    title: 'Abende, die schon *gelaufen* sind.',
     items: ph(
       [
-        { time: '19:00', title: 'Winter Gala', meta: 'Tech-Unternehmen · 280 Gäste · Dezember', media: 'gala-tafel-kerzen' as MediaId, tag: 'Firma' },
-        { time: '21:30', title: 'Sneaker Release Night', meta: 'Brand-Event · 400 Gäste · Kreuzberg', media: 'sneaker-wand' as MediaId, tag: 'Brand' },
-        { time: '16:00', title: 'Sommerfest am Wasser', meta: 'Mittelstand · 150 Gäste · Wannsee', media: 'party-lichterketten' as MediaId, tag: 'Firma' },
-        { time: '06:00', title: 'Musikvideo-Dreh', meta: 'Artist-Produktion · Set, Crew & Catering', media: 'filmset-kamera' as MediaId, tag: 'Produktion' },
-        { time: '20:00', title: 'Hochzeit im Bunker', meta: 'Privat · 120 Gäste · Bunker West', media: 'hochzeit-loft' as MediaId, tag: 'Privat' },
-        { time: '23:59', title: 'Konzert über den Wolken', meta: 'Die Idee, die alle für unmöglich hielten', media: 'ballons-nacht' as MediaId, tag: 'Idee' },
+        { title: 'Winter Gala', meta: 'Firmenfeier · 280 Gäste', media: 'gala-tafel-kerzen' as MediaId },
+        { title: 'Sneaker Release Night', meta: 'Brand-Event · 400 Gäste', media: 'sneaker-wand' as MediaId },
+        { title: 'Hochzeit im Loft', meta: 'Privat · 120 Gäste', media: 'hochzeit-loft' as MediaId },
+        { title: 'Musikvideo-Dreh', meta: 'Produktion · Set & Catering', media: 'filmset-kamera' as MediaId },
       ],
       REF_NOTE,
       'Referenzen',
     ),
+    cta: 'Zur Galerie',
   },
-  audiences: {
-    kicker: 'Für wen',
-    items: [
-      { id: 'firmen', title: 'Für Firmen', text: 'Weihnachtsfeier, Sommerfest, Jubiläum, Konferenz. Ein Ansprechpartner, eine Rechnung, null Stress für HR.', media: 'firmenfeier-festsaal' as MediaId, href: '/anfrage?kategorie=event-organisation&anlass=weihnachtsfeier', cta: 'Firmenevent anfragen' },
-      { id: 'privat', title: 'Für Privat', text: 'Hochzeit, runder Geburtstag, die Party, die du schon ewig schmeißen willst.', media: 'weinglaeser-anstossen' as MediaId, href: '/anfrage?kategorie=event-organisation&anlass=private-feier', cta: 'Feier anfragen' },
-      { id: 'brands', title: 'Für Brands & Produktionen', text: 'Release-Events, Pop-ups, Musikvideos, Film. Wir können Set und Nachtleben.', media: 'artist-rauch-buehne' as MediaId, href: '/anfrage?kategorie=event-management&anlass=release-event', cta: 'Projekt anfragen' },
-    ],
+  voices: {
+    kicker: 'Stimmen',
+    title: 'Was Gäste *sagen.*',
+    feedTitle: 'Neu auf Instagram',
+    follow: 'Folge uns auf Instagram',
+    allReviews: 'Alle Bewertungen auf Google',
+    reviewsOf: 'Bewertungen',
   },
-  configurator: {
-    kicker: 'Konfigurator',
-    title: 'Bau dir deinen Rider.',
-    text: 'Bands haben einen Rider, auf dem steht, was sie brauchen. Du jetzt auch. Bar, Crew, Food, Licht, Möbel: zusammenklicken, abschicken, Angebot bekommen. Ohne Bezahlung, ohne Login.',
-    cta: 'Zum Konfigurator',
+  finale: {
+    lines: ['Lass uns', 'deinen Abend', 'machen.'],
+    cta: 'Event zusammenstellen',
+    secondary: 'Oder direkt anfragen',
   },
   bunker: {
     kicker: 'Exklusive Location',
@@ -66,28 +72,6 @@ export const home = {
     cta: 'Location ansehen',
     codeLabel: 'Willkommens-Code',
     media: 'bunker-beton' as MediaId,
-  },
-  voices: {
-    kicker: 'Stimmen',
-    items: ph(
-      [
-        { quote: 'Wir haben Celia ein Datum und ein Budget gegeben. Zurück kam die beste Weihnachtsfeier, die wir je hatten.', who: 'Name, Position', org: 'Firma (Platzhalter)' },
-        { quote: 'Bar, Crew und Regie aus einer Hand. Ich war zum ersten Mal Gast auf meinem eigenen Event.', who: 'Name', org: 'Release-Event (Platzhalter)' },
-        { quote: 'Die haben unser Set in sechs Stunden gebaut und um vier Uhr morgens noch Kaffee gebracht.', who: 'Name', org: 'Musikvideo-Produktion (Platzhalter)' },
-      ],
-      'Kundenstimmen fehlen, nur mit Freigabe veröffentlichen',
-      'Referenzen',
-    ),
-    logos: ph(['Kunde 01', 'Kunde 02', 'Kunde 03', 'Kunde 04', 'Kunde 05', 'Kunde 06'], 'Kundenlogos fehlen, nur mit Freigabe', 'Referenzen'),
-  },
-  calendar: {
-    kicker: 'Freie Termine',
-    title: 'Wann geht’s los?',
-    text: 'Grün ist frei. Klick auf einen Tag und das Datum landet direkt in deiner Anfrage.',
-  },
-  finale: {
-    lines: ['Lass uns', 'deinen Abend', 'machen.'],
-    cta: 'Event anfragen',
   },
 };
 
@@ -137,37 +121,53 @@ export const socialMedia = {
 
 export const about = {
   seo: {
-    title: 'Über uns: die Umsetzer für alle Ideen',
-    description: 'Celia und das Team hinter C-Event: 360°-Eventagentur aus Berlin mit Netzwerk aus Crew, Partnerküchen, Technik und exklusiven Locations wie Bunker West.',
+    title: 'Über uns – Event Concept & Production aus Berlin',
+    description: 'Celia und das Team hinter CN Event Agency: Event Concept & Production aus Berlin, mit Netzwerk aus Crew, Partnerküchen, Technik und exklusiven Locations wie Bunker West.',
   },
-  hero: { kicker: 'Über uns', h1: 'Wir sind die, die es dann einfach machen.', media: 'weisses-buehnenlicht-crowd' as MediaId },
+  hero: { kicker: 'Über uns', h1: 'Wir sind die, die es dann *einfach machen.*', media: 'weisses-buehnenlicht-crowd' as MediaId },
   story: ph(
-    'C-Event ist aus einer einfachen Beobachtung entstanden: Die meisten Ideen für Events scheitern nicht an Kreativität, sondern an der Umsetzung. Zu viele Dienstleister, zu viele Absprachen, zu wenig Zeit. Wir sind die Abkürzung. Eine Agentur, die von der Bar bis zur Regie alles selbst kann und für den Rest ein Netzwerk hat, auf das sie sich verlässt.',
+    'CN Event Agency ist aus einer einfachen Beobachtung entstanden: Die meisten Ideen für Events scheitern nicht an Kreativität, sondern an der Umsetzung. Zu viele Dienstleister, zu viele Absprachen, zu wenig Zeit. Wir sind die Abkürzung – Event Concept & Production aus einer Hand, mit einem Netzwerk, auf das wir uns verlassen.',
     'Geschichte der Agentur von Celia',
+    'Texte',
+    'P1',
   ),
+  whatWeDo: {
+    title: 'Was wir machen',
+    items: [
+      { title: 'Firmenfeiern', text: 'Weihnachtsfeier, Sommerfest, Jubiläum, Konferenz. Ein Ansprechpartner, eine Rechnung.', media: 'weihnachtstafel-lichter' as MediaId, href: '/leistungen/event-organisation' },
+      { title: 'Private Events', text: 'Hochzeit, runder Geburtstag, die Party, die du schon ewig schmeißen willst.', media: 'hochzeit-loft' as MediaId, href: '/leistungen/event-organisation' },
+      { title: 'Brand- & Release-Events', text: 'Launches, Pop-ups, Store-Events – mit Gästeliste, Bar und Content.', media: 'sneaker-wand' as MediaId, href: '/leistungen/event-management' },
+      { title: 'Produktionen', text: 'Musikvideos und Film: Set, Crew, Catering und Ablauf am Drehtag.', media: 'filmset-kamera' as MediaId, href: '/leistungen/event-management' },
+    ],
+  },
   values: [
     { title: 'Machen statt Moodboard', text: 'Wir lieben Ideen, aber wir messen uns am Abend selbst.' },
     { title: 'Ein Ansprechpartner', text: 'Du hast eine Nummer. Die geht ran.' },
     { title: 'Keine Standard-Events', text: 'Jeder Abend bekommt eine eigene Dramaturgie.' },
   ],
+  teamTitle: 'Das Team',
   team: ph(
     [
-      { name: 'Celia', role: 'Gründerin & Inhaberin', text: 'Idee, Angebot, Regie. Bei jedem Event persönlich erreichbar.', media: 'planerin-notizbuch' as MediaId },
+      { name: 'Celia', role: 'Gründerin & Inhaberin', text: 'Idee, Angebot, Regie – bei jedem Event persönlich erreichbar.', media: 'planerin-notizbuch' as MediaId },
       { name: 'Josh', role: 'Social Media & Content', text: 'Strategie und Content für Brands und Collectives.', media: 'videograf' as MediaId },
-      { name: 'Die Crew', role: 'Netzwerk', text: 'Barkeeper:innen, Service, Technik, Deko. Eingespielt seit Jahren.', media: 'barcrew-team' as MediaId },
+      { name: 'Name folgt', role: 'Bar & Crew-Leitung', text: 'Hält am Abend Bar und Service zusammen.', media: 'barcrew-team' as MediaId },
+      { name: 'Name folgt', role: 'Produktion & Technik', text: 'Aufbau, Licht, Ton – und der Plan B.', media: 'regie-silhouette' as MediaId },
     ],
-    'Teamfotos und -texte fehlen',
+    'Team: Namen, Rollen, Fotos und je ein Satz (Instagram-Highlight „Team“)',
     'Team',
+    'P1',
   ),
+  networkTitle: 'Netzwerk & Partner',
   network: ph(
     ['Bunker West · Location', 'Partnerküchen Berlin', 'Licht- & Tontechnik', 'Floristik', 'DJs & Live-Acts', 'Foto & Video'],
     'Netzwerk und Partner mit Celia bestätigen',
     'Partner',
   ),
+  cta: 'Lass uns reden',
 };
 
 export const gallery = {
-  seo: { title: 'Galerie: Events, Bars, Bühnen', description: 'Einblicke in Events von C-Event: Firmenfeiern, Release-Events, Hochzeiten, Bars, Catering und Produktionen in Berlin.' },
+  seo: { title: 'Galerie: Events, Bars, Bühnen', description: 'Einblicke in Events von CN Event Agency: Firmenfeiern, Release-Events, Hochzeiten, Bars, Catering und Produktionen in Berlin.' },
   kicker: 'Galerie',
   h1: 'Beweisfotos.',
   lead: 'Ein Querschnitt durch Bars, Bühnen und Abende. Filter nach Leistung oder Anlass.',
@@ -256,19 +256,33 @@ export const inquiryPage = {
   },
 };
 
-export const configuratorPage = {
-  seo: { title: 'Event-Konfigurator: Rider zusammenstellen', description: 'Stell dein Event-Paket zusammen: mobile Bar, Crew, Catering, Deko, Licht, Sound und Möbel. Unverbindlich anfragen, ohne Bezahlung.' },
-  kicker: 'Konfigurator',
-  h1: 'Dein Rider.',
-  lead: 'Klick zusammen, was dein Event braucht. Nichts davon kostet jetzt etwas: Am Ende schickst du eine Anfrage, Celia prüft Verfügbarkeit und macht dir ein Angebot.',
-  packagesTitle: 'Oder nimm ein Paket als Startpunkt.',
+export const shopPage = {
+  seo: {
+    title: 'Shop: Event zusammenstellen',
+    description: 'Stell dein Event zusammen: mobile Bar, Crew, Catering, Deko, Licht, Sound, Möbel und fertige Pakete. Unverbindliches Angebot anfragen, ohne Bezahlung.',
+  },
+  kicker: 'Event zusammenstellen',
+  h1: 'Alles für *deinen Abend.*',
+  lead: 'Leg in dein Event, was du brauchst. Nichts davon kostet jetzt etwas: Am Ende fragst du ein unverbindliches Angebot an, Celia prüft Verfügbarkeit und meldet sich persönlich.',
+  packagesTitle: 'Pakete als Startpunkt',
+  itemsTitle: 'Einzeln dazu',
+  all: 'Alles',
+  detail: { back: 'Zurück zum Shop', includes: 'Enthalten', fits: 'Passt zu', stock: 'Verfügbar', minQty: 'Mindestmenge', deposit: 'Kaution' },
+  note: 'Unverbindlich. Kein Checkout, keine Zahlung.',
+};
+
+export const cartPage = {
+  seo: { title: 'Dein Event', description: 'Deine Auswahl im Überblick – Mengen anpassen, Notizen ergänzen und unverbindlich anfragen.' },
+  kicker: 'Warenkorb',
+  lead: 'Mengen anpassen, Notizen ergänzen, dann unverbindlich anfragen. Celia prüft Verfügbarkeit und schickt dir ein persönliches Angebot.',
+  empty: 'Noch nichts drin. Stöbere im Shop oder auf den Leistungsseiten.',
 };
 
 export const legal = {
   impressum: {
     title: 'Impressum',
     fields: {
-      company: ph('C-Event Agency [Rechtsform]', 'Firmenname und Rechtsform', 'Rechtliches'),
+      company: ph('CN Event Agency [Rechtsform]', 'Impressum: Firmenname und Rechtsform', 'Rechtliches', 'P2'),
       street: ph('Musterstraße 1', 'Anschrift', 'Rechtliches'),
       city: ph('10115 Berlin', 'PLZ und Ort', 'Rechtliches'),
       representative: ph('Celia [Nachname]', 'Vertretungsberechtigte Person', 'Rechtliches'),
@@ -282,9 +296,9 @@ export const legal = {
     note: ph('Vorlage, vor Livegang rechtlich prüfen lassen', 'Datenschutzerklärung vor Livegang prüfen (Hosting, Mail-Anbieter, Kalender)', 'Rechtliches'),
     sections: [
       { h: '1. Verantwortliche Stelle', p: 'Verantwortlich für die Datenverarbeitung auf dieser Website ist die im Impressum genannte Stelle.' },
-      { h: '2. Anfrage-Formular', p: 'Wenn du uns über das Formular eine Anfrage schickst, verarbeiten wir deine Angaben (Name, Kontaktdaten, Eventdaten, Nachricht, Rider) ausschließlich, um deine Anfrage zu beantworten und ein Angebot zu erstellen (Art. 6 Abs. 1 lit. b DSGVO). Du erhältst eine automatische Bestätigung per E-Mail.' },
+      { h: '2. Anfrage-Formular', p: 'Wenn du uns über das Formular eine Anfrage schickst, verarbeiten wir deine Angaben (Name, Kontaktdaten, Eventdaten, Nachricht, Warenkorb-Inhalt) ausschließlich, um deine Anfrage zu beantworten und ein Angebot zu erstellen (Art. 6 Abs. 1 lit. b DSGVO). Du erhältst eine automatische Bestätigung per E-Mail.' },
       { h: '3. Speicherdauer', p: 'Anfragen speichern wir, solange es für die Bearbeitung nötig ist, und löschen sie spätestens nach Ablauf gesetzlicher Aufbewahrungsfristen.' },
-      { h: '4. Konfigurator', p: 'Dein Rider wird nur lokal in deinem Browser gespeichert (localStorage), bis du ihn mit einer Anfrage abschickst. Es werden keine Cookies für Tracking gesetzt.' },
+      { h: '4. Shop & Warenkorb', p: 'Deine Auswahl wird nur lokal in deinem Browser gespeichert (localStorage), bis du ihn mit einer Anfrage abschickst. Es werden keine Cookies für Tracking gesetzt.' },
       { h: '5. Hosting & Schriften', p: 'Schriften werden lokal ausgeliefert, es findet kein Aufruf von Google-Servern statt. Angaben zum Hosting-Anbieter folgen.' },
       { h: '6. Deine Rechte', p: 'Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit und Widerspruch sowie ein Beschwerderecht bei einer Aufsichtsbehörde.' },
     ],
@@ -293,8 +307,8 @@ export const legal = {
     title: 'AGB & Mietbedingungen',
     note: ph('Vorlage, Mietbedingungen und AGB kommen von Celia', 'Mietbedingungen und AGB fehlen', 'Rechtliches'),
     sections: [
-      { h: '1. Geltungsbereich', p: 'Diese Bedingungen gelten für alle Leistungen und Mietverträge von C-Event. Die Website enthält kein verbindliches Angebot; Verträge kommen erst mit unserem schriftlichen Angebot und deiner Bestätigung zustande.' },
-      { h: '2. Anfrage & Angebot', p: 'Preise im Konfigurator sind unverbindliche Richtwerte. Maßgeblich ist ausschließlich das individuelle Angebot.' },
+      { h: '1. Geltungsbereich', p: 'Diese Bedingungen gelten für alle Leistungen und Mietverträge von CN Event Agency. Die Website enthält kein verbindliches Angebot; Verträge kommen erst mit unserem schriftlichen Angebot und deiner Bestätigung zustande.' },
+      { h: '2. Anfrage & Angebot', p: 'Preise im Shop sind unverbindliche Richtwerte. Maßgeblich ist ausschließlich das individuelle Angebot.' },
       { h: '3. Kaution', p: 'Für einzelne Mietartikel wird eine Kaution fällig, die nach ordnungsgemäßer Rückgabe erstattet wird.' },
       { h: '4. Lieferung & Abholung', p: 'Lieferung, Aufbau und Abholung erfolgen nach Absprache. Anfahrtskosten werden im Angebot ausgewiesen.' },
       { h: '5. Stornierung', p: '[Stornostaffel von Celia einsetzen]' },
@@ -306,16 +320,110 @@ export const legal = {
 export const ui = {
   nav: {
     services: 'Leistungen',
-    configurator: 'Konfigurator',
     gallery: 'Galerie',
     about: 'Über uns',
     social: 'Social Media',
-    inquiry: 'Anfrage',
     menu: 'Menü',
     close: 'Schließen',
   },
-  rider: { label: 'Rider', empty: 'Dein Rider ist noch leer.', send: 'Anfrage senden', add: 'In den Rider', added: 'Im Rider', onRequest: 'auf Anfrage', deposit: 'Kaution', estimate: 'Richtwert', plusOnRequest: 'zzgl. Positionen auf Anfrage', clear: 'Leeren' },
-  service: { whatWeDo: 'Was wir machen', occasions: 'Für welche Anlässe', process: 'So läuft’s', gallery: 'Eindrücke', fit: 'Passt dazu', fitTitle: 'Direkt in den *Rider*.', fitText: 'Leg dir Artikel und Pakete zusammen und schick sie mit deiner Anfrage.', fitLink: 'Alle Artikel im Konfigurator →', faq: 'Fragen & Antworten', faqTitle: 'Gute Frage.', preselected: 'Kategorie vorausgewählt:', nextAct: 'Next act', all: 'Alle Leistungen' },
-  footer: { contact: 'Kontakt', legal: 'Rechtliches', bigLine: 'Wir sehen uns auf der Tanzfläche.' },
+  cart: {
+    empty: 'Noch nichts drin.',
+    send: 'Unverbindliches Angebot anfragen',
+    add: 'Zum Event hinzufügen',
+    added: 'Im Event',
+    onRequest: 'auf Anfrage',
+    from: 'ab',
+    deposit: 'Kaution',
+    estimate: 'Richtwert',
+    plusOnRequest: 'zzgl. Positionen auf Anfrage',
+    clear: 'Alles entfernen',
+    remove: 'Entfernen',
+    note: 'Notiz',
+    notePlaceholder: 'z. B. „Bar bitte in Weiß“',
+    open: 'Ansehen',
+    toPage: 'Zur Übersicht',
+    positions: 'Positionen',
+    admit: 'Admit one',
+    summary: 'Zusammenfassung',
+    noPayment: 'Unverbindlich. Kein Checkout, keine Zahlung.',
+  },
+  service: {
+    whatWeDo: 'Was wir machen',
+    occasions: 'Für welche Anlässe',
+    process: 'So läuft’s',
+    gallery: 'Eindrücke',
+    fit: 'Zum Event hinzufügen',
+    fitTitle: 'Direkt in *dein Event.*',
+    fitText: 'Leg dir Artikel und Pakete zusammen und frag alles in einem Rutsch an.',
+    fitLink: 'Alle Artikel im Shop',
+    faq: 'Fragen & Antworten',
+    faqTitle: 'Gute Frage.',
+    preselected: 'Kategorie vorausgewählt:',
+    nextAct: 'Nächste Leistung',
+    all: 'Alle Leistungen',
+    teamTitle: 'Team',
+  },
+  footer: { contact: 'Kontakt', legal: 'Rechtliches', more: 'Mehr' },
   placeholder: 'Platzhalter',
+};
+
+export const adminUi = {
+  title: 'Admin',
+  login: {
+    title: 'Anmelden',
+    email: 'E-Mail',
+    password: 'Passwort',
+    submit: 'Anmelden',
+    error: 'Zugangsdaten stimmen nicht.',
+    demoHint: 'Demo-Zugang',
+  },
+  logout: 'Abmelden',
+  tabs: { anfragen: 'Anfragen', mails: 'Mails', posts: 'Posts', rezensionen: 'Rezensionen', kalender: 'Kalender', demo: 'Demo' },
+  status: {
+    neu: 'Neu',
+    'in-bearbeitung': 'In Bearbeitung',
+    'angebot-raus': 'Angebot raus',
+    gebucht: 'Gebucht',
+    abgesagt: 'Abgesagt',
+  },
+  inquiries: {
+    empty: 'Noch keine Anfragen.',
+    all: 'Alle',
+    detail: 'Details',
+    contact: 'Kontakt',
+    event: 'Event',
+    cart: 'Warenkorb',
+    message: 'Nachricht',
+    notes: 'Interne Notizen',
+    notesHint: 'Nur hier sichtbar, nicht für den Kunden.',
+    saveNotes: 'Notizen speichern',
+    reply: 'Antwort aus Vorlage',
+    subject: 'Betreff',
+    body: 'Text',
+    send: 'Antwort senden',
+    sent: 'Antwort im Postfach – Status auf „Angebot raus“ gesetzt.',
+    back: '← Alle Anfragen',
+  },
+  mails: { empty: 'Noch keine Mails.', to: 'An', from: 'Von', replyTo: 'Antwort an', transport: 'Versand', demoTransport: 'Demo-Postfach (nicht verschickt)' },
+  posts: { planned: 'Beiträge planen: vorbereitet, Umsetzung offen (Instagram Content Publishing API).', open: 'Auf Instagram öffnen' },
+  reviews: { source: 'Quelle' },
+  calendar: { hint: 'Klick auf einen Tag belegt ihn bzw. gibt ihn frei. Öffentlich sichtbar ist nur Belegt/Frei.' },
+  demo: {
+    hint: 'Nur im Demo-Modus. Im Live-Modus ist dieser Tab aus.',
+    transition: 'Hero-Übergang „Doors open → 360°“',
+    transitions: { vorhang: 'Vorhang – fünf Bahnen fallen nach oben weg', blende: 'Blende – das Bild schließt sich wie eine Kamerablende', ticket: 'Ticket – das Bild reißt an der Perforation auf' },
+    slogan: 'Slogan-Variante (Hero)',
+    flags: 'Feature-Flags',
+    flagLabels: {
+      showPrices: ['Preise anzeigen', 'Aus = überall „auf Anfrage“'],
+      bunkerWestCode: ['Bunker-West-Willkommens-Code', 'ca. 10 %, noch mit Albi abstimmen'],
+      showPlaceholders: ['Platzhalter markieren', 'gestrichelter Rahmen + Badge'],
+    },
+    placeholders: 'Platzhalter nach Priorität',
+    placeholdersHint: 'P1 = vor dem Bau nötig · P2 = nach und nach (für den Livegang nur Domain + Impressum zwingend).',
+    replayIntro: 'Intro erneut abspielen',
+    reset: 'Demo-Daten zurücksetzen',
+    resetConfirm: 'Alle Demo-Daten (Anfragen, Mails, Kalender, Einstellungen) zurücksetzen?',
+    flow: 'Hauptflow testen: Startseite → Leistung → „Zum Event hinzufügen“ → Warenkorb → Anfrage → Danke → hier unter „Anfragen“.',
+  },
 };

@@ -1,4 +1,4 @@
-/* C-Event Service Worker: Offline-Grundlage für PWA. Seiten network-first, Assets cache-first. */
+/* CN Event Agency Service Worker: Offline-Grundlage für PWA. Seiten network-first, Assets cache-first. */
 const CACHE = 'cev-v2';
 // Basis aus dem Scope ableiten, damit es auch unter einem Unterpfad (GitHub Pages) läuft.
 const BASE = new URL(self.registration.scope).pathname.replace(/\/$/, '');

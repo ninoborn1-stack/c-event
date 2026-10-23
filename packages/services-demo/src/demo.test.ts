@@ -7,12 +7,12 @@ import { describe, expect, it } from 'vitest';
 import { createDemoServices, seedBookedDays } from './index';
 
 const ctx = {
-  brandName: 'C-Event Agency',
-  agencyEmail: 'hallo@c-event.de',
+  brandName: 'CN Event Agency',
+  agencyEmail: 'hallo@cn-event.de',
   agencyPhone: '+49',
-  fromAddress: 'noreply@c-event.de',
+  fromAddress: 'noreply@cn-event.de',
   siteUrl: 'http://localhost:3000',
-  recipient: 'anfragen@c-event.de',
+  recipient: 'anfragen@cn-event.de',
   labels: labelFns,
 };
 

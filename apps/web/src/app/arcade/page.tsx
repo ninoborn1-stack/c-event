@@ -1,6 +1,6 @@
 import { arcade, inquiryHref } from '@c-event/content';
 import { Cabinet } from '@/components/arcade/Cabinet';
-import { Btn } from '@/components/Btn';
+import { TicketLink } from '@/components/ui/Ticket';
 import { Split } from '@/components/Split';
 import { pageMeta } from '@/lib/seo';
 
@@ -23,9 +23,9 @@ export default function ArcadePage() {
       </section>
       <section className="arcade-outro">
         <h2 className="display-l">{arcade.outro.title}</h2>
-        <Btn href={inquiryHref()} variant="signal" label="Booking">
+        <TicketLink href={inquiryHref()}  label="Booking">
           {arcade.outro.cta}
-        </Btn>
+        </TicketLink>
       </section>
     </>
   );

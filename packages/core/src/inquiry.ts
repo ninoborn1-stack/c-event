@@ -60,8 +60,12 @@ export const inquiryInputSchema = z.object({
 export type InquiryFormValues = z.input<typeof inquiryInputSchema>;
 export type InquiryInput = z.output<typeof inquiryInputSchema>;
 
+export const INQUIRY_STATUSES = ['neu', 'in-bearbeitung', 'angebot-raus', 'gebucht', 'abgesagt'] as const;
+export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
+
 export interface InquiryCartSnapshot {
   name: string;
+  note?: string;
   qty: number;
   unit: string;
   unitCents: number | null;
@@ -72,7 +76,10 @@ export interface InquiryCartSnapshot {
 export interface Inquiry extends Omit<InquiryInput, 'privacy' | 'website' | 'startedAt' | 'cart'> {
   id: string;
   createdAt: string;
-  status: 'neu' | 'in-bearbeitung' | 'angebot-gesendet';
+  status: InquiryStatus;
+  /** Interne Notizen der Agentur (nur im Admin sichtbar) */
+  adminNotes?: string;
+  updatedAt?: string;
   cart: InquiryCartSnapshot[];
   cartSubtotalCents: number;
   cartHasOnRequest: boolean;

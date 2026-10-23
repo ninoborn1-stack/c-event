@@ -1,34 +1,17 @@
-import { catalog, configuratorPage } from '@c-event/content';
-import { PackageCard } from '@/components/catalog/ItemCard';
-import { Configurator } from '@/components/catalog/Configurator';
-import { Split } from '@/components/Split';
-import { pageMeta } from '@/lib/seo';
+import Link from 'next/link';
+import { shop } from '@c-event/content';
+import { asset } from '@/lib/env';
 
-export const metadata = pageMeta({ ...configuratorPage.seo, path: '/konfigurator', image: 'bar-lichter' });
+/** Alte Adresse aus der ersten Demo: leitet auf den Shop weiter. */
+export const metadata = { title: 'Weiterleitung', robots: { index: false } };
 
-export default function ConfiguratorPage() {
+export default function OldConfigurator() {
   return (
-    <>
-      <header className="page-head page-head--ink">
-        <span className="micro">
-          <i className="live-dot" /> {configuratorPage.kicker}
-        </span>
-        <Split as="h1" className="page-head__title" text={configuratorPage.h1} />
-        <p className="page-head__lead" data-reveal="up">
-          {configuratorPage.lead}
-        </p>
-      </header>
-      <section className="sec sec--night sec--tight">
-        <Split as="h2" className="display-m" text={configuratorPage.packagesTitle} />
-        <div className="pkgs">
-          {catalog.packages.map((p, i) => (
-            <PackageCard key={p.id} pkg={p} index={i} />
-          ))}
-        </div>
-      </section>
-      <section className="sec sec--cream sec--tight">
-        <Configurator />
-      </section>
-    </>
+    <section className="page-head page-head--small">
+      <meta httpEquiv="refresh" content={`0;url=${asset(shop.path)}`} />
+      <p className="page-head__lead">
+        Der Konfigurator heißt jetzt <Link href={shop.path}>Shop</Link>.
+      </p>
+    </section>
   );
 }

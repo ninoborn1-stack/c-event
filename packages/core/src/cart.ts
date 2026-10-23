@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { Catalog, CatalogItem, CatalogPackage } from './domain';
+import { priceMode, type Catalog, type CatalogItem, type CatalogPackage, type PriceMode } from './domain';
 import { val } from './placeholder';
 
 /** Der Anfrage-Warenkorb („Rider“): nur Referenzen und Mengen, Preise kommen immer aus dem Katalog. */
@@ -7,6 +7,8 @@ export const cartLineSchema = z.object({
   kind: z.enum(['item', 'package']),
   id: z.string().min(1).max(80),
   qty: z.number().int().min(1).max(999),
+  /** Notiz pro Position, z. B. „Bar bitte in Weiß“ */
+  note: z.string().trim().max(300).optional(),
 });
 export const cartSchema = z.array(cartLineSchema).max(60);
 
@@ -26,6 +28,11 @@ export function setQty(cart: Cart, kind: CartLine['kind'], id: string, qty: numb
   if (qty <= 0) return removeFromCart(cart, kind, id);
   const max = catalog ? maxQty(catalog, { kind, id, qty }) : 999;
   return cart.map((l) => (l.kind === kind && l.id === id ? { ...l, qty: Math.min(max, Math.round(qty)) } : l));
+}
+
+export function setNote(cart: Cart, kind: CartLine['kind'], id: string, note: string): Cart {
+  const n = note.slice(0, 300);
+  return cart.map((l) => (l.kind === kind && l.id === id ? { ...l, note: n || undefined } : l));
 }
 
 export function removeFromCart(cart: Cart, kind: CartLine['kind'], id: string): Cart {
@@ -48,6 +55,8 @@ export interface PricedLine {
   totalCents: number | null;
   depositCents: number;
   media: string;
+  mode: PriceMode;
+  note?: string;
 }
 
 export interface CartSummary {
@@ -81,6 +90,8 @@ export function summarizeCart(cart: Cart, catalog: Catalog): CartSummary {
       totalCents: price.amountCents === null ? null : price.amountCents * line.qty,
       depositCents: deposit * line.qty,
       media: entry.media,
+      mode: priceMode(price),
+      note: line.note,
     });
   }
   return {

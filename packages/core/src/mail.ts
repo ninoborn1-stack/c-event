@@ -43,7 +43,7 @@ function cartTable(inq: Inquiry): string {
   const lines = inq.cart
     .map(
       (l) =>
-        `<tr><td style="padding:8px 0;border-bottom:1px solid #e4dccd">${l.qty}× ${esc(l.name)}</td><td style="padding:8px 0;border-bottom:1px solid #e4dccd;text-align:right;white-space:nowrap">${
+        `<tr><td style="padding:8px 0;border-bottom:1px solid #e4dccd">${l.qty}× ${esc(l.name)}${l.note ? `<br><span style="color:#7a6f60;font-size:13px">Notiz: ${esc(l.note)}</span>` : ''}</td><td style="padding:8px 0;border-bottom:1px solid #e4dccd;text-align:right;white-space:nowrap">${
           l.totalCents === null ? 'auf Anfrage' : formatEuro(l.totalCents)
         }</td></tr>`,
     )
@@ -92,6 +92,27 @@ ${cartTable(inq)}
     .map(([k, v]) => `${k}: ${v}`)
     .join('\n')}\n\nAnfrage-Nr. ${inq.id}`;
   return { subject, html, text };
+}
+
+/** Antwort der Agentur an den Kunden (Vorlage im Admin, Text frei editierbar). */
+export function renderReplyMail(inq: Inquiry, ctx: MailContext, subject: string, body: string) {
+  const html = shell(
+    ctx,
+    esc(subject),
+    `<p style="margin:0 0 16px;white-space:pre-wrap">${esc(body)}</p>
+${cartTable(inq)}
+<p style="margin:24px 0 0;color:#7a6f60;font-size:13px">Bezug: Anfrage-Nr. ${esc(inq.id)}</p>`,
+  );
+  return { subject, html, text: `${body}\n\nAnfrage-Nr. ${inq.id}` };
+}
+
+/** Vorschlagstext für die Antwort, je nach Status. */
+export function replyTemplate(inq: Inquiry, ctx: MailContext): { subject: string; body: string } {
+  const first = inq.name.split(' ')[0] ?? inq.name;
+  return {
+    subject: `Dein Angebot von ${ctx.brandName}`,
+    body: `Hallo ${first},\n\ndanke für deine Anfrage (${ctx.labels.category(inq.category)}${inq.date ? `, ${formatDate(inq.date, inq.dateFlexible)}` : ''}). Wir haben uns alles angeschaut und schicken dir anbei unser Angebot.\n\n[Angebot / Details einsetzen]\n\nMelde dich gern, wenn du Fragen hast oder wir etwas anpassen sollen.\n\nViele Grüße\nCelia & Team`,
+  };
 }
 
 export function renderAgencyNotification(inq: Inquiry, ctx: MailContext) {

@@ -1,5 +1,5 @@
-import type { Catalog, DayAvailability, SiteSettings } from './domain';
-import type { Inquiry, InquiryInput } from './inquiry';
+import type { Catalog, DayAvailability, ReviewSummary, SiteSettings, SocialFeed } from './domain';
+import type { Inquiry, InquiryInput, InquiryStatus } from './inquiry';
 
 /**
  * Service-Interfaces. Die UI und die API kennen nur diese Verträge.
@@ -10,6 +10,8 @@ export interface InquiryService {
   create(input: Omit<Inquiry, 'id' | 'createdAt' | 'status'>): Promise<Inquiry>;
   get(id: string): Promise<Inquiry | null>;
   list(): Promise<Inquiry[]>;
+  /** Admin: Status und interne Notizen ändern. */
+  update(id: string, patch: { status?: InquiryStatus; adminNotes?: string }): Promise<Inquiry | null>;
 }
 
 export interface OutgoingMail {
@@ -48,6 +50,35 @@ export interface SettingsService {
   get(): Promise<SiteSettings>;
 }
 
+/** Social Feed (Demo: Beispielposts, live: Instagram Graph API). */
+export interface SocialFeedService {
+  getFeed(limit?: number): Promise<SocialFeed>;
+}
+
+/** Rezensionen (Demo: Beispiele, live: Google Places API oder Business Profile API). */
+export interface ReviewsService {
+  getSummary(): Promise<ReviewSummary>;
+}
+
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface AdminSession {
+  token: string;
+  user: AdminUser;
+  expiresAt: string;
+}
+
+/** Login für /admin. Demo: ein fester Demo-User. Live: echter Anbieter (z. B. Auth.js, Clerk, Supabase). */
+export interface AuthService {
+  login(email: string, password: string): Promise<AdminSession | null>;
+  verify(token: string): Promise<AdminUser | null>;
+  logout(token: string): Promise<void>;
+}
+
 export interface Services {
   mode: 'demo' | 'live';
   inquiries: InquiryService;
@@ -55,6 +86,9 @@ export interface Services {
   availability: AvailabilityService;
   catalog: CatalogService;
   settings: SettingsService;
+  social: SocialFeedService;
+  reviews: ReviewsService;
+  auth: AuthService;
 }
 
 export type { InquiryInput };

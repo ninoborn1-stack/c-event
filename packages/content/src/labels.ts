@@ -9,7 +9,7 @@ export const categoryLabels: Record<InquiryCategory, string> = {
   dekoration: 'Dekoration',
   'equipment-mieten': 'Equipment-Vermietung',
   'social-media': 'Social Media & Content',
-  konfigurator: 'Rider aus dem Konfigurator',
+  konfigurator: 'Event aus dem Shop',
   allgemein: 'Allgemeine Anfrage',
 };
 

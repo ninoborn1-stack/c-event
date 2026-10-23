@@ -9,7 +9,7 @@ export default function GalleryPage() {
   return (
     <>
       <header className="page-head page-head--ink">
-        <span className="micro">{gallery.kicker}</span>
+        <span className="eyebrow">{gallery.kicker}</span>
         <Split as="h1" className="page-head__title" text={gallery.h1} />
         <p className="page-head__lead">{gallery.lead}</p>
       </header>

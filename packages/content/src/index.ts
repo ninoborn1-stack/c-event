@@ -1,8 +1,9 @@
 import { collectPlaceholders } from '@c-event/core';
-import { brand, partners } from './brand';
+import { brand, partners, shop } from './brand';
 import { catalog } from './catalog';
 import { media } from './media';
-import { about, arcade, configuratorPage, gallery, home, inquiryPage, legal, socialMedia } from './pages';
+import { about, arcade, cartPage, gallery, home, inquiryPage, legal, shopPage, socialMedia } from './pages';
+import { briefing } from './briefing';
 import { services } from './services';
 
 export * from './brand';
@@ -13,6 +14,7 @@ export * from './catalog';
 export * from './pages';
 export * from './design-tokens';
 export * from './nav';
+export * from './briefing';
 
 /** Alles, was Inhalte enthält – Grundlage für die automatische Platzhalter-Liste. */
 export const allContent = {
@@ -24,7 +26,10 @@ export const allContent = {
   about,
   gallery,
   inquiryPage,
-  configuratorPage,
+  shopPage,
+  cartPage,
+  shop,
+  briefing,
   arcade,
   catalog,
   legal,

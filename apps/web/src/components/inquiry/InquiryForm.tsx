@@ -14,11 +14,13 @@ import {
   isInquiryCategory,
   isValidIsoDate,
   type Occasion,
+  val,
 } from '@c-event/core';
-import { budgetLabels, catalog, categoryLabels, occasionLabels, ui } from '@c-event/content';
+import { budgetLabels, catalog, categoryLabels, occasionLabels, shop, ui } from '@c-event/content';
+import { TicketButton } from '@/components/ui/Ticket';
 import { PickCalendar } from '@/components/calendar/MonthCalendar';
 import { api } from '@/lib/api';
-import { rider, useRider } from '@/lib/rider-store';
+import { cart as cartStore, useCart } from '@/lib/cart-store';
 import { useSite } from '@/lib/site-context';
 
 type Values = Record<string, string | boolean>;
@@ -34,7 +36,7 @@ export function InquiryForm() {
   const initialCategory = isInquiryCategory(kat) ? kat : undefined;
   const initialDate = isValidIsoDate(datum) ? datum : undefined;
   const initialOccasion = (OCCASIONS as readonly string[]).includes(anlass) ? (anlass as Occasion) : undefined;
-  const cart = useRider();
+  const cart = useCart();
   const { settings } = useSite();
   const summary = summarizeCart(cart, catalog);
   const [startedAt] = useState(() => Date.now());
@@ -93,7 +95,7 @@ export function InquiryForm() {
         setSending(false);
         return;
       }
-      rider.clear();
+      cartStore.clear();
       router.push(`/anfrage/danke?id=${encodeURIComponent(data.id)}`);
     } catch {
       setServerError('Verbindung fehlgeschlagen. Bitte versuch es noch einmal.');
@@ -139,7 +141,7 @@ export function InquiryForm() {
       {summary.lines.length > 0 && (
         <fieldset className="form__block form__rider">
           <legend>
-            <em>02</em> Dein Rider
+            <em>02</em> {val(shop.cartLabel)}
           </legend>
           <ul>
             {summary.lines.map((l) => (
@@ -147,18 +149,18 @@ export function InquiryForm() {
                 <span>
                   {l.qty}× {l.name}
                 </span>
-                {settings.showPrices && <b>{l.totalCents === null ? ui.rider.onRequest : formatEuro(l.totalCents)}</b>}
+                {settings.showPrices && <b>{l.totalCents === null ? ui.cart.onRequest : formatEuro(l.totalCents)}</b>}
               </li>
             ))}
           </ul>
           <div className="form__rider-foot">
             {settings.showPrices && (
               <span>
-                {ui.rider.estimate}: <b>{formatEuro(summary.subtotalCents)}</b>
-                {summary.hasOnRequest ? ` · ${ui.rider.plusOnRequest}` : ''}
+                {ui.cart.estimate}: <b>{formatEuro(summary.subtotalCents)}</b>
+                {summary.hasOnRequest ? ` · ${ui.cart.plusOnRequest}` : ''}
               </span>
             )}
-            <button type="button" className="link-btn" onClick={() => window.dispatchEvent(new Event('rider:open'))}>
+            <button type="button" className="link-btn" onClick={() => cartStore.open()}>
               Bearbeiten
             </button>
           </div>
@@ -245,10 +247,9 @@ export function InquiryForm() {
             {serverError}
           </p>
         )}
-        <button type="submit" className="btn btn--signal btn--xl" disabled={sending}>
-          <span className="btn__text">{sending ? 'Wird gesendet …' : 'Anfrage senden'}</span>
-          <span className="btn__arrow">→</span>
-        </button>
+        <TicketButton type="submit" size="lg" disabled={sending}>
+          {sending ? 'Wird gesendet …' : ui.cart.send}
+        </TicketButton>
         <p className="muted small">Unverbindlich. Du bekommst sofort eine Bestätigung, das Angebot kommt persönlich.</p>
       </div>
     </form>

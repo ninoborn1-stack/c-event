@@ -29,7 +29,7 @@ function tokenize(text: string): Token[] {
 
 /**
  * Zerlegt Text serverseitig in Wörter, damit Reveals ohne DOM-Manipulation animieren können.
- * Wörter in *Sternchen* werden als kursive Serif-Akzente gesetzt.
+ * Wörter in *Sternchen* werden als Akzent (Bernstein) gesetzt.
  */
 export function Split({
   text,
@@ -40,11 +40,12 @@ export function Split({
   text: string;
   as?: ElementType;
   className?: string;
-  reveal?: 'words' | 'scrub' | 'none';
+  reveal?: 'words' | 'none';
 }) {
-  const attrs = reveal === 'words' ? { 'data-reveal': 'words' } : reveal === 'scrub' ? { 'data-scrub': 'words' } : {};
+  const attrs = reveal === 'words' ? { 'data-reveal': 'words' } : {};
   return (
-    <Tag className={className} {...attrs} aria-label={text.replace(/\*/g, '')}>
+    <Tag className={className} {...attrs}>
+      <span className="sr-only">{text.replace(/\*/g, '')}</span>
       {tokenize(text).map((t, i) => (
         <Fragment key={i}>
           <span className={`w${t.accent ? ' w--accent' : ''}`} aria-hidden="true">
