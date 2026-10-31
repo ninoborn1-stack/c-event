@@ -14,7 +14,7 @@ import { DEMO_ADMIN, demoFeed, demoReviews } from './demo-data';
 
 /** Demo-Logik ohne Node- oder Browser-Abhängigkeiten. Die Ablage wird von außen hereingereicht. */
 export interface DemoDb {
-  version: 1;
+  version: 2;
   seededAt: string;
   inquiries: Inquiry[];
   mails: SentMail[];
@@ -46,7 +46,7 @@ export function seedBookedDays(today = new Date()): string[] {
 
 export function freshDb(): DemoDb {
   return {
-    version: 1,
+    version: 2,
     seededAt: new Date().toISOString(),
     inquiries: [],
     mails: [],
@@ -78,6 +78,12 @@ export function createDemoServicesWithStore(store: DemoStore): DemoServices {
 
   async function read(): Promise<DemoDb> {
     const db = await store.read();
+    // Ältere Ablagen (v1) haben veraltete Standard-Einstellungen gespeichert: nur die Einstellungen erneuern
+    if (db && (db as { version?: number }).version !== 2) {
+      db.version = 2;
+      db.settings = { ...DEFAULT_SETTINGS };
+      await store.write(db);
+    }
     if (db) return db;
     // Erste Nutzung: genau einmal anlegen, auch bei parallelen Zugriffen.
     init ??= store.write(freshDb()).finally(() => (init = null));

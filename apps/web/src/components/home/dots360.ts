@@ -97,12 +97,19 @@ export function createDots360(
     o.setTransform(sx, 0, 0, 1, x0, 0);
     o.strokeText(opts.text, 0, H / 2 + fs * 0.04);
     o.setTransform(1, 0, 0, 1, 0, 0);
-    const data = o.getImageData(0, 0, W, H).data;
+    // Nur den Bereich um die Zahl auslesen, nicht das ganze Fenster
+    const bx = Math.max(0, Math.floor(x0 - step * 2));
+    const by = Math.max(0, Math.floor(H / 2 - fs * 0.6));
+    const bw = Math.min(W - bx, Math.ceil(tw + step * 4));
+    const bh = Math.min(H - by, Math.ceil(fs * 1.2));
+    const data = o.getImageData(bx, by, bw, bh).data;
     const depth = fs * 0.09;
     const targets: Dot[] = [];
     for (let y = step / 2; y < H; y += step) {
+      if (y < by || y >= by + bh) continue;
       for (let x = step / 2; x < W; x += step) {
-        const a = data[(Math.round(y) * W + Math.round(x)) * 4 + 3]!;
+        if (x < bx || x >= bx + bw) continue;
+        const a = data[((Math.round(y) - by) * bw + (Math.round(x) - bx)) * 4 + 3]!;
         if (a < 120) continue;
         const isAccent = x > accentX;
         const base = { src: null, x, y, delay: Math.random() * 0.35, lift: 0.6 + Math.random() * 1.8, ox: 0, oy: 0 };
@@ -260,6 +267,10 @@ export function createDots360(
 
   return {
     draw,
+    /** Vorab berechnen (im Leerlauf), damit der erste Übergang nicht ruckelt */
+    prepare() {
+      if (!built) build();
+    },
     rebuild() {
       built = false;
     },

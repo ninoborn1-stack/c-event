@@ -874,9 +874,9 @@ body:has(.poster-head--light) .nav {
 .hero__strip-inner {
   position: absolute;
 }
-/* Tiefe und Blende: ein Stück */
-.hero__strips--tiefe .hero__strip,
-.hero__strips--tiefe .hero__strip-inner,
+/* Punkte und Blende: ein Stück */
+.hero__strips--punkte .hero__strip,
+.hero__strips--punkte .hero__strip-inner,
 .hero__strips--blende .hero__strip,
 .hero__strips--blende .hero__strip-inner {
   inset: 0;
@@ -2085,14 +2085,14 @@ a.rail__item:hover .rail__img img {
   background: var(--color-night);
   transition: flex-grow 0.7s var(--ease-inOut);
 }
-.strips:not(:hover):not(:focus-within) .strip:first-child,
-.strip:hover,
-.strip:focus-within {
+.strip.is-active {
   flex-grow: 3.2;
 }
 .strip__img {
   position: absolute;
-  inset: 0;
+  inset: 0 auto 0 50%;
+  width: max(100%, 60vw);
+  transform: translateX(-50%);
 }
 .strip__img::after {
   content: '';
@@ -2153,17 +2153,13 @@ a.rail__item:hover .rail__img img {
   align-items: center;
   gap: 18px;
 }
-.strips:not(:hover):not(:focus-within) .strip:first-child .strip__body,
-.strip:hover .strip__body,
-.strip:focus-within .strip__body {
+.strip.is-active .strip__body {
   opacity: 1;
   visibility: visible;
   transform: none;
   transition-delay: 0.25s, 0.25s, 0s;
 }
-.strips:not(:hover):not(:focus-within) .strip:first-child .strip__name,
-.strip:hover .strip__name,
-.strip:focus-within .strip__name {
+.strip.is-active .strip__name {
   writing-mode: horizontal-tb;
   transform: none;
   bottom: auto;
@@ -2173,9 +2169,7 @@ a.rail__item:hover .rail__img img {
   white-space: normal;
   max-width: 12ch;
 }
-.strips:not(:hover):not(:focus-within) .strip:first-child .strip__img img,
-.strip:hover .strip__img img,
-.strip:focus-within .strip__img img {
+.strip.is-active .strip__img img {
   filter: none;
   transform: scale(1.05);
 }
@@ -2188,7 +2182,7 @@ a.rail__item:hover .rail__img img {
     min-height: 400px;
   }
   .strip .strip__name,
-  .strips .strip:first-child .strip__name {
+  .strip.is-active .strip__name {
     writing-mode: horizontal-tb;
     transform: none;
     top: 52px;
@@ -2596,4 +2590,9 @@ a.rail__item:hover .rail__img img {
 .teaser:hover .teaser__img img {
   filter: none;
   transform: scale(1.05);
+}
+
+/* Hover während des Scrollens aus (Klasse setzt SmoothScroll) */
+html.is-scrolling main {
+  pointer-events: none;
 }

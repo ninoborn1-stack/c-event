@@ -100,9 +100,18 @@ export function Hero(p: HeroProps) {
       document.documentElement.addEventListener('pointerleave', onLeave);
     }
     let resizeTimer = 0;
+    // Punkte im Leerlauf vorberechnen (nach dem Laden des Bildes und der Schrift), nicht erst beim Scrollen
+    const idle = (fn: () => void) => (typeof window.requestIdleCallback === 'function' ? window.requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 1200));
+    const prepare = () => void document.fonts?.ready.then(() => idle(() => field?.prepare()));
+    const heroImg = el.querySelector<HTMLImageElement>('.hero__strip img');
+    if (!heroImg || heroImg.complete) prepare();
+    else heroImg.addEventListener('load', prepare, { once: true });
     const onResize = () => {
       window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => field?.rebuild(), 200);
+      resizeTimer = window.setTimeout(() => {
+        field?.rebuild();
+        idle(() => field?.prepare());
+      }, 200);
     };
     window.addEventListener('resize', onResize);
 
@@ -219,8 +228,9 @@ export function Hero(p: HeroProps) {
         intro.to(q('.intro__load'), { autoAlpha: 0, duration: 0.15 });
         q('.intro__digit').forEach((c, i, all) => {
           intro!
-            .fromTo(c, { scale: 2.2, autoAlpha: 0, svgOrigin: '50 50' }, { scale: 1, autoAlpha: 1, svgOrigin: '50 50', duration: 0.2, ease: 'expo.out' })
-            .to(c, { scale: i === all.length - 1 ? 6 : 0.7, autoAlpha: 0, duration: 0.14, ease: 'power2.in' }, '+=0.08');
+            // Skalierung als transform-Attribut um die feste Mitte (50 50): unabhängig davon, wann die Schrift lädt
+            .fromTo(c, { attr: { transform: 'translate(50 50) scale(2.2)' }, autoAlpha: 0 }, { attr: { transform: 'translate(50 50) scale(1)' }, autoAlpha: 1, duration: 0.2, ease: 'expo.out' })
+            .to(c, { attr: { transform: `translate(50 50) scale(${i === all.length - 1 ? 6 : 0.7})` }, autoAlpha: 0, duration: 0.14, ease: 'power2.in' }, '+=0.08');
         });
         intro.fromTo(q('.intro__flash'), { opacity: 0 }, { opacity: 0.85, duration: 0.05 }, '-=0.08').to(q('.intro__flash'), { opacity: 0, duration: 0.4 });
       } else {
@@ -387,7 +397,7 @@ export function Hero(p: HeroProps) {
             {/* Als SVG-Text: sonst wertet Lighthouse die Countdown-Ziffern als „größtes Element“ (LCP) */}
             <svg className="intro__count" viewBox="0 0 100 100" aria-hidden="true">
               {p.countdown.map((c) => (
-                <text key={c} x="50" y="50" textAnchor="middle" dominantBaseline="central" className="intro__digit">
+                <text key={c} x="0" y="0" transform="translate(50 50)" textAnchor="middle" dominantBaseline="central" className="intro__digit">
                   {c}
                 </text>
               ))}

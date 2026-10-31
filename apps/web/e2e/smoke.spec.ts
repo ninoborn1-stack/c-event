@@ -127,3 +127,14 @@ test('alle Seiten der Sitemap antworten mit 200 und haben eine H1', async ({ pag
   }
   expect(await (await request.get('/llms.txt')).text()).toContain('CN Event Agency');
 });
+
+/** Regression: Nach dem Umbenennen der Hero-Variante hatte das Foto keine Größe (CSS-Selektor mit altem Namen). */
+test('Hero-Foto ist im ersten Fenster sichtbar', async ({ page }) => {
+  await page.goto('/');
+  const img = page.locator('.hero__img').first();
+  await expect(img).toBeVisible();
+  const box = await img.boundingBox();
+  const vp = page.viewportSize()!;
+  expect(box!.width).toBeGreaterThanOrEqual(vp.width);
+  expect(box!.height).toBeGreaterThanOrEqual(vp.height * 0.9);
+});
