@@ -8,7 +8,7 @@ export const metadata = pageMeta({ ...gallery.seo, path: '/galerie', image: 'kon
 export default function GalleryPage() {
   return (
     <>
-      <header className="poster-head">
+      <header className="poster-head poster-head--light">
         <span className="eyebrow eyebrow--sq">{gallery.kicker}</span>
         <Split as="h1" className="poster-head__title" text={gallery.h1} />
         <div className="poster-head__foot">

@@ -51,12 +51,7 @@ export default async function HomePage() {
         <ServiceStrips />
       </section>
 
-      {/* 3 · Event-Match: wischen statt Formular */}
-      <section className="sec sec--ink">
-        <SwipeDeck cards={val(home.swipe.cards)} />
-      </section>
-
-      {/* 3 · Shop-Einstieg mit den Paketen */}
+      {/* 3 · Shop-Einstieg (hell) mit den Paketen */}
       <section className="sec sec--cream">
         <header className="sec__head sec__head--row">
           <div>
@@ -77,15 +72,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4 · Highlights aus der Galerie */}
-      <section className="sec">
+      {/* 4 · Event-Match: wischen statt Formular */}
+      <section className="sec sec--ink">
+        <SwipeDeck cards={val(home.swipe.cards)} />
+      </section>
+
+      {/* 5 · Abende als Plakatzeilen (hell) */}
+      <section className="sec sec--cream">
         <header className="sec__head sec__head--row">
           <div>
             <span className="eyebrow">{home.highlights.kicker}</span>
             <Split as="h2" className="h-l" text={home.highlights.title} />
           </div>
           <div className="sec__aside">
-            <TicketLink href="/galerie" label="Galerie" tone="outline">
+            <TicketLink href="/galerie" label="Galerie">
               {home.highlights.cta}
             </TicketLink>
           </div>

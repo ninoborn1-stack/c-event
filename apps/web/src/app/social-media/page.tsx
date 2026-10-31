@@ -42,7 +42,7 @@ export default async function SocialPage() {
         </h2>
       </section>
 
-      <section className="sec">
+      <section className="sec sec--cream">
         <header className="sec__head sec__head--row">
           <div>
             <span className="eyebrow">{T.blocks}</span>
@@ -50,7 +50,7 @@ export default async function SocialPage() {
           </div>
           <p className="sec__lead">{socialMedia.notFor}</p>
         </header>
-        <Ph v={socialMedia.blocks} as="ol" className="hairgrid hairgrid--5">
+        <Ph v={socialMedia.blocks} as="ol" className="hairgrid hairgrid--5 hairgrid--light">
           {(blocks) =>
             blocks.map((b, i) => (
               <li key={b.title} className="hairgrid__cell" data-reveal="up">
@@ -73,7 +73,7 @@ export default async function SocialPage() {
         <SocialFeed feed={feed} grid />
       </section>
 
-      <section className="sec">
+      <section className="sec sec--cream">
         <header className="sec__head">
           <span className="eyebrow">{T.process}</span>
           <Split as="h2" className="h-l" text={T.processTitle} />

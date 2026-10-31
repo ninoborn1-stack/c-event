@@ -14,7 +14,7 @@ export default function AboutPage() {
     <>
       <PageHero media={about.hero.media} kicker={about.hero.kicker} title={about.hero.h1} />
 
-      <section className="sec">
+      <section className="sec sec--cream">
         <header className="sec__head">
           <span className="eyebrow">{about.kickers.whatWeDo}</span>
           <Split as="h2" className="h-l" text={about.whatWeDo.title} />
@@ -38,7 +38,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="sec sec--cream">
+      <section className="sec sec--ink">
         <header className="sec__head sec__head--row">
           <div>
             <span className="eyebrow">{about.kickers.story}</span>
@@ -46,7 +46,7 @@ export default function AboutPage() {
           </div>
           <PhText v={about.story} className="sec__lead" />
         </header>
-        <ol className="hairgrid hairgrid--3 hairgrid--light">
+        <ol className="hairgrid hairgrid--3">
           {about.values.map((v, i) => (
             <li key={v.title} className="hairgrid__cell" data-reveal="up">
               <span className="mono">{String(i + 1).padStart(2, '0')}</span>
@@ -57,7 +57,7 @@ export default function AboutPage() {
         </ol>
       </section>
 
-      <section className="sec">
+      <section className="sec sec--cream">
         <header className="sec__head">
           <span className="eyebrow">{about.kickers.team}</span>
           <Split as="h2" className="h-l" text={about.teamTitle} />

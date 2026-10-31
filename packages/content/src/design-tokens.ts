@@ -1,7 +1,7 @@
 /**
  * Design-Tokens: EINE Quelle für Web (als CSS-Variablen) und spätere App.
  * Farben nach dem Design-Konzept (Plakat-Look) – bis Celias CI kommt.
- * Kontraste (WCAG AA): cream auf ink 16.6:1 · mute auf ink 8.2:1 · cream auf red 4.7:1 · red auf ink 3.9:1 (nur große Schrift) · amberText auf cream 6.9:1
+ * Kontraste (WCAG AA): ink auf beige 14.1:1 · ash auf beige 7.9:1 · red auf beige 3.6:1 (nur große Schrift) · cream auf ink 16.6:1 · mute auf ink 8.2:1 · cream auf red 4.7:1 · red auf ink 3.9:1 (nur große Schrift) · amberText auf cream 6.9:1
  */
 export const tokens = {
   color: {
@@ -14,6 +14,9 @@ export const tokens = {
     /** „Bone“: Text auf Dunkel und helle Flächen */
     cream: '#f4eee4',
     paper: '#faf5ef',
+    /** Beige: helle Abschnitte im Wechsel mit den dunklen (Hell-Dunkel-Rhythmus) */
+    beige: '#e8dcc6',
+    beigeDeep: '#dccdb2',
     /** Einziger bunter Akzent: Buttons, Akzentwörter, rote Flächen */
     red: '#d4212d',
     redDeep: '#a5141f',

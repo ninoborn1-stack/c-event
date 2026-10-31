@@ -2308,3 +2308,44 @@
   border-color: var(--color-red);
   color: var(--color-cream);
 }
+
+/* =========================================================
+   HELLE ABSCHNITTE (Beige): Linien, Meta und Akzente für dunkle Schrift
+   ========================================================= */
+.sec--cream {
+  --color-line: var(--color-line-dark);
+}
+.sec--cream .night__no,
+.sec--cream .night__meta,
+.sec--cream .night__arrow,
+.sec--cream .bignum p,
+.sec--cream .ptile__text .mono {
+  color: var(--color-ash);
+}
+.sec--cream .night__link:hover .night__arrow {
+  color: var(--color-ink);
+}
+.sec--cream .ptile__text .mono {
+  color: rgba(244, 238, 228, 0.75);
+}
+.sec--cream .portrait {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+.sec--cream .portrait__text .mono,
+.sec--cream .portrait__text p {
+  color: var(--color-mute);
+}
+/* Heller Plakat-Kopf (z. B. Galerie) */
+.poster-head--light {
+  background: var(--color-beige);
+  color: var(--color-ink);
+  --color-line: var(--color-line-dark);
+}
+.poster-head--light .eyebrow,
+.poster-head--light .poster-head__count {
+  color: var(--color-ash);
+}
+.poster-head--light .page-head__lead {
+  color: var(--color-ash);
+}
