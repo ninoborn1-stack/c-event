@@ -37,9 +37,16 @@ export function inquiryHref(category?: string, extra?: Record<string, string>): 
   return q ? `/anfrage?${q}` : '/anfrage';
 }
 
-/** Shop-Link, optional mit Kategorie-Filter */
-export function shopHref(category?: string): string {
-  return category ? `${shop.path}?kategorie=${encodeURIComponent(category)}` : shop.path;
+/**
+ * Shop-Link, optional mit Kategorie-Filter und Herkunft (Slug der Leistungsseite oder „match“).
+ * Der Shop wählt die Kategorie vor und zeigt, woher man kommt; die Anfrage übernimmt die Herkunft später.
+ */
+export function shopHref(category?: string, from?: string): string {
+  const p = new URLSearchParams();
+  if (category) p.set('kategorie', category);
+  if (from) p.set('von', from);
+  const q = p.toString();
+  return q ? `${shop.path}?${q}#artikel` : shop.path;
 }
 
 /** Detailseite eines Shop-Artikels oder Pakets */

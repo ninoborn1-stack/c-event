@@ -1,16 +1,20 @@
-import Link from 'next/link';
 import { inquiryHref, socialMedia } from '@c-event/content';
 import { TicketLink } from '@/components/ui/Ticket';
 import { JsonLd } from '@/components/JsonLd';
 import { Media } from '@/components/Media';
+import { PageHero } from '@/components/layout/PageHero';
 import { Ph, PhText } from '@/components/Ph';
+import { SocialFeed } from '@/components/social/SocialFeed';
 import { Split } from '@/components/Split';
 import { SITE_URL } from '@/lib/env';
 import { pageMeta } from '@/lib/seo';
+import { getServices } from '@/server/services';
 
 export const metadata = pageMeta({ ...socialMedia.seo, path: '/social-media', image: socialMedia.hero.media });
 
-export default function SocialPage() {
+export default async function SocialPage() {
+  const feed = await getServices().social.getFeed(12);
+  const T = socialMedia.sections;
   return (
     <>
       <JsonLd
@@ -23,78 +27,101 @@ export default function SocialPage() {
           areaServed: ['Berlin', 'Deutschland'],
         }}
       />
-      <header className="social-hero">
-        <div className="social-hero__phone" aria-hidden="true">
-          <div className="social-hero__screen">
-            <Media id="video-dj-loop" />
-            <span className="social-hero__rec">● REC</span>
+      <PageHero media={socialMedia.hero.media} kicker={socialMedia.hero.kicker} title={socialMedia.hero.poster} lead={<PhText v={socialMedia.hero.lead} />}>
+        <TicketLink href={inquiryHref('social-media')} label="Anfrage" size="lg">
+          {socialMedia.cta}
+        </TicketLink>
+      </PageHero>
+
+      {/* Rote Statement-Fläche über die volle Breite */}
+      <section className="statement">
+        <h2 className="statement__text" aria-label={socialMedia.statement.join(' ').replace(/\*/g, '')}>
+          {socialMedia.statement.map((l) => (
+            <Split key={l} text={l} className="statement__line" />
+          ))}
+        </h2>
+      </section>
+
+      <section className="sec">
+        <header className="sec__head sec__head--row">
+          <div>
+            <span className="eyebrow">{T.blocks}</span>
+            <Split as="h2" className="h-l" text={T.blocksTitle} />
           </div>
-        </div>
-        <div className="social-hero__body">
-          <span className="eyebrow"> {socialMedia.hero.kicker}
-          </span>
-          <Split as="h1" className="page-head__title" text={socialMedia.hero.h1.replace('Events machen', '*Events machen*')} />
-          <PhText v={socialMedia.hero.lead} className="page-head__lead" />
-          <TicketLink href={inquiryHref('social-media')}  label="Booking">
-            {socialMedia.cta}
-          </TicketLink>
-        </div>
-      </header>
-      <section className="sec sec--cream">
-        <header className="sec__head">
-          <span className="eyebrow">Bausteine</span>
-          <Split as="h2" className="h-l" text="Von der Strategie bis zum *fertigen Post*." />
+          <p className="sec__lead">{socialMedia.notFor}</p>
         </header>
-        <Ph v={socialMedia.blocks} as="div" className="points points--5">
+        <Ph v={socialMedia.blocks} as="ol" className="hairgrid hairgrid--5">
           {(blocks) =>
             blocks.map((b, i) => (
-              <div key={b.title} className="point" data-reveal="up">
-                <em>{String(i + 1).padStart(2, '0')}</em>
-                <h2>{b.title}</h2>
+              <li key={b.title} className="hairgrid__cell" data-reveal="up">
+                <span className="mono">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{b.title}</h3>
                 <p>{b.text}</p>
-              </div>
+              </li>
             ))
           }
         </Ph>
-        <p className="note-line">{socialMedia.notFor}</p>
       </section>
+
       <section className="sec sec--night">
-        <header className="sec__head">
-          <span className="eyebrow">Ablauf</span>
+        <header className="sec__head sec__head--row">
+          <div>
+            <span className="eyebrow">{T.feed}</span>
+            <Split as="h2" className="h-l" text={T.feedTitle} />
+          </div>
         </header>
-        <ol className="steps steps--4">
+        <SocialFeed feed={feed} grid />
+      </section>
+
+      <section className="sec">
+        <header className="sec__head">
+          <span className="eyebrow">{T.process}</span>
+          <Split as="h2" className="h-l" text={T.processTitle} />
+        </header>
+        <ol className="bignum">
           {socialMedia.process.map((st, i) => (
             <li key={st.title} data-reveal="up">
-              <span className="steps__no">{i + 1}</span>
+              <span className="bignum__no">{String(i + 1).padStart(2, '0')}</span>
               <h3>{st.title}</h3>
               <p>{st.text}</p>
             </li>
           ))}
         </ol>
       </section>
+
       <section className="sec sec--ink">
         <header className="sec__head">
-          <span className="eyebrow">Referenzen</span>
+          <span className="eyebrow">{T.refs}</span>
+          <Split as="h2" className="h-l" text={T.refsTitle} />
         </header>
-        <Ph v={socialMedia.references} as="div" className="refs">
+        <Ph v={socialMedia.references} as="div" className="ptiles">
           {(refs) =>
             refs.map((r) => (
-              <article key={r.name} className="refs__card" data-reveal="up">
-                <div className="refs__img">
+              <article key={r.name} className="ptile" data-reveal="up">
+                <div className="ptile__img duo">
                   <Media id={r.media} sizes="(min-width: 900px) 33vw, 100vw" />
                 </div>
-                <h3>{r.name}</h3>
-                <p>{r.text}</p>
+                <div className="ptile__text">
+                  <span className="mono">{r.text}</span>
+                  <h3>{r.name}</h3>
+                </div>
               </article>
             ))
           }
         </Ph>
       </section>
-      <section className="svc-cta">
-        <Link href={inquiryHref('social-media')} className="svc-cta__big" data-label="Booking">
-          <span className="eyebrow">Kategorie vorausgewählt: Social Media</span>
-          <strong>{socialMedia.cta} →</strong>
-        </Link>
+
+      <section className="split-red">
+        <div className="split-red__img duo">
+          <Media id="mikrofon-publikum" sizes="(min-width: 900px) 50vw, 100vw" />
+        </div>
+        <div className="split-red__body">
+          <Split as="h2" className="h-l" text={T.finale} />
+          <p>{T.finaleText}</p>
+          <TicketLink href={inquiryHref('social-media')} label="Anfrage" size="lg" tone="cream">
+            {socialMedia.cta}
+          </TicketLink>
+        </div>
       </section>
     </>
   );

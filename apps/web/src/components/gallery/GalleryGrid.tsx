@@ -75,6 +75,7 @@ export function GalleryGrid({ items, services, occasions }: { items: Item[]; ser
           return (
             <button key={`${it.media}-${i}`} type="button" className={`gal__item gal__item--${i % 7}`} onClick={() => setOpen(i)}>
               <Media id={it.media} sizes="(min-width: 1000px) 33vw, 50vw" />
+              <span className="gal__no mono">№ {String(i + 1).padStart(2, '0')}</span>
               {m.kind === 'video' && <span className="gal__play">▶ Video</span>}
               <span className="gal__cap">
                 {it.occasion} · {services.find((s) => it.services.includes(s.slug))?.name}

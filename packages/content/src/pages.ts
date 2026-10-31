@@ -16,8 +16,6 @@ export const home = {
     cta: 'Event zusammenstellen',
     ctaSecondary: 'Leistungen ansehen',
     bar: ['Jetzt buchbar für Dezember', 'Antwort in 48 h', 'Berlin & Brandenburg'],
-    /** Foto-Leiste im Hero: die Bilder sind die Leistungen */
-    railTitle: 'Was wir machen',
   },
   intro: {
     countdown: ['3', '2', '1'],
@@ -26,10 +24,40 @@ export const home = {
   },
   services: {
     kicker: 'Leistungen',
-    title: 'Alles für deinen Abend.',
-    text: 'Jede Leistung hat ihre eigene Seite – und alles davon kannst du direkt in dein Event legen.',
-    more: 'Ansehen',
-    toShop: 'Im Shop',
+    title: 'Alles für deinen *Abend.*',
+    text: 'Sieben Gewerke, ein Team. Fahr über eine Leistung, um sie aufzuklappen – im Shop legst du sie direkt in dein Event.',
+    more: 'Mehr zur Leistung',
+    toShop: 'Im Shop ansehen',
+  },
+  /** Event-Match: Kartenstapel zum Wischen (Anlass + Location + passende Leistung) */
+  swipe: {
+    kicker: 'Event-Match',
+    title: 'Wischen. Merken. *Feiern.*',
+    text: 'Keine Lust auf Formulare? Wisch dich durch Anlässe und Locations. Was dir gefällt, merkst du dir – am Ende zeigen wir dir, was dafür im Shop liegt.',
+    steps: [
+      { key: '→', label: 'Passt', text: 'Nach rechts wischen' },
+      { key: '←', label: 'Weiter', text: 'Nach links wischen' },
+      { key: '♥', label: 'Gemerkt', text: 'Deine Matches' },
+    ],
+    like: 'Passt',
+    skip: 'Weiter',
+    hint: 'Ziehen, wischen oder Pfeiltasten',
+    doneTitle: 'Deine *Matches.*',
+    doneEmpty: 'Noch nichts gemerkt. Nochmal?',
+    restart: 'Nochmal wischen',
+    toShop: 'Im Shop ansehen',
+    cards: ph(
+      [
+        { title: 'Weihnachtsfeier im Loft', venue: 'Industrie-Loft · Kreuzberg', guests: '80–150 Gäste', fit: 'Paket M · Bar, Crew, Food', category: 'bar', media: 'weihnachtsbaum-kugeln' as MediaId },
+        { title: 'Release-Night im Bunker', venue: 'Bunker West · Partner-Location', guests: 'bis 400 Gäste', fit: 'Licht, Sound, Einlass', category: 'technik', media: 'club-buehne-dunkel' as MediaId },
+        { title: 'Rooftop-Afterwork', venue: 'Dachterrasse · Mitte', guests: 'bis 60 Gäste', fit: 'Mobile Bar & Signature-Drinks', category: 'bar', media: 'anstossen-nachts' as MediaId },
+        { title: 'Sommerfest im Hof', venue: 'Hinterhof · Friedrichshain', guests: '100–250 Gäste', fit: 'Catering & Stehtische', category: 'catering', media: 'gartenparty-crowd' as MediaId },
+        { title: 'Hochzeit im Glashaus', venue: 'Gewächshaus · Potsdam', guests: '60–120 Gäste', fit: 'Deko-Konzept & Floristik', category: 'deko', media: 'hochzeit-tafel' as MediaId },
+        { title: 'Launch-Dinner', venue: 'Galerie · Schöneberg', guests: '30–80 Gäste', fit: 'Service-Crew & Flying Dinner', category: 'personal', media: 'fine-dining' as MediaId },
+      ],
+      'Venue-Vorschläge: echte Partner-Locations und Anlässe von Celia',
+      'Partner',
+    ),
   },
   shopEntry: {
     kicker: 'Shop',
@@ -42,10 +70,10 @@ export const home = {
     title: 'Abende, die schon *gelaufen* sind.',
     items: ph(
       [
-        { title: 'Winter Gala', meta: 'Firmenfeier · 280 Gäste', media: 'gala-tafel-kerzen' as MediaId },
-        { title: 'Sneaker Release Night', meta: 'Brand-Event · 400 Gäste', media: 'sneaker-wand' as MediaId },
-        { title: 'Hochzeit im Loft', meta: 'Privat · 120 Gäste', media: 'hochzeit-loft' as MediaId },
-        { title: 'Musikvideo-Dreh', meta: 'Produktion · Set & Catering', media: 'filmset-kamera' as MediaId },
+        { title: 'Winter Gala', meta: 'Firmenfeier · 280 Gäste', place: 'Berlin-Mitte', year: '2025', media: 'gala-tafel-kerzen' as MediaId },
+        { title: 'Sneaker Release Night', meta: 'Brand-Event · 400 Gäste', place: 'Kreuzberg', year: '2025', media: 'sneaker-wand' as MediaId },
+        { title: 'Hochzeit im Loft', meta: 'Privat · 120 Gäste', place: 'Potsdam', year: '2024', media: 'hochzeit-loft' as MediaId },
+        { title: 'Musikvideo-Dreh', meta: 'Produktion · Set & Catering', place: 'Studio Lichtenberg', year: '2024', media: 'filmset-kamera' as MediaId },
       ],
       REF_NOTE,
       'Referenzen',
@@ -84,6 +112,8 @@ export const socialMedia = {
   hero: {
     kicker: 'Social Media & Content',
     h1: 'Social-Media-Strategie für Brands, die Events machen.',
+    /** Plakat-Headline im Seiten-Hero (das H1 oben bleibt für Google im Titel-Attribut/SEO) */
+    poster: 'Content, der länger *läuft* als die Nacht.',
     lead: ph(
       'Ein Event dauert eine Nacht. Der Content dazu läuft Monate. Wir entwickeln Strategie und Formate für Brands und Collectives aus der Event-Welt und begleiten bis zum fertigen Post.',
       'Social-Media-Leistungsbeschreibung: Entwurf von Nino, Freigabe durch Celia',
@@ -117,6 +147,19 @@ export const socialMedia = {
   ),
   notFor: 'Kein Gastro-Content. Wir konzentrieren uns auf Events, Brands und Collectives.',
   cta: 'Social Media anfragen',
+  statement: ['Ein Event dauert eine Nacht.', 'Der Content *Monate.*'],
+  sections: {
+    blocks: 'Bausteine',
+    blocksTitle: 'Von der Strategie bis zum *fertigen Post.*',
+    feed: 'Live aus dem Feed',
+    feedTitle: 'Frisch *gepostet.*',
+    process: 'Ablauf',
+    processTitle: 'In vier *Schritten.*',
+    refs: 'Referenzen',
+    refsTitle: 'Für wen wir *drehen.*',
+    finale: 'Lass uns über euren *Content* reden.',
+    finaleText: 'Erstgespräch, 45 Minuten, unverbindlich. Danach wisst ihr, was eure Kanäle brauchen.',
+  },
 };
 
 export const about = {
@@ -131,8 +174,9 @@ export const about = {
     'Texte',
     'P1',
   ),
+  kickers: { whatWeDo: 'Was wir machen', story: 'Haltung', team: 'Team', network: 'Netzwerk' },
   whatWeDo: {
-    title: 'Was wir machen',
+    title: 'Für jeden *Anlass.*',
     items: [
       { title: 'Firmenfeiern', text: 'Weihnachtsfeier, Sommerfest, Jubiläum, Konferenz. Ein Ansprechpartner, eine Rechnung.', media: 'weihnachtstafel-lichter' as MediaId, href: '/leistungen/event-organisation' },
       { title: 'Private Events', text: 'Hochzeit, runder Geburtstag, die Party, die du schon ewig schmeißen willst.', media: 'hochzeit-loft' as MediaId, href: '/leistungen/event-organisation' },
@@ -145,7 +189,8 @@ export const about = {
     { title: 'Ein Ansprechpartner', text: 'Du hast eine Nummer. Die geht ran.' },
     { title: 'Keine Standard-Events', text: 'Jeder Abend bekommt eine eigene Dramaturgie.' },
   ],
-  teamTitle: 'Das Team',
+  teamTitle: 'Das *Team.*',
+  storyTitle: 'Warum es uns *gibt.*',
   team: ph(
     [
       { name: 'Celia', role: 'Gründerin & Inhaberin', text: 'Idee, Angebot, Regie – bei jedem Event persönlich erreichbar.', media: 'planerin-notizbuch' as MediaId },
@@ -169,7 +214,8 @@ export const about = {
 export const gallery = {
   seo: { title: 'Galerie: Events, Bars, Bühnen', description: 'Einblicke in Events von CN Event Agency: Firmenfeiern, Release-Events, Hochzeiten, Bars, Catering und Produktionen in Berlin.' },
   kicker: 'Galerie',
-  h1: 'Beweisfotos.',
+  h1: 'Beweis*fotos.*',
+  countLabel: 'Momente aus echten Nächten',
   lead: 'Ein Querschnitt durch Bars, Bühnen und Abende. Filter nach Leistung oder Anlass.',
   occasions: ['Firma', 'Privat', 'Brand', 'Konzert', 'Produktion'] as const,
   items: [
@@ -267,6 +313,8 @@ export const shopPage = {
   packagesTitle: 'Pakete als Startpunkt',
   itemsTitle: 'Einzeln dazu',
   all: 'Alles',
+  /** Hinweis, wenn man von einer Leistungsseite oder aus dem Event-Match kommt */
+  from: { label: 'Du kommst von', match: 'deinem Event-Match', preselected: 'Passende Kategorie ist vorausgewählt.', back: 'Zurück zur Leistung', showAll: 'Alles zeigen' },
   detail: { back: 'Zurück zum Shop', includes: 'Enthalten', fits: 'Passt zu', stock: 'Verfügbar', minQty: 'Mindestmenge', deposit: 'Kaution' },
   note: 'Unverbindlich. Kein Checkout, keine Zahlung.',
 };
@@ -352,10 +400,11 @@ export const ui = {
     occasions: 'Für welche Anlässe',
     process: 'So läuft’s',
     gallery: 'Eindrücke',
-    fit: 'Zum Event hinzufügen',
-    fitTitle: 'Direkt in *dein Event.*',
-    fitText: 'Leg dir Artikel und Pakete zusammen und frag alles in einem Rutsch an.',
-    fitLink: 'Alle Artikel im Shop',
+    fit: 'Im Shop zusammenstellen',
+    fitTitle: 'Alles dafür liegt im *Shop.*',
+    fitText: 'Wir nehmen dich mit: Der Shop öffnet mit der passenden Kategorie, du legst dir zusammen, was du brauchst, und fragst alles in einem Rutsch an.',
+    fitLink: 'Im Shop zusammenstellen',
+    fitIncludes: 'Zum Beispiel',
     faq: 'Fragen & Antworten',
     faqTitle: 'Gute Frage.',
     preselected: 'Kategorie vorausgewählt:',
@@ -411,7 +460,7 @@ export const adminUi = {
   demo: {
     hint: 'Nur im Demo-Modus. Im Live-Modus ist dieser Tab aus.',
     transition: 'Hero-Übergang „Doors open → 360°“',
-    transitions: { tiefe: 'Tiefe – das Bild kippt nach hinten weg, die 3D-360° fliegt nach vorn', blende: 'Blende – das Bild schließt sich wie eine Kamerablende', ticket: 'Ticket – das Bild reißt an der Perforation auf' },
+    transitions: { punkte: 'Punkte – das Bild zerfällt in Punkte, die sich zur 360° formen', blende: 'Blende – das Bild schließt sich wie eine Kamerablende', ticket: 'Ticket – das Bild reißt an der Perforation auf' },
     slogan: 'Slogan-Variante (Hero)',
     flags: 'Feature-Flags',
     flagLabels: {

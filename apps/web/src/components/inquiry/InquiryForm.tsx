@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { readOrigin } from '@/lib/origin';
 import { useState } from 'react';
 import {
   BUDGET_RANGES,
@@ -34,6 +35,10 @@ export function InquiryForm() {
   const datum = sp.get('datum');
   const anlass = sp.get('anlass') ?? '';
   const initialCategory = isInquiryCategory(kat) ? kat : undefined;
+  const [fromCategory] = useState(() => {
+    const o = typeof window === 'undefined' ? null : readOrigin();
+    return isInquiryCategory(o) ? o : undefined;
+  });
   const initialDate = isValidIsoDate(datum) ? datum : undefined;
   const initialOccasion = (OCCASIONS as readonly string[]).includes(anlass) ? (anlass as Occasion) : undefined;
   const cart = useCart();
@@ -41,7 +46,8 @@ export function InquiryForm() {
   const summary = summarizeCart(cart, catalog);
   const [startedAt] = useState(() => Date.now());
   const [v, setV] = useState<Values>({
-    category: initialCategory ?? (cart.length ? 'konfigurator' : 'allgemein'),
+    // Ohne Vorauswahl: Warenkorb → Konfigurator, sonst die Leistung, von der man in den Shop kam
+    category: initialCategory ?? (cart.length ? 'konfigurator' : (fromCategory ?? 'allgemein')),
     name: '',
     company: '',
     email: '',

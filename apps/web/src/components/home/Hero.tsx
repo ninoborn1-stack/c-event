@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { DEFAULT_SETTINGS, HERO_TRANSITIONS, type HeroTransition } from '@c-event/core';
 import { getMedia } from '@c-event/content';
-import { PhotoRail, type RailItem } from '@/components/media/PhotoRail';
 import { TicketLink } from '@/components/ui/Ticket';
+import { createDots360, type DotsState } from './dots360';
 import { asset } from '@/lib/env';
 import { gsap, prefersReducedMotion } from '@/lib/motion';
 import { useSite } from '@/lib/site-context';
@@ -22,8 +22,6 @@ interface HeroProps {
   sloganIsPlaceholder: boolean;
   sloganNote?: string;
   behind: string;
-  rail: RailItem[];
-  railTitle: string;
 }
 
 /** „CN“ als Blende (viewBox 1000): C-Ring links, N rechts. Zoom-Ursprung liegt im linken N-Schaft. */
@@ -34,17 +32,15 @@ const CN_PATHS = [
 const ZOOM_ORIGIN = '613 500';
 const INTRO_KEY = 'cev-intro-seen';
 
-/** Stücke, in die das Hero-Bild für den Übergang zerfällt: 1 Bild (Tiefe, Blende), 2 Ticket-Hälften */
-const PIECES: Record<HeroTransition, number> = { tiefe: 1, blende: 1, ticket: 2 };
-/** Ebenen der 3D-Zahl: hintereinander gestaffelte Kopien ergeben die harte Extrusion */
-const DEPTH_LAYERS = 16;
+/** Stücke, in die das Hero-Bild für den Übergang zerfällt: 1 Bild (Punkte, Blende), 2 Ticket-Hälften */
+const PIECES: Record<HeroTransition, number> = { punkte: 1, blende: 1, ticket: 2 };
 
 /**
  * Hero als eigenes kleines Event.
  * Ebenen-Regel: Intro und Scroll bewegen NIE dieselbe Eigenschaft am selben Element.
  * Intro: .intro*, .hero__img (scale), .ch, .hero__eyebrow/.hero__foot-Kinder, .hero__bar-in, .nav.
- * Scroll: .hero__zoom (scale), .hero__content, .hero__bar, .hero__second, .hero__strip, .hero__strips (clip/3D), .hero__behind-in.
- * Maus: nur .num3d (Neigung) und dessen Licht-Variablen.
+ * Scroll: .hero__zoom (scale), .hero__content, .hero__bar, .hero__second, .hero__strip, .hero__strips (clip/opacity), .hero__ring, Punkte-Zustand (Canvas).
+ * Die „360°“ zeichnet .hero__dots (Canvas, dots360.ts); Maus und Touch wirken nur dort.
  * Der CSS-Grundzustand ist immer der fertige Zustand.
  */
 export function Hero(p: HeroProps) {
@@ -63,10 +59,67 @@ export function Hero(p: HeroProps) {
     const el = root.current;
     if (!el || prefersReducedMotion()) return;
     const q = gsap.utils.selector(el);
+    const canvas = el.querySelector<HTMLCanvasElement>('.hero__dots');
+    const dots: DotsState = { grid: 0, fly: 0, alpha: 0 };
+    const touch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const font = getComputedStyle(el.querySelector('.hero__title') ?? el).fontFamily;
+    const field = canvas
+      ? createDots360(canvas, {
+          text: p.behind,
+          accentFrom: Math.max(1, p.behind.length - 1),
+          img: el.querySelector<HTMLImageElement>('.hero__strip img'),
+          fontFamily: font,
+          fly: variant === 'punkte',
+          touch,
+        })
+      : null;
+    // Zeichnen nur, solange der Übergang läuft oder die Zahl zu sehen ist
+    let raf = 0;
+    let active = false;
+    const loop = () => {
+      field?.draw(dots);
+      raf = active ? requestAnimationFrame(loop) : 0;
+    };
+    const setActive = (on: boolean) => {
+      if (on === active) return;
+      active = on;
+      if (on && !raf) raf = requestAnimationFrame(loop);
+      if (!on) field?.clear();
+    };
+    let inRange = false;
+    let inView = true;
+    const io = new IntersectionObserver(([e]) => {
+      inView = !!e?.isIntersecting;
+      setActive(inRange && inView);
+    });
+    io.observe(el);
+    const onMove = (e: PointerEvent) => field?.pointer(e.clientX, e.clientY);
+    const onLeave = () => field?.leave();
+    if (!touch) {
+      window.addEventListener('pointermove', onMove, { passive: true });
+      document.documentElement.addEventListener('pointerleave', onLeave);
+    }
+    let resizeTimer = 0;
+    const onResize = () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => field?.rebuild(), 200);
+    };
+    window.addEventListener('resize', onResize);
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         defaults: { ease: 'none' },
-        scrollTrigger: { trigger: el, start: 'top top', end: 'bottom bottom', scrub: 0.8, onUpdate: (s) => s.progress > 0.02 && finishRef.current() },
+        scrollTrigger: {
+          trigger: el,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.8,
+          onUpdate: (s) => {
+            if (s.progress > 0.02) finishRef.current();
+            inRange = s.progress > 0.42;
+            setActive(inRange && inView);
+          },
+        },
       });
       tl.fromTo(q('.hero__zoom'), { scale: 1 }, { scale: 1.2, duration: 1 }, 0)
         .fromTo(q('.hero__content'), { yPercent: 0, autoAlpha: 1 }, { yPercent: -22, autoAlpha: 0, duration: 0.3, ease: 'power1.in' }, 0)
@@ -74,16 +127,16 @@ export function Hero(p: HeroProps) {
         .fromTo(q('.hero__second'), { autoAlpha: 0, y: 90 }, { autoAlpha: 1, y: 0, duration: 0.2, ease: 'power2.out' }, 0.26)
         .fromTo(q('.hero__second'), { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -70, duration: 0.12, ease: 'power2.in', immediateRender: false }, 0.54);
 
-      if (variant === 'tiefe') {
-        // Tiefe: das Bild kippt nach hinten in den Raum, aus der Tiefe dreht sich die 3D-Zahl einmal um 360° nach vorn
-        tl.fromTo(q('.hero__strips'), { rotationX: 0, scale: 1, transformPerspective: 1100, transformOrigin: '50% 100%' }, { rotationX: 68, scale: 0.6, duration: 0.36, ease: 'power2.in' }, 0.56)
-          .fromTo(q('.hero__strips'), { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.1, immediateRender: false }, 0.82)
-          .fromTo(q('.hero__behind-in'), { scale: 0.12, rotationY: -360 }, { scale: 1, rotationY: 0, duration: 0.42, ease: 'power3.out' }, 0.6);
+      if (variant === 'punkte') {
+        // Punkte: das Foto wird zum Punkteraster, dann fliegen die Punkte zur 360° zusammen
+        tl.fromTo(dots, { grid: 0 }, { grid: 1, duration: 0.08 }, 0.5)
+          .fromTo(q('.hero__strips'), { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.05, immediateRender: false }, 0.56)
+          .fromTo(dots, { fly: 0 }, { fly: 1, duration: 0.3 }, 0.6);
       } else if (variant === 'blende') {
         // Blende: das Bild schließt sich wie eine Kamerablende zum Kreis, dahinter dreht sich 360° ein
         tl.fromTo(q('.hero__strips'), { clipPath: 'circle(120% at 50% 50%)' }, { clipPath: 'circle(0% at 50% 50%)', duration: 0.34, ease: 'power3.inOut' }, 0.6)
           .fromTo(q('.hero__ring'), { scale: 1.8, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'power2.out' }, 0.68)
-          .fromTo(q('.hero__behind-in'), { scale: 0.5, rotate: -90 }, { scale: 1, rotate: 0, duration: 0.36, ease: 'power3.out' }, 0.64);
+          .fromTo(dots, { alpha: 0 }, { alpha: 1, duration: 0.2 }, 0.7);
       } else {
         // Ticket: das Bild reißt an der Perforation in zwei Hälften auseinander
         const [top, bottom] = q('.hero__strip');
@@ -91,36 +144,20 @@ export function Hero(p: HeroProps) {
           .fromTo(top!, { yPercent: 0, rotate: 0 }, { yPercent: -105, rotate: -3, duration: 0.3, ease: 'power3.in' }, 0.64)
           .fromTo(bottom!, { yPercent: 0, rotate: 0 }, { yPercent: 105, rotate: 2, duration: 0.3, ease: 'power3.in' }, 0.64)
           .fromTo(q('.hero__perf'), { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.06, immediateRender: false }, 0.66)
-          .fromTo(q('.hero__behind-in'), { scale: 0.8, yPercent: 20 }, { scale: 1, yPercent: 0, duration: 0.34, ease: 'power3.out' }, 0.66);
+          .fromTo(dots, { alpha: 0 }, { alpha: 1, duration: 0.2 }, 0.7);
       }
     }, el);
-    return () => ctx.revert();
-  }, [variant]);
-
-  // ---------- 3D-ZAHL: folgt der Maus, auf Touch-Geräten schwingt sie langsam ----------
-  useEffect(() => {
-    const el = root.current;
-    const num = el?.querySelector<HTMLElement>('.num3d');
-    if (!el || !num || prefersReducedMotion()) return;
-    const ctx = gsap.context(() => {
-      const rx = gsap.quickTo(num, 'rotationX', { duration: 0.9, ease: 'power3.out' });
-      const ry = gsap.quickTo(num, 'rotationY', { duration: 0.9, ease: 'power3.out' });
-      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        const move = (e: PointerEvent) => {
-          const x = e.clientX / window.innerWidth - 0.5;
-          const y = e.clientY / window.innerHeight - 0.5;
-          rx(y * -34);
-          ry(x * 46);
-          num.style.setProperty('--gx', `${(x + 0.5) * 100}%`);
-          num.style.setProperty('--gy', `${(y + 0.5) * 100}%`);
-        };
-        window.addEventListener('pointermove', move, { passive: true });
-        return () => window.removeEventListener('pointermove', move);
-      }
-      gsap.fromTo(num, { rotationY: -22, rotationX: 8 }, { rotationY: 22, rotationX: -8, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-    }, el);
-    return () => ctx.revert();
-  }, []);
+    return () => {
+      io.disconnect();
+      setActive(false);
+      if (raf) cancelAnimationFrame(raf);
+      window.clearTimeout(resizeTimer);
+      window.removeEventListener('pointermove', onMove);
+      document.documentElement.removeEventListener('pointerleave', onLeave);
+      window.removeEventListener('resize', onResize);
+      ctx.revert();
+    };
+  }, [variant, p.behind]);
 
   // ---------- INTRO: einmal beim Laden ----------
   useEffect(() => {
@@ -256,17 +293,9 @@ export function Hero(p: HeroProps) {
         <div className="hero__stage">
           <div className="hero__behind" aria-hidden="true">
             {variant === 'blende' && <span className="hero__ring" />}
-            <div className="hero__behind-in">
-              <div className="num3d">
-                {Array.from({ length: DEPTH_LAYERS }, (_, i) => (
-                  <span key={i} className="num3d__layer" style={{ '--l': DEPTH_LAYERS - i } as React.CSSProperties}>
-                    {p.behind}
-                  </span>
-                ))}
-                <span className="num3d__face">{p.behind}</span>
-              </div>
-            </div>
+            <span className="sr-only">{p.behind}</span>
           </div>
+          <canvas className="hero__dots" aria-hidden="true" />
           <div className={`hero__strips hero__strips--${variant}`}>
             {Array.from({ length: n }, (_, i) => (
               <div key={`${variant}-${i}`} className="hero__strip" style={{ '--i': i, '--n': n } as React.CSSProperties}>
@@ -371,7 +400,6 @@ export function Hero(p: HeroProps) {
           </div>
         )}
       </section>
-      <PhotoRail items={p.rail} title={p.railTitle} />
     </>
   );
 }

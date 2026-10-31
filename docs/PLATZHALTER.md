@@ -1,6 +1,6 @@
 # Offene Platzhalter
 
-Automatisch erzeugt aus `packages/content` (alles, was mit `ph()` markiert ist). Stand: 23.10.2026. **234 Einträge**, davon **200 × P1**.
+Automatisch erzeugt aus `packages/content` (alles, was mit `ph()` markiert ist). Stand: 31.10.2026. **235 Einträge**, davon **200 × P1**.
 
 - **P1** = vor dem Bau nötig (Briefing 2)
 - **P2** = nach und nach; für den Livegang sind nur **Domain** und **Impressum** zwingend
@@ -161,7 +161,7 @@ Richtwerte: Hero 2–3 Clips à 10–30 s (quer + hochkant) · 5–10 Fotos je L
 | Finale Leistungen bestätigen (fehlt etwas, fällt etwas weg?) | Bar-Catering, Personal, Catering, Event-Management, Event-Organisation, Dekor… | `briefing.offer.finalServices` | 1 |
 | Umfang des Social-Media-Angebots und wer umsetzt (Celia, Josh, Partner) | Strategie & Beratung, Content-Production, Skripte, Handbuch, laufende Begleitung | `briefing.offer.socialScope` | 1 |
 
-## P2 (34)
+## P2 (35)
 
 ### Einsatzgebiet (1)
 
@@ -187,13 +187,14 @@ Richtwerte: Hero 2–3 Clips à 10–30 s (quer + hochkant) · 5–10 Fotos je L
 | Englische Version? | Erst Deutsch | `briefing.organisation.english` | 1 |
 | Statistik und Newsletter | Datenschutzfreundliche Statistik ohne Cookie-Banner, kein Newsletter | `briefing.organisation.analytics` | 1 |
 
-### Partner (4)
+### Partner (5)
 
 | Was fehlt | Vorschlag (aktuell in der Demo) | Wo | Anzahl |
 |---|---|---|---|
 | Bunker-West-Verlinkung (URL) | https://bunker-west.example | `partners.bunkerWest.href` | 1 |
 | Willkommens-Code ca. 10 %, mit Albi abstimmen | CNEVENT10 | `partners.bunkerWest.code` | 1 |
 | Höhe des Rabatts mit Albi klären | 10 % | `partners.bunkerWest.discount` | 1 |
+| Venue-Vorschläge: echte Partner-Locations und Anlässe von Celia | [{"title":"Weihnachtsfeier im Loft","venue":"Industrie-Loft · Kreuzberg","gue… | `home.swipe.cards` | 1 |
 | Netzwerk und Partner mit Celia bestätigen | ["Bunker West · Location","Partnerküchen Berlin","Licht- & Tontechnik","Flori… | `about.network` | 1 |
 
 ### Rechtliches (10)
@@ -215,7 +216,7 @@ Richtwerte: Hero 2–3 Clips à 10–30 s (quer + hochkant) · 5–10 Fotos je L
 
 | Was fehlt | Vorschlag (aktuell in der Demo) | Wo | Anzahl |
 |---|---|---|---|
-| Referenz-Platzhalter. Echte Events mit Freigabe der Kunden von Celia | [{"title":"Winter Gala","meta":"Firmenfeier · 280 Gäste","media":"gala-tafel-… | `home.highlights.items` | 1 |
+| Referenz-Platzhalter. Echte Events mit Freigabe der Kunden von Celia | [{"title":"Winter Gala","meta":"Firmenfeier · 280 Gäste","place":"Berlin-Mitt… | `home.highlights.items` | 1 |
 | Referenzen nur nach Freigabe der Beteiligten (Yami Club, JD Sports o. ä.) | [{"name":"Club-Collective (z. B. Yami Club)","text":"Event-Recaps und Line-up… | `socialMedia.references` | 1 |
 | Referenzen: klären, ob „kcee“ ein Kunde ist | „kcee“ – Kunde oder Partner? | `briefing.organisation.clientKcee` | 1 |
 

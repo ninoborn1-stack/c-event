@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
-import { Archivo, DM_Sans, Press_Start_2P } from 'next/font/google';
-import { brand, home, listPlaceholders, tokens, tokensToCss } from '@c-event/content';
+import { Archivo, Geist_Mono, Inter, Press_Start_2P } from 'next/font/google';
+import { brand, home, tokens, tokensToCss } from '@c-event/content';
 import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
 import { DemoBadge } from '@/components/layout/DemoBadge';
@@ -20,7 +20,8 @@ import './globals.css';
 // Schriften werden von Next beim Build heruntergeladen und selbst ausgeliefert (kein Google-Aufruf im Browser).
 // Archivo (variabel, schmaler Schnitt) = die blockige Hero-Schrift aus „Ideen auf die Bühne“ – einzige Headline-Schrift.
 const display = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--ff-display', display: 'swap' });
-const sans = DM_Sans({ subsets: ['latin'], variable: '--ff-sans', display: 'swap' });
+const sans = Inter({ subsets: ['latin'], variable: '--ff-sans', display: 'swap' });
+const mono = Geist_Mono({ subsets: ['latin'], weight: ['500'], variable: '--ff-mono', display: 'swap' });
 // Pixel-Schrift nur für die Arcade; kein Preload, damit sie die übrigen Seiten nicht bremst.
 const pixel = Press_Start_2P({ subsets: ['latin'], weight: '400', variable: '--ff-pixel', display: 'swap', preload: false });
 
@@ -38,11 +39,10 @@ export const viewport: Viewport = { themeColor: tokens.color.ink, width: 'device
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSettings();
-  const phCount = IS_DEMO ? listPlaceholders().length : 0;
   return (
     <html
       lang="de"
-      className={`${display.variable} ${sans.variable} ${pixel.variable}`}
+      className={`${display.variable} ${sans.variable} ${mono.variable} ${pixel.variable}`}
       data-ph={IS_DEMO && settings.showPlaceholders ? 'on' : 'off'}
       suppressHydrationWarning
     >
@@ -70,7 +70,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <SmoothScroll />
           <Reveals />
           <PwaRegister />
-          {IS_DEMO && <DemoBadge placeholders={phCount} />}
+          {IS_DEMO && <DemoBadge />}
         </SiteProvider>
       </body>
     </html>

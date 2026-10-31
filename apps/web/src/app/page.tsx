@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { isPlaceholder, val } from '@c-event/core';
-import { brand, catalog, home, inquiryHref, services, shop, shopHref } from '@c-event/content';
+import { brand, catalog, home, inquiryHref, shop } from '@c-event/content';
 import { Hero } from '@/components/home/Hero';
+import { ServiceStrips } from '@/components/home/ServiceStrips';
+import { SwipeDeck } from '@/components/home/SwipeDeck';
 import { Media } from '@/components/Media';
 import { Ph } from '@/components/Ph';
 import { PackageCard } from '@/components/shop/ProductCard';
@@ -22,7 +24,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 1 · Hero mit CN-Intro, Übergang und Foto-Leiste der Leistungen */}
+      {/* 1 · Hero mit CN-Intro und Übergang „Doors open → 360°“ */}
       <Hero
         mediaId={home.hero.media}
         slogans={val(brand.slogans)}
@@ -35,40 +37,23 @@ export default async function HomePage() {
         sloganIsPlaceholder={isPlaceholder(brand.slogans)}
         sloganNote={isPlaceholder(brand.slogans) ? brand.slogans.note : undefined}
         behind={home.intro.behind}
-        railTitle={home.hero.railTitle}
-        rail={services.map((sv) => ({ media: sv.hero, label: sv.name, sub: sv.line, href: `/leistungen/${sv.slug}` }))}
       />
 
-      {/* 2 · Leistungen: jede Kachel führt zur Unterseite und in den Shop */}
-      <section className="sec" id="leistungen">
-        <header className="sec__head">
-          <span className="eyebrow">{home.services.kicker}</span>
-          <Split as="h2" className="h-l" text={home.services.title} />
+      {/* 2 · Leistungen als aufklappende Bildstreifen; jedes Ticket führt in den Shop */}
+      <section className="sec sec--flush" id="leistungen">
+        <header className="sec__head sec__head--row">
+          <div>
+            <span className="eyebrow">{home.services.kicker}</span>
+            <Split as="h2" className="h-l" text={home.services.title} />
+          </div>
           <p className="sec__lead">{home.services.text}</p>
         </header>
-        <div className="tiles">
-          {services.map((sv) => (
-            <article key={sv.slug} className="tile">
-              <Link href={`/leistungen/${sv.slug}`} className="tile__img" data-label={sv.name} tabIndex={-1} aria-hidden="true">
-                <Media id={sv.hero} sizes="(min-width: 1100px) 25vw, (min-width: 700px) 50vw, 100vw" />
-              </Link>
-              <h3>
-                <Link href={`/leistungen/${sv.slug}`} data-label={sv.name}>
-                  {sv.name}
-                </Link>
-              </h3>
-              <p>{sv.line}</p>
-              <div className="tile__links">
-                <Link href={`/leistungen/${sv.slug}`} data-label={sv.name}>
-                  {home.services.more} →
-                </Link>
-                <Link href={shopHref(sv.shopCategory)} data-label={val(shop.label)}>
-                  {home.services.toShop} →
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+        <ServiceStrips />
+      </section>
+
+      {/* 3 · Event-Match: wischen statt Formular */}
+      <section className="sec sec--ink">
+        <SwipeDeck cards={val(home.swipe.cards)} />
       </section>
 
       {/* 3 · Shop-Einstieg mit den Paketen */}
@@ -105,18 +90,27 @@ export default async function HomePage() {
             </TicketLink>
           </div>
         </header>
-        <Ph v={hl} as="div" className="highlights">
+        <Ph v={hl} as="ol" className="nights">
           {(items) =>
-            items.map((h) => (
-              <figure key={h.title} className="highlight" data-reveal="up">
-                <div className="highlight__img">
-                  <Media id={h.media} sizes="(min-width: 900px) 25vw, 50vw" />
-                </div>
-                <figcaption>
-                  <strong>{h.title}</strong>
-                  <span>{h.meta}</span>
-                </figcaption>
-              </figure>
+            items.map((h, i) => (
+              <li key={h.title} className="night" data-reveal="up">
+                <Link href="/galerie" className="night__link" data-label="Galerie">
+                  <span className="night__no mono">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="night__img">
+                    <Media id={h.media} sizes="(min-width: 900px) 30vw, 100vw" />
+                  </span>
+                  <strong className="night__title">{h.title}</strong>
+                  <span className="night__meta mono">
+                    <span>{h.meta}</span>
+                    <span>
+                      {h.place} · {h.year}
+                    </span>
+                  </span>
+                  <span className="night__arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </Link>
+              </li>
             ))
           }
         </Ph>

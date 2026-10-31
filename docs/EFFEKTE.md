@@ -1,4 +1,4 @@
-# Effekt-Inventur (Review 22.10.2026)
+# Effekt-Inventur (Review 22.10.2026, aktualisiert 31.10.2026)
 
 Vorgabe: „Consistency is key“ – nur die drei bis vier besten Effekte behalten und seitenweit einheitlich nutzen.
 
@@ -6,10 +6,12 @@ Vorgabe: „Consistency is key“ – nur die drei bis vier besten Effekte behal
 
 | # | Effekt | Wo | Warum |
 |---|---|---|---|
-| 1 | **Hero-Intro mit CN-Blende** – Ladezähler, Countdown 3-2-1, Lichtblitz, das Bild öffnet sich durch „CN“, Kamerafahrt durchs N, Headline steigt Buchstabe für Buchstabe auf. Dazu der **Übergang „Doors open → 360°“** in drei Varianten (Tiefe · Blende · Ticket, im Admin → Demo umschaltbar; Standard „Tiefe“: das Bild kippt nach hinten in den Raum, die „360°“ dreht sich einmal um sich selbst nach vorn). Die „360°“ ist eine **3D-Zahl** mit harter Extrusion und Glanzlicht, die sich zur Maus neigt (Touch: langsames Schwingen). | Startseite | Von Celia ausdrücklich gewünscht („komplette Hero-Animation inkl. C“). |
+| 1 | **Hero-Intro mit CN-Blende** – Ladezähler, Countdown 3-2-1, Lichtblitz, das Bild öffnet sich durch „CN“, Kamerafahrt durchs N, Headline steigt Buchstabe für Buchstabe auf. Dazu der **Übergang „Doors open → 360°“** in drei Varianten (Punkte · Blende · Ticket, im Admin → Demo umschaltbar). Standard „Punkte“: Das Foto zerfällt in ein Punkteraster wie eine LED-Wand, die Punkte fliegen zur „360°“ zusammen, der Rest fällt weg. Die Zahl besteht nur aus Punkten auf der Kontur (zwei Ebenen = räumliche Tiefe), neigt sich zur Maus und weicht ihr aus (Touch: langsames Schwingen). Canvas 2D, `components/home/dots360.ts`. | Startseite | Von Celia ausdrücklich gewünscht („komplette Hero-Animation inkl. C“). |
 | 2 | **Vorhang zwischen Seiten** – fünf Bahnen fallen, Linktext als Label, öffnen sich auf der neuen Seite. | überall | Event-Gefühl bei jedem Seitenwechsel. Bewusst nur hier: Der Hero-Übergang nutzt keine Bahnen mehr (Review 23.10.). |
-| 3 | **Foto-Leiste (horizontaler Foto-Scroll)** – Bilder laufen seitlich durch, während man scrollt. Komponente `PhotoRail`. | Hero (Leistungen), jede Leistungsseite (Eindrücke) | Celias Highlight von Bar-Catering, jetzt wiederverwendbar. |
+| 3 | **Foto-Leiste (horizontaler Foto-Scroll)** – Bilder laufen seitlich durch, während man scrollt. Komponente `PhotoRail`. | jede Leistungsseite (Eindrücke) | Celias Highlight von Bar-Catering. Auf der Startseite seit 31.10. ersetzt durch die aufklappenden Leistungs-Streifen. |
 | 4 | **Reveal** – Headlines steigen wortweise aus einer Kante (`data-reveal="words"`), Karten/Absätze gleiten hoch (`data-reveal="up"`). | überall | Ruhige, einheitliche Bewegung für alle übrigen Inhalte. |
+
+Interaktionen (kein Scroll-Effekt, nur auf Hover/Geste): **aufklappende Bildstreifen** der Leistungen (Startseite), **Event-Match** (Kartenstapel zum Wischen), Abende als Plakatzeilen mit aufklappendem Bild beim Hover.
 
 Infrastruktur (kein sichtbarer Effekt): Smooth Scroll (Lenis), `prefers-reduced-motion` schaltet alles ab.
 

@@ -8,10 +8,15 @@ export const metadata = pageMeta({ ...gallery.seo, path: '/galerie', image: 'kon
 export default function GalleryPage() {
   return (
     <>
-      <header className="page-head page-head--ink">
-        <span className="eyebrow">{gallery.kicker}</span>
-        <Split as="h1" className="page-head__title" text={gallery.h1} />
-        <p className="page-head__lead">{gallery.lead}</p>
+      <header className="poster-head">
+        <span className="eyebrow eyebrow--sq">{gallery.kicker}</span>
+        <Split as="h1" className="poster-head__title" text={gallery.h1} />
+        <div className="poster-head__foot">
+          <p className="page-head__lead">{gallery.lead}</p>
+          <span className="poster-head__count mono">
+            <b>{String(gallery.items.length).padStart(2, '0')}</b> {gallery.countLabel}
+          </span>
+        </div>
       </header>
       <section className="sec sec--ink sec--tight">
         <GalleryGrid items={gallery.items} services={services.map((s) => ({ slug: s.slug, name: s.name }))} occasions={gallery.occasions} />

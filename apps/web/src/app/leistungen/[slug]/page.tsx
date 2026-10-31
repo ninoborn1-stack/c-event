@@ -2,12 +2,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { val } from '@c-event/core';
-import { brand, catalog, getService, home, inquiryHref, partners, services, shop, shopHref, ui } from '@c-event/content';
+import { brand, catalog, getService, home, partners, productHref, services, shopHref, ui } from '@c-event/content';
 import { JsonLd } from '@/components/JsonLd';
 import { Media } from '@/components/Media';
 import { PhotoRail } from '@/components/media/PhotoRail';
 import { Ph, PhText } from '@/components/Ph';
-import { PackageCard, ProductCard } from '@/components/shop/ProductCard';
 import { Split } from '@/components/Split';
 import { TicketLink } from '@/components/ui/Ticket';
 import { SITE_URL } from '@/lib/env';
@@ -34,6 +33,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
   const pkgs = catalog.packages.filter((p) => p.services.includes(s.slug));
   const faq = val(s.faq);
   const url = `${SITE_URL}/leistungen/${s.slug}`;
+  // Jeder CTA dieser Seite führt in den Shop, mit passender Kategorie und Herkunft
+  const toShop = shopHref(s.shopCategory, s.slug);
 
   return (
     <article className="svc">
@@ -75,12 +76,9 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <div className="svc-hero__foot">
             <PhText v={s.intro} className="svc-hero__intro" />
             <div className="svc-hero__ctas">
-              <TicketLink href={shopHref(s.shopCategory)} label={ui.service.fit} size="lg">
+              <TicketLink href={toShop} label={ui.service.fit} size="lg">
                 {ui.service.fit}
               </TicketLink>
-              <Link href={inquiryHref(s.slug)} className="text-link" data-label="Anfrage">
-                {s.cta} →
-              </Link>
             </div>
           </div>
         </div>
@@ -141,23 +139,27 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
             </div>
             <div className="sec__aside">
               <p>{ui.service.fitText}</p>
-              <TicketLink href={shopHref(s.shopCategory)} label={val(shop.label)} tone="outline">
+              <TicketLink href={toShop} label={ui.service.fit}>
                 {ui.service.fitLink}
               </TicketLink>
             </div>
           </header>
-          {pkgs.length > 0 && (
-            <div className="products products--pkgs">
-              {pkgs.map((p) => (
-                <PackageCard key={p.id} pkg={p} index={catalog.packages.indexOf(p)} />
+          <span className="eyebrow eyebrow--dark">{ui.service.fitIncludes}</span>
+          <ul className="teaser-grid">
+            {[...pkgs.map((p) => ({ id: p.id, name: p.name, media: p.media, meta: p.guests })), ...items.map((i) => ({ id: i.id, name: i.name, media: i.media, meta: catalog.categories.find((c) => c.id === i.category)?.label ?? '' }))]
+              .slice(0, 6)
+              .map((t) => (
+                <li key={t.id}>
+                  <Link href={productHref(t.id)} className="teaser" data-label={t.name}>
+                    <span className="teaser__img">
+                      <Media id={t.media} sizes="(min-width: 900px) 16vw, 50vw" />
+                    </span>
+                    <span className="mono">{t.meta}</span>
+                    <strong>{t.name}</strong>
+                  </Link>
+                </li>
               ))}
-            </div>
-          )}
-          <div className="products">
-            {items.map((i) => (
-              <ProductCard key={i.id} item={i} />
-            ))}
-          </div>
+          </ul>
         </section>
       )}
 
@@ -212,8 +214,8 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <span className="eyebrow">
             {ui.service.preselected} {s.name}
           </span>
-          <TicketLink href={inquiryHref(s.slug)} label="Anfrage" size="lg" tone="cream">
-            {s.cta}
+          <TicketLink href={toShop} label={ui.service.fit} size="lg" tone="cream">
+            {ui.service.fit}
           </TicketLink>
         </div>
         <Link href={`/leistungen/${next.slug}`} className="svc-cta__next" data-label={next.name}>

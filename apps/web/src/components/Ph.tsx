@@ -14,7 +14,7 @@ export function Ph<T>({
 }: {
   v: Maybe<T>;
   children: (value: T) => ReactNode;
-  as?: 'span' | 'div' | 'li';
+  as?: 'span' | 'div' | 'li' | 'ol' | 'ul';
   className?: string;
 }) {
   const value = val(v);

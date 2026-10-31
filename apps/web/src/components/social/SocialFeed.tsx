@@ -3,11 +3,11 @@ import type { SocialFeed as Feed } from '@c-event/core';
 import { Media } from '@/components/Media';
 import { TicketLink } from '@/components/ui/Ticket';
 
-/** Kompakter Instagram-Feed (eine Reihe, wischbar) – der Account hat erst ~12 Beiträge, deshalb kein großes Raster. */
-export function SocialFeed({ feed }: { feed: Feed }) {
+/** Instagram-Feed: kompakt als wischbare Reihe (Startseite) oder als Haarlinien-Raster (Social-Media-Seite). */
+export function SocialFeed({ feed, grid = false }: { feed: Feed; grid?: boolean }) {
   const isDemo = feed.source === 'demo';
   return (
-    <div className="feed">
+    <div className={`feed${grid ? ' feed--grid' : ''}`}>
       <div className="feed__head">
         <span className="eyebrow">
           {home.voices.feedTitle} · @{feed.handle}
@@ -17,14 +17,14 @@ export function SocialFeed({ feed }: { feed: Feed }) {
           {home.voices.follow}
         </TicketLink>
       </div>
-      <ul className="feed__row" data-lenis-prevent>
+      <ul className="feed__row" data-lenis-prevent={grid ? undefined : true}>
         {feed.posts.map((p) => {
           const local = isDemo || !/^https?:/.test(p.image);
           return (
             <li key={p.id}>
               <a href={p.permalink} target="_blank" rel="noopener noreferrer" className="feed__post" aria-label={p.caption || 'Instagram-Beitrag'}>
                 {local ? (
-                  <Media id={p.image} sizes="240px" />
+                  <Media id={p.image} sizes={grid ? '(min-width: 900px) 25vw, 50vw' : '240px'} />
                 ) : (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={p.image} alt={p.caption} loading="lazy" />

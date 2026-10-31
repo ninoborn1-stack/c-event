@@ -6,21 +6,27 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => sessionStorage.setItem('cev-intro-seen', '1'));
 });
 
-/** Hauptflow laut Review: Startseite → Leistung → Artikel in den Warenkorb → Warenkorb → Anfrage → Danke → Admin */
+/** Hauptflow: Startseite → Leistung → Shop (Kategorie vorausgewählt) → Artikel in den Warenkorb → Warenkorb → Anfrage → Danke → Admin */
 test('Hauptflow von der Startseite bis in den Admin', async ({ page, request }) => {
   await request.post('/api/demo/reset');
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
-  // Leistung über die Kachel öffnen
-  const tile = page.locator('.tile h3 a[href$="/leistungen/bar-catering"]');
-  await tile.scrollIntoViewIfNeeded();
-  await tile.click();
+  // Leistung über den Bildstreifen öffnen
+  const strip = page.locator('.strip__name a[href$="/leistungen/bar-catering"]');
+  await strip.scrollIntoViewIfNeeded();
+  await strip.click();
   await expect(page).toHaveURL(/\/leistungen\/bar-catering/);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Bar-Catering');
 
+  // Jeder CTA der Leistungsseite führt in den Shop – mit Kategorie und Herkunft
+  await page.locator('.svc-hero__ctas .tk').click();
+  await expect(page).toHaveURL(/\/shop\?kategorie=bar&von=bar-catering/);
+  await expect(page.locator('.shop-from')).toContainText('Bar-Catering');
+  await expect(page.locator('#artikel .chip.is-on')).toContainText('Bar');
+
   // Artikel „Zum Event hinzufügen“
-  const add = page.locator('#zum-event .products:not(.products--pkgs) .add-to-cart').first();
+  const add = page.locator('#artikel .products .add-to-cart').first();
   await add.scrollIntoViewIfNeeded();
   await add.click();
   await expect(add).toContainText('Im Event');

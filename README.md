@@ -36,12 +36,12 @@ Das Ergebnis liegt in `apps/web/out`.
 ## Demo durchspielen
 
 1. Startseite: Das Intro (Countdown, „CN“-Blende, Doors open) läuft beim ersten Besuch pro Tab.
-2. Eine Leistung öffnen (Kachel oder Navbar → Leistungen) und einen Artikel „Zum Event hinzufügen“.
+2. Eine Leistung öffnen (Bildstreifen oder Navbar → Leistungen) → „Im Shop zusammenstellen“: Der Shop öffnet mit passender Kategorie, dort einen Artikel „Zum Event hinzufügen“.
 3. Oben rechts das Warenkorb-Ticket öffnen → „Zur Übersicht“ → Notizen ergänzen → „Unverbindliches Angebot anfragen“.
 4. Im Kalender einen freien Tag anklicken, Formular ausfüllen, abschicken → Danke-Seite.
 5. **Admin** (`/admin`, Demo-Login): Anfrage mit Warenkorb und Notizen, Status ändern, Antwort aus Vorlage senden; unter „Mails“ alle System-Mails.
 
-Unter **Admin → Demo**: Hero-Übergang (Tiefe/Blende/Ticket), Slogan, Feature-Flags (Preise, Bunker-West-Code, Platzhalter-Markierung), Intro neu abspielen, Reset und alle Platzhalter nach P1/P2.
+Unter **Admin → Demo**: Hero-Übergang (Punkte/Blende/Ticket), Slogan, Feature-Flags (Preise, Bunker-West-Code, Platzhalter-Markierung), Intro neu abspielen, Reset und alle Platzhalter nach P1/P2.
 
 ## Befehle
 
