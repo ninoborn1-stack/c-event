@@ -75,6 +75,8 @@ Getroffen beim Bau der Demo (22.10.2026), wo Briefing oder Start-Prompt offen od
 |---|---|---|
 | Hero-Intro | Hero-Inhalte und Navigation verdeckt während des Intros nur CSS (`.is-intro`, `html.intro-on`). Die Tweens setzen ihren Startzustand erst, wenn sie dran sind. Ein Wächter mit `setTimeout` springt nach spätestens 10 s auf den Endzustand, eine CSS-Notbremse nach 9 s. Im Hintergrund-Tab geladen → kein Intro. | Vorher konnten Buttons und Navigation unsichtbar bleiben, wenn `requestAnimationFrame` stand (Hintergrund-Tab, stockender Browser). |
 | Effekte | Filmkorn statisch und nur Viewport-groß, Cursor ohne `mix-blend-mode`, bewegte Großflächen mit `will-change`, ScrollTrigger-Refresh nach Fonts und Bildern | Weniger Arbeit pro Frame beim Scrollen. |
+| Hero-Titel (01.11.) | Der Titel-Tween setzt `y: 0` ausdrücklich mit. CSS verdeckt die Buchstaben mit `translateY(125%)`; GSAP las das als Pixel-Versatz und addierte es zu `yPercent`, sodass der Titel erst am Intro-Ende hart erschien. E2E-Test prüft das. | Titel steigt jetzt sichtbar auf. |
+| CN-Zoom (01.11.) | Die Blende blendet aus, solange das CN noch klein ist; im Hochformat liegt der SVG-Ausschnitt in Fensterform um das CN. Demo-Schild ist während des Intros verdeckt. | Vorher halbschwarze Zwischenbilder beim Durchzoomen und abgeschnittenes CN am Handy. |
 | Bilder statisch | `scripts/stock-variants.mjs` erzeugt WebP-Varianten (480/960/1600/2200 px), ein eigener Loader wählt die passende. | GitHub Pages hat keinen Bild-Optimierer; vorher wurden überall die Originale (bis 2400 px) geladen. |
 
 ## Afterhour Arcade

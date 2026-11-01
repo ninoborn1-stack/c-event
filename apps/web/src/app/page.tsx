@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { isPlaceholder, val } from '@c-event/core';
-import { brand, catalog, home, inquiryHref, shop } from '@c-event/content';
+import { brand, catalog, gallery, home, inquiryHref, shop } from '@c-event/content';
 import { Hero } from '@/components/home/Hero';
 import { ServiceStrips } from '@/components/home/ServiceStrips';
 import { SwipeDeck } from '@/components/home/SwipeDeck';
@@ -77,42 +77,52 @@ export default async function HomePage() {
         <SwipeDeck cards={val(home.swipe.cards)} />
       </section>
 
-      {/* 5 · Abende als Plakatzeilen (hell) */}
+      {/* 5 · Abende als Plakatwand im Ticket-Stil (hell) */}
       <section className="sec sec--cream">
         <header className="sec__head sec__head--row">
           <div>
             <span className="eyebrow">{home.highlights.kicker}</span>
             <Split as="h2" className="h-l" text={home.highlights.title} />
           </div>
-          <div className="sec__aside">
-            <TicketLink href="/galerie" label="Galerie">
-              {home.highlights.cta}
-            </TicketLink>
-          </div>
         </header>
-        <Ph v={hl} as="ol" className="nights">
-          {(items) =>
-            items.map((h, i) => (
-              <li key={h.title} className="night" data-reveal="up">
-                <Link href="/galerie" className="night__link" data-label="Galerie">
-                  <span className="night__no mono">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="night__img">
-                    <Media id={h.media} sizes="(min-width: 900px) 30vw, 100vw" />
+        <Ph v={hl} as="ol" className="bills">
+          {(items) => [
+            ...items.map((h, i) => (
+              <li key={h.title} className={`bill bill--${i}`} data-reveal="up">
+                <Link href="/galerie" className="bill__link" data-label="Galerie">
+                  <span className="bill__img">
+                    <Media id={h.media} sizes={i === 0 ? '(min-width: 900px) 58vw, 100vw' : '(min-width: 900px) 42vw, 100vw'} />
                   </span>
-                  <strong className="night__title">{h.title}</strong>
-                  <span className="night__meta mono">
-                    <span>{h.meta}</span>
+                  <span className="bill__top mono">
                     <span>
-                      {h.place} · {h.year}
+                      {home.highlights.no} {String(i + 1).padStart(2, '0')}
                     </span>
+                    <span>{h.year}</span>
                   </span>
-                  <span className="night__arrow" aria-hidden="true">
-                    ↗
+                  <strong className="bill__title">{h.title}</strong>
+                  <span className="bill__stub mono">
+                    <span>{h.meta}</span>
+                    <span className="bill__place">{h.place}</span>
+                    <span className="bill__arrow" aria-hidden="true">
+                      ↗
+                    </span>
                   </span>
                 </Link>
               </li>
-            ))
-          }
+            )),
+            <li key="archiv" className="bill bill--more" data-reveal="up">
+              <span className="eyebrow eyebrow--sq">{home.highlights.archive.kicker}</span>
+              <Split as="h3" className="bill__more-title" text={home.highlights.archive.title} />
+              <div className="bill__more-foot">
+                <p className="mono">
+                  <b>{gallery.items.length}</b> {home.highlights.archive.count}
+                </p>
+                <TicketLink href="/galerie" label="Galerie" tone="cream">
+                  {home.highlights.cta}
+                </TicketLink>
+              </div>
+            </li>,
+          ]}
         </Ph>
       </section>
 

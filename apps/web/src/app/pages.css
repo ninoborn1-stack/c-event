@@ -2315,15 +2315,9 @@
 .sec--cream {
   --color-line: var(--color-line-dark);
 }
-.sec--cream .night__no,
-.sec--cream .night__meta,
-.sec--cream .night__arrow,
 .sec--cream .bignum p,
 .sec--cream .ptile__text .mono {
   color: var(--color-ash);
-}
-.sec--cream .night__link:hover .night__arrow {
-  color: var(--color-ink);
 }
 .sec--cream .ptile__text .mono {
   color: rgba(244, 238, 228, 0.75);

@@ -214,6 +214,11 @@ export function Hero(p: HeroProps) {
       const counter = { v: 0 };
       const loadNum = q('.intro__load b')[0];
       gsap.set(q('.hero__img'), { scale: 1.6 });
+      // Hochformat: Ausschnitt in Fensterform um das CN (x 210–780) legen, sonst schneidet „slice“ C und N am Rand ab
+      if (window.innerWidth < window.innerHeight) {
+        const h = (640 * window.innerHeight) / window.innerWidth;
+        q('.intro__svg')[0]?.setAttribute('viewBox', `175 ${500 - h / 2} 640 ${h}`);
+      }
       // Titel, Eyebrow, Lead, CTA, Leiste und Navigation verdeckt bis zu ihrem Auftritt nur CSS (.is-intro / .intro-on).
 
       if (full) {
@@ -243,8 +248,9 @@ export function Hero(p: HeroProps) {
         .fromTo(q('.intro__zoomc'), { scale: 1, svgOrigin: ZOOM_ORIGIN }, { scale: 90, svgOrigin: ZOOM_ORIGIN, duration: full ? 1.05 : 0.8, ease: 'expo.in' }, full ? '+=0.25' : '+=0.05')
         .to(q('.intro__doors'), { autoAlpha: 0, scale: 1.4, duration: 0.3, ease: 'power2.in' }, '<')
         .to(q('.hero__img'), { scale: 1.12, duration: 2, ease: 'expo.out' }, '<0.55')
-        .set(q('.intro'), { autoAlpha: 0 }, '<0.5')
-        .fromTo(q('.ch'), { yPercent: 125, rotate: 9 }, { yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out', immediateRender: false }, '<0.05')
+        // Overlay ausblenden, solange das CN noch klein ist: kein halbschwarzes Zwischenbild beim Durchzoomen
+        .to(q('.intro'), { autoAlpha: 0, duration: 0.45, ease: 'none' }, '<-0.25')
+        .fromTo(q('.ch'), { y: 0, yPercent: 125, rotate: 9 }, { y: 0, yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out', immediateRender: false }, '<0.3')
         .fromTo(q('.hero__eyebrow > *'), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power3.out', immediateRender: false }, '<0.3')
         .fromTo(q('.hero__foot > *'), { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out', immediateRender: false }, '<0.1')
         .fromTo(q('.hero__bar-in'), { autoAlpha: 0, yPercent: 110 }, { autoAlpha: 1, yPercent: 0, duration: 0.8, ease: 'expo.out', immediateRender: false }, '<0.1');

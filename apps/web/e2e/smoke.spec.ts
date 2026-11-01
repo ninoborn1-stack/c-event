@@ -138,3 +138,31 @@ test('Hero-Foto ist im ersten Fenster sichtbar', async ({ page }) => {
   expect(box!.width).toBeGreaterThanOrEqual(vp.width);
   expect(box!.height).toBeGreaterThanOrEqual(vp.height * 0.9);
 });
+
+test('Hero-Titel steigt schon während des Intros ein, nicht erst danach', async ({ page }) => {
+  await page.goto('/');
+  // Solange .is-intro gesetzt ist, muss der erste Buchstabe irgendwann in seiner Zeile ankommen
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const hero = document.querySelector('.hero');
+          const ch = document.querySelector('.hero__title .ch');
+          const line = ch?.parentElement;
+          if (!hero || !ch || !line) return 'fehlt';
+          const off = ch.getBoundingClientRect().top - line.getBoundingClientRect().top;
+          return hero.classList.contains('is-intro') ? (off < 40 ? 'drin' : 'unten') : 'fertig';
+        }),
+      { timeout: 12000, intervals: [100] },
+    )
+    .toBe('drin');
+});
+
+test('Abende als Plakatwand mit Archiv-Kachel', async ({ page }) => {
+  await page.goto('/');
+  const bills = page.locator('.bills > .bill');
+  await expect(bills).toHaveCount(5);
+  const more = page.locator('.bill--more a[href$="/galerie"]');
+  await more.scrollIntoViewIfNeeded(); // Reveal blendet erst im Bild ein
+  await expect(more).toBeVisible();
+});

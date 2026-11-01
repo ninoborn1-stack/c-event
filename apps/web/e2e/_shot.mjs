@@ -1,0 +1,14 @@
+import { chromium, devices } from '@playwright/test';
+const [url, sel, out, mode] = process.argv.slice(2);
+const b = await chromium.launch();
+const ctx = mode === 'mobile' ? await b.newContext({ ...devices['Pixel 7'] }) : await b.newContext({ viewport: { width: 1440, height: 900 } });
+const p = await ctx.newPage();
+const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type() === 'error' && errs.push(m.text()));
+await p.addInitScript(() => sessionStorage.setItem('cev-intro-seen', '1'));
+await p.emulateMedia({ reducedMotion: 'reduce' });
+await p.goto(url, { waitUntil: 'networkidle' });
+const el = p.locator(sel).first();
+await el.scrollIntoViewIfNeeded(); await p.waitForTimeout(1200);
+await el.screenshot({ path: out });
+console.log(errs.join('\n'));
+await b.close();

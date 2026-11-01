@@ -79,6 +79,13 @@ export const home = {
       'Referenzen',
     ),
     cta: 'Zur Galerie',
+    /** Rote Kachel am Ende der Plakatwand */
+    archive: {
+      kicker: 'Archiv',
+      title: 'Noch mehr Nächte im *Archiv.*',
+      count: 'Fotos aus echten Abenden',
+    },
+    no: 'Nr.',
   },
   voices: {
     kicker: 'Stimmen',
