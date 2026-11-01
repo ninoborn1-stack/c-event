@@ -24,12 +24,12 @@ interface HeroProps {
   behind: string;
 }
 
-/** „CN“ als Blende (viewBox 1000): C-Ring links, N rechts. Zoom-Ursprung liegt im linken N-Schaft. */
+/** „CN“ als Blende (viewBox 1000): C-Ring links, N rechts. Zum Öffnen quellen die Buchstaben per Kontur auf, bis sie das ganze Fenster füllen. */
 const CN_PATHS = [
   'M 510.2 390.7 A 170 170 0 1 0 510.2 609.3 L 456.6 564.3 A 100 100 0 1 1 456.6 435.7 Z',
   'M 580 330 H 646 L 714 488 V 330 H 780 V 670 H 714 L 646 512 V 670 H 580 Z',
 ];
-const ZOOM_ORIGIN = '613 500';
+const ZOOM_ORIGIN = '495 500';
 const INTRO_KEY = 'cev-intro-seen';
 
 /** Stücke, in die das Hero-Bild für den Übergang zerfällt: 1 Bild (Punkte, Blende), 2 Ticket-Hälften */
@@ -77,20 +77,28 @@ export function Hero(p: HeroProps) {
     let raf = 0;
     let active = false;
     const loop = () => {
+      raf = 0;
+      if (!active) return;
       field?.draw(dots);
-      raf = active ? requestAnimationFrame(loop) : 0;
+      raf = requestAnimationFrame(loop);
     };
     const setActive = (on: boolean) => {
       if (on === active) return;
       active = on;
       if (on && !raf) raf = requestAnimationFrame(loop);
-      if (!on) field?.clear();
+      if (!on) {
+        // geplanten Frame verwerfen, sonst malt er das Raster nach dem Löschen noch einmal hin
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+        field?.clear();
+      }
     };
-    let inRange = false;
+    // Zeichnen hängt am tatsächlichen Punkte-Zustand (nicht an der Scrollposition, die dem Scrub vorausläuft)
+    const visible = () => dots.grid > 0.001 || dots.alpha > 0.001;
     let inView = true;
     const io = new IntersectionObserver(([e]) => {
       inView = !!e?.isIntersecting;
-      setActive(inRange && inView);
+      setActive(inView && visible());
     });
     io.observe(el);
     const onMove = (e: PointerEvent) => field?.pointer(e.clientX, e.clientY);
@@ -125,10 +133,9 @@ export function Hero(p: HeroProps) {
           scrub: 0.8,
           onUpdate: (s) => {
             if (s.progress > 0.02) finishRef.current();
-            inRange = s.progress > 0.42;
-            setActive(inRange && inView);
           },
         },
+        onUpdate: () => setActive(inView && visible()),
       });
       tl.fromTo(q('.hero__zoom'), { scale: 1 }, { scale: 1.2, duration: 1 }, 0)
         .fromTo(q('.hero__content'), { yPercent: 0, autoAlpha: 1 }, { yPercent: -22, autoAlpha: 0, duration: 0.3, ease: 'power1.in' }, 0)
@@ -231,25 +238,28 @@ export function Hero(p: HeroProps) {
           },
         });
         intro.to(q('.intro__load'), { autoAlpha: 0, duration: 0.15 });
+        // Countdown im gleichmäßigen Takt: rein (leicht größer → 1), kurz stehen, raus; die rote 1 fliegt auf die Kamera zu
         q('.intro__digit').forEach((c, i, all) => {
+          const last = i === all.length - 1;
           intro!
             // Skalierung als transform-Attribut um die feste Mitte (50 50): unabhängig davon, wann die Schrift lädt
-            .fromTo(c, { attr: { transform: 'translate(50 50) scale(2.2)' }, autoAlpha: 0 }, { attr: { transform: 'translate(50 50) scale(1)' }, autoAlpha: 1, duration: 0.2, ease: 'expo.out' })
-            .to(c, { attr: { transform: `translate(50 50) scale(${i === all.length - 1 ? 6 : 0.7})` }, autoAlpha: 0, duration: 0.14, ease: 'power2.in' }, '+=0.08');
+            .fromTo(c, { attr: { transform: 'translate(50 50) scale(1.3)' }, autoAlpha: 0 }, { attr: { transform: 'translate(50 50) scale(1)' }, autoAlpha: 1, duration: 0.22, ease: 'power3.out' })
+            .to(c, { attr: { transform: `translate(50 50) scale(${last ? 5 : 0.86})` }, autoAlpha: 0, duration: last ? 0.34 : 0.16, ease: 'power2.in' }, '+=0.2');
         });
-        intro.fromTo(q('.intro__flash'), { opacity: 0 }, { opacity: 0.85, duration: 0.05 }, '-=0.08').to(q('.intro__flash'), { opacity: 0, duration: 0.4 });
       } else {
         intro.set(q('.intro__load'), { autoAlpha: 0 });
       }
       intro
-        .set(q('.intro__c'), { visibility: 'visible' }, full ? '-=0.4' : 0)
-        .fromTo(q('.intro__c'), { scale: 0.001, rotation: -160, svgOrigin: '500 500' }, { scale: 1, rotation: 0, svgOrigin: '500 500', duration: full ? 0.8 : 0.55, ease: 'expo.out' }, '<')
+        .set(q('.intro__c'), { visibility: 'visible' }, full ? '-=0.02' : 0)
+        .fromTo(q('.intro__c'), { scale: 0.62, rotation: -10, svgOrigin: '500 500' }, { scale: 1, rotation: 0, svgOrigin: '500 500', duration: full ? 0.75 : 0.55, ease: 'expo.out' }, '<')
         .fromTo(q('.intro__doors'), { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power3.out' }, '<0.15')
-        .fromTo(q('.intro__zoomc'), { scale: 1, svgOrigin: ZOOM_ORIGIN }, { scale: 90, svgOrigin: ZOOM_ORIGIN, duration: full ? 1.05 : 0.8, ease: 'expo.in' }, full ? '+=0.25' : '+=0.05')
+        // Aufquellen statt Durchzoomen: die Kontur wächst, die Buchstaben verschmelzen zum vollen Foto (keine schwarzen Kanten)
+        .fromTo(q('.intro__c path'), { attr: { 'stroke-width': 0 } }, { attr: { 'stroke-width': 1500 }, duration: full ? 0.9 : 0.7, ease: 'power3.in' }, full ? '+=0.25' : '+=0.05')
+        .fromTo(q('.intro__zoomc'), { scale: 1, svgOrigin: ZOOM_ORIGIN }, { scale: 1.35, svgOrigin: ZOOM_ORIGIN, duration: full ? 0.9 : 0.7, ease: 'power2.in' }, '<')
         .to(q('.intro__doors'), { autoAlpha: 0, scale: 1.4, duration: 0.3, ease: 'power2.in' }, '<')
-        .to(q('.hero__img'), { scale: 1.12, duration: 2, ease: 'expo.out' }, '<0.55')
-        // Overlay ausblenden, solange das CN noch klein ist: kein halbschwarzes Zwischenbild beim Durchzoomen
-        .to(q('.intro'), { autoAlpha: 0, duration: 0.45, ease: 'none' }, '<-0.25')
+        // Am Ende kurz ausblenden, falls in einer Ecke noch ein Rest Schwarz steht
+        .to(q('.intro'), { autoAlpha: 0, duration: 0.2, ease: 'power1.in' }, full ? '<0.7' : '<0.5')
+        .to(q('.hero__img'), { scale: 1.12, duration: 2, ease: 'expo.out' }, '<')
         .fromTo(q('.ch'), { y: 0, yPercent: 125, rotate: 9 }, { y: 0, yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out', immediateRender: false }, '<0.3')
         .fromTo(q('.hero__eyebrow > *'), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power3.out', immediateRender: false }, '<0.3')
         .fromTo(q('.hero__foot > *'), { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out', immediateRender: false }, '<0.1')
@@ -392,7 +402,7 @@ export function Hero(p: HeroProps) {
                   <g className="intro__zoomc">
                     <g className="intro__c" style={{ visibility: 'hidden' }}>
                       {CN_PATHS.map((d) => (
-                        <path key={d} d={d} fill="black" />
+                        <path key={d} d={d} fill="black" stroke="black" strokeWidth={0} strokeLinejoin="round" />
                       ))}
                     </g>
                   </g>
@@ -412,7 +422,6 @@ export function Hero(p: HeroProps) {
             <div className="intro__load eyebrow">
               Einlass <b>00</b>%
             </div>
-            <div className="intro__flash" />
           </div>
         )}
       </section>

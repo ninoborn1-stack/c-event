@@ -1091,9 +1091,7 @@ body:has(.poster-head--light) .nav {
   font-weight: 900;
   font-variation-settings: 'wdth' 62;
   font-size: 76px;
-  fill: transparent;
-  stroke: var(--color-amber);
-  stroke-width: 0.4px;
+  fill: var(--color-cream);
   opacity: 0;
 }
 .intro__digit:last-child {
@@ -1121,13 +1119,6 @@ body:has(.poster-head--light) .nav {
 .intro__load b {
   color: var(--color-cream);
   font-variant-numeric: tabular-nums;
-}
-.intro__flash {
-  position: absolute;
-  inset: 0;
-  background: var(--color-cream);
-  opacity: 0;
-  mix-blend-mode: overlay;
 }
 /* Während des Intros verdeckt nur CSS die Hero-Inhalte; die Tweens übernehmen, sobald sie dran sind. Notbremse nach 9 s. */
 .hero.is-intro .ch {

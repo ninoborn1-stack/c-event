@@ -166,3 +166,29 @@ test('Abende als Plakatwand mit Archiv-Kachel', async ({ page }) => {
   await more.scrollIntoViewIfNeeded(); // Reveal blendet erst im Bild ein
   await expect(more).toBeVisible();
 });
+
+test('360°-Punkte verschwinden, wenn man in den Hero zurückscrollt', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Mausrad nur am Desktop');
+  await page.addInitScript(() => sessionStorage.setItem('cev-intro-seen', '1'));
+  await page.goto('/');
+  await page.waitForTimeout(3500);
+  await page.mouse.move(600, 400);
+  const lit = () =>
+    page.evaluate(() => {
+      const c = document.querySelector<HTMLCanvasElement>('.hero__dots')!;
+      const d = c.getContext('2d')!.getImageData(0, 0, c.width, c.height).data;
+      let n = 0;
+      for (let i = 3; i < d.length; i += 40) if (d[i]) n++;
+      return n;
+    });
+  for (let i = 0; i < 12; i++) {
+    await page.mouse.wheel(0, 120);
+    await page.waitForTimeout(60);
+  }
+  await expect.poll(lit, { timeout: 8000 }).toBeGreaterThan(0);
+  for (let i = 0; i < 20; i++) {
+    await page.mouse.wheel(0, -160);
+    await page.waitForTimeout(40);
+  }
+  await expect.poll(lit, { timeout: 8000 }).toBe(0);
+});
