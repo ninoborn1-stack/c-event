@@ -32,7 +32,6 @@ export default async function HomePage() {
         lead={home.hero.lead}
         cta={{ label: home.hero.cta, href: shop.path }}
         bar={home.hero.bar}
-        countdown={home.intro.countdown}
         doors={home.intro.doors}
         sloganIsPlaceholder={isPlaceholder(brand.slogans)}
         sloganNote={isPlaceholder(brand.slogans) ? brand.slogans.note : undefined}

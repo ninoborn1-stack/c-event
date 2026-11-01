@@ -18,7 +18,6 @@ export const home = {
     bar: ['Jetzt buchbar für Dezember', 'Antwort in 48 h', 'Berlin & Brandenburg'],
   },
   intro: {
-    countdown: ['3', '2', '1'],
     doors: 'Doors open',
     behind: '360°',
   },

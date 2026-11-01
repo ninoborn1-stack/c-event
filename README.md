@@ -35,7 +35,7 @@ Das Ergebnis liegt in `apps/web/out`.
 
 ## Demo durchspielen
 
-1. Startseite: Das Intro (Countdown, „CN“-Blende, Doors open) läuft beim ersten Besuch pro Tab.
+1. Startseite: Das Intro („CN“-Blende, Doors open) läuft beim ersten Besuch pro Tab.
 2. Eine Leistung öffnen (Bildstreifen oder Navbar → Leistungen) → „Im Shop zusammenstellen“: Der Shop öffnet mit passender Kategorie, dort einen Artikel „Zum Event hinzufügen“.
 3. Oben rechts das Warenkorb-Ticket öffnen → „Zur Übersicht“ → Notizen ergänzen → „Unverbindliches Angebot anfragen“.
 4. Im Kalender einen freien Tag anklicken, Formular ausfüllen, abschicken → Danke-Seite.

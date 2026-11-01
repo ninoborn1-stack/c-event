@@ -17,7 +17,6 @@ interface HeroProps {
   lead: string;
   cta: { label: string; href: string };
   bar: string[];
-  countdown: string[];
   doors: string;
   sloganIsPlaceholder: boolean;
   sloganNote?: string;
@@ -218,8 +217,6 @@ export function Hero(p: HeroProps) {
           setIntroDone(true);
         },
       });
-      const counter = { v: 0 };
-      const loadNum = q('.intro__load b')[0];
       gsap.set(q('.hero__img'), { scale: 1.6 });
       // Hochformat: Ausschnitt in Fensterform um das CN (x 210–780) legen, sonst schneidet „slice“ C und N am Rand ab
       if (window.innerWidth < window.innerHeight) {
@@ -228,39 +225,20 @@ export function Hero(p: HeroProps) {
       }
       // Titel, Eyebrow, Lead, CTA, Leiste und Navigation verdeckt bis zu ihrem Auftritt nur CSS (.is-intro / .intro-on).
 
-      if (full) {
-        intro.to(counter, {
-          v: 100,
-          duration: 0.7,
-          ease: 'power2.inOut',
-          onUpdate: () => {
-            if (loadNum) loadNum.textContent = String(Math.round(counter.v)).padStart(2, '0');
-          },
-        });
-        intro.to(q('.intro__load'), { autoAlpha: 0, duration: 0.15 });
-        // Countdown im gleichmäßigen Takt: rein (leicht größer → 1), kurz stehen, raus; die rote 1 fliegt auf die Kamera zu
-        q('.intro__digit').forEach((c, i, all) => {
-          const last = i === all.length - 1;
-          intro!
-            // Skalierung als transform-Attribut um die feste Mitte (50 50): unabhängig davon, wann die Schrift lädt
-            .fromTo(c, { attr: { transform: 'translate(50 50) scale(1.3)' }, autoAlpha: 0 }, { attr: { transform: 'translate(50 50) scale(1)' }, autoAlpha: 1, duration: 0.22, ease: 'power3.out' })
-            .to(c, { attr: { transform: `translate(50 50) scale(${last ? 5 : 0.86})` }, autoAlpha: 0, duration: last ? 0.34 : 0.16, ease: 'power2.in' }, '+=0.2');
-        });
-      } else {
-        intro.set(q('.intro__load'), { autoAlpha: 0 });
-      }
+      // Nur das CN: ruhig aufblenden, kurz stehen, dann quellen die Buchstaben auf und öffnen das Foto
+      const swell = full ? 1.05 : 0.75;
       intro
-        .set(q('.intro__c'), { visibility: 'visible' }, full ? '-=0.02' : 0)
-        .fromTo(q('.intro__c'), { scale: 0.62, rotation: -10, svgOrigin: '500 500' }, { scale: 1, rotation: 0, svgOrigin: '500 500', duration: full ? 0.75 : 0.55, ease: 'expo.out' }, '<')
-        .fromTo(q('.intro__doors'), { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power3.out' }, '<0.15')
+        .set(q('.intro__c'), { visibility: 'visible' })
+        .fromTo(q('.intro__c'), { autoAlpha: 0, scale: 0.94, svgOrigin: '500 500' }, { autoAlpha: 1, scale: 1, svgOrigin: '500 500', duration: full ? 0.9 : 0.5, ease: 'power2.out' })
+        .fromTo(q('.intro__doors'), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '<0.25')
         // Aufquellen statt Durchzoomen: die Kontur wächst, die Buchstaben verschmelzen zum vollen Foto (keine schwarzen Kanten)
-        .fromTo(q('.intro__c path'), { attr: { 'stroke-width': 0 } }, { attr: { 'stroke-width': 1500 }, duration: full ? 0.9 : 0.7, ease: 'power3.in' }, full ? '+=0.25' : '+=0.05')
-        .fromTo(q('.intro__zoomc'), { scale: 1, svgOrigin: ZOOM_ORIGIN }, { scale: 1.35, svgOrigin: ZOOM_ORIGIN, duration: full ? 0.9 : 0.7, ease: 'power2.in' }, '<')
-        .to(q('.intro__doors'), { autoAlpha: 0, scale: 1.4, duration: 0.3, ease: 'power2.in' }, '<')
+        .fromTo(q('.intro__c path'), { attr: { 'stroke-width': 0 } }, { attr: { 'stroke-width': 1500 }, duration: swell, ease: 'power3.inOut' }, full ? '+=0.35' : '+=0.05')
+        .fromTo(q('.intro__zoomc'), { scale: 1, svgOrigin: ZOOM_ORIGIN }, { scale: 1.2, svgOrigin: ZOOM_ORIGIN, duration: swell, ease: 'power2.inOut' }, '<')
+        .to(q('.hero__img'), { scale: 1.12, duration: swell + 1.2, ease: 'power2.out' }, '<')
+        .to(q('.intro__doors'), { autoAlpha: 0, y: -10, duration: 0.3, ease: 'power2.in' }, '<')
         // Am Ende kurz ausblenden, falls in einer Ecke noch ein Rest Schwarz steht
-        .to(q('.intro'), { autoAlpha: 0, duration: 0.2, ease: 'power1.in' }, full ? '<0.7' : '<0.5')
-        .to(q('.hero__img'), { scale: 1.12, duration: 2, ease: 'expo.out' }, '<')
-        .fromTo(q('.ch'), { y: 0, yPercent: 125, rotate: 9 }, { y: 0, yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out', immediateRender: false }, '<0.3')
+        .to(q('.intro'), { autoAlpha: 0, duration: 0.2, ease: 'power1.in' }, `<${swell - 0.2}`)
+        .fromTo(q('.ch'), { y: 0, yPercent: 125, rotate: 9 }, { y: 0, yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out', immediateRender: false }, '<-0.2')
         .fromTo(q('.hero__eyebrow > *'), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power3.out', immediateRender: false }, '<0.3')
         .fromTo(q('.hero__foot > *'), { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out', immediateRender: false }, '<0.1')
         .fromTo(q('.hero__bar-in'), { autoAlpha: 0, yPercent: 110 }, { autoAlpha: 1, yPercent: 0, duration: 0.8, ease: 'expo.out', immediateRender: false }, '<0.1');
@@ -410,18 +388,7 @@ export function Hero(p: HeroProps) {
               </defs>
               <rect x="-5000" y="-5000" width="11000" height="11000" fill="var(--color-ink)" mask="url(#intro-mask)" />
             </svg>
-            {/* Als SVG-Text: sonst wertet Lighthouse die Countdown-Ziffern als „größtes Element“ (LCP) */}
-            <svg className="intro__count" viewBox="0 0 100 100" aria-hidden="true">
-              {p.countdown.map((c) => (
-                <text key={c} x="0" y="0" transform="translate(50 50)" textAnchor="middle" dominantBaseline="central" className="intro__digit">
-                  {c}
-                </text>
-              ))}
-            </svg>
             <div className="intro__doors">{p.doors}</div>
-            <div className="intro__load eyebrow">
-              Einlass <b>00</b>%
-            </div>
           </div>
         )}
       </section>
