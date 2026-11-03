@@ -192,3 +192,33 @@ test('360°-Punkte verschwinden, wenn man in den Hero zurückscrollt', async ({ 
   }
   await expect.poll(lit, { timeout: 8000 }).toBe(0);
 });
+
+test('Nichts ragt bei 320 px über den Bildschirmrand', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'nur im Mobil-Projekt');
+  await page.setViewportSize({ width: 320, height: 640 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const path of ['/', '/leistungen/bar-catering', '/anfrage', '/shop']) {
+    await page.goto(path);
+    await page.waitForLoadState('networkidle');
+    const over = await page.evaluate(() => {
+      const vw = document.documentElement.clientWidth;
+      const clipped = (el: Element) => {
+        for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+          const s = getComputedStyle(a);
+          if (/(hidden|auto|scroll|clip)/.test(s.overflowX) || s.position === 'fixed') return true;
+        }
+        return false;
+      };
+      return [...document.querySelectorAll('body *')]
+        .filter((el) => {
+          const s = getComputedStyle(el);
+          if (s.display === 'none' || s.position === 'fixed' || el.closest('.hp')) return false;
+          const r = el.getBoundingClientRect();
+          return r.width > 0 && r.right > vw + 1 && !clipped(el);
+        })
+        .map((el) => `${el.tagName}.${el.className}`)
+        .slice(0, 5);
+    });
+    expect(over, path).toEqual([]);
+  }
+});

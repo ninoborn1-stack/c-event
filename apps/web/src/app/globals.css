@@ -225,7 +225,7 @@ main {
   border-radius: var(--radius-pill);
   background: var(--color-amber);
   color: var(--color-ink);
-  font: 700 0.62rem/1.3 var(--font-sans);
+  font: 700 0.7rem/1.3 var(--font-sans);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -367,6 +367,50 @@ main {
 .tk:active {
   transform: translateY(1px);
 }
+/* Abriss beim Klick: der Stub kippt an der Perforation weg und fällt, das Ticket zuckt kurz zurück.
+   Am Ende steht der Stub wieder (für Buttons; Links sind dann längst hinter dem Vorhang). */
+.tk[data-torn],
+.tk[data-torn]:hover {
+  transform: none;
+}
+.tk[data-torn] .tk__stub {
+  transform-origin: 0 100%;
+  animation: tkTear 0.9s cubic-bezier(0.3, 0, 0.6, 1) both;
+}
+.tk[data-torn] .tk__main {
+  animation: tkJolt 0.36s var(--ease-out);
+}
+@keyframes tkTear {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  14% {
+    /* oben reißt es zuerst: kurz anheben und aufklappen */
+    transform: translate(3px, -2px) rotate(9deg);
+  }
+  58% {
+    transform: translate(18px, 34px) rotate(38deg);
+    opacity: 1;
+  }
+  72% {
+    transform: translate(24px, 52px) rotate(46deg);
+    opacity: 0;
+  }
+  73% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes tkJolt {
+  30% {
+    transform: translateX(-3px) rotate(-0.8deg);
+  }
+}
 .tk--red {
   --tk-bg: var(--ticket-bg);
   --tk-fg: var(--ticket-fg);
@@ -415,9 +459,33 @@ main {
 .tk--full .tk__main {
   flex: 1;
 }
+.tk {
+  max-width: 100%;
+}
+.tk__main {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 420px) {
+  .tk {
+    letter-spacing: 0.08em;
+  }
+  .tk--lg {
+    min-height: 56px;
+    font-size: 0.9rem;
+  }
+  .tk--lg .tk__main {
+    padding: 15px 18px 14px 20px;
+  }
+}
 .tk:disabled {
   opacity: 0.6;
   cursor: progress;
+}
+
+/* Fieldsets haben im Browser min-width: min-content und sprengen sonst schmale Layouts */
+fieldset {
+  min-width: 0;
 }
 
 /* ---------- Platzhalter (nur sichtbar mit html[data-ph=on]) ---------- */
@@ -762,6 +830,11 @@ body:has(.poster-head--light) .nav {
     display: flex;
   }
   .nav__burger {
+    display: none;
+  }
+}
+@media (max-width: 370px) {
+  .nav__word {
     display: none;
   }
 }
@@ -1326,7 +1399,7 @@ a.rail__item:hover .rail__img img {
   border-radius: var(--radius-pill);
   background: rgba(15, 8, 8, 0.82);
   color: var(--color-cream);
-  font: 700 0.62rem/1.2 var(--font-sans);
+  font: 700 0.7rem/1.2 var(--font-sans);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -1753,7 +1826,7 @@ a.rail__item:hover .rail__img img {
 }
 .ticket__admit {
   grid-column: 1 / -1;
-  font: 700 0.66rem/1 var(--font-sans);
+  font: 700 0.7rem/1 var(--font-sans);
   letter-spacing: 0.32em;
   text-transform: uppercase;
   opacity: 0.85;
@@ -2183,12 +2256,13 @@ a.rail__item:hover .rail__img img {
 /* ---------- Event-Match: Kartenstapel in der Handy-Attrappe ---------- */
 .match {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(40px, 6vw, 96px);
   align-items: center;
 }
 @media (min-width: 900px) {
   .match {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 }
 .match__text {
@@ -2198,7 +2272,7 @@ a.rail__item:hover .rail__img img {
 }
 .match__steps {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   width: 100%;
   max-width: 620px;
@@ -2211,7 +2285,8 @@ a.rail__item:hover .rail__img img {
 .match__steps li {
   display: grid;
   gap: 6px;
-  padding: 18px 16px;
+  min-width: 0;
+  padding: clamp(12px, 3vw, 18px) clamp(10px, 3vw, 16px);
   background: var(--color-ink);
 }
 .match__steps b {
@@ -2223,8 +2298,9 @@ a.rail__item:hover .rail__img img {
   font-variation-settings: 'wdth' 62;
   font-weight: 900;
   text-transform: uppercase;
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 5vw, 1.5rem);
   line-height: 1;
+  overflow-wrap: anywhere;
 }
 .match__steps .mono {
   color: var(--color-mute);
@@ -2300,7 +2376,7 @@ a.rail__item:hover .rail__img img {
 }
 .deck__info .mono {
   color: var(--color-amber);
-  font-size: 0.62rem;
+  font-size: 0.7rem;
 }
 .deck__info strong {
   font-family: var(--font-display);
@@ -2343,7 +2419,7 @@ a.rail__item:hover .rail__img img {
   padding: 14px 22px 22px;
 }
 .deck__btns .mono {
-  font-size: 0.56rem;
+  font-size: 0.66rem;
   color: var(--color-mute);
   text-align: center;
 }
@@ -2659,7 +2735,7 @@ a.rail__item:hover .rail__img img {
 }
 .teaser .mono {
   color: var(--color-ash);
-  font-size: 0.62rem;
+  font-size: 0.7rem;
 }
 .teaser strong {
   font-family: var(--font-display);

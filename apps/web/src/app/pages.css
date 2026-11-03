@@ -259,10 +259,11 @@
 }
 .svc-cta {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
 }
 @media (min-width: 900px) {
   .svc-cta {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 }
 .svc-cta__main,

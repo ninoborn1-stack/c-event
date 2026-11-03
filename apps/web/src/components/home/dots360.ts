@@ -32,6 +32,8 @@ interface Dot {
   lift: number;
   ox: number;
   oy: number;
+  /** Füllpunkt im Inneren der Ziffer (kleiner, gedämpft) statt Kontur */
+  fill: boolean;
 }
 
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -82,8 +84,9 @@ export function createDots360(
     setFont('extra-condensed');
     const sx = o.measureText(opts.text).width > wide * 0.9 ? 0.64 : 1;
     let tw = o.measureText(opts.text).width * sx;
-    if (tw > W * 0.88) {
-      fs *= (W * 0.88) / tw;
+    const maxW = W * (W < 761 ? 0.94 : 0.88);
+    if (tw > maxW) {
+      fs *= maxW / tw;
       setFont('extra-condensed');
       tw = o.measureText(opts.text).width * sx;
     }
@@ -92,9 +95,12 @@ export function createDots360(
     const accentX = x0 + o.measureText(opts.text.slice(0, opts.accentFrom)).width * sx;
     o.textBaseline = 'middle';
     o.lineJoin = 'round';
-    o.lineWidth = step * 0.95;
-    o.strokeStyle = '#fff';
+    // Rot = Fläche der Ziffer, Grün = Kontur (etwas breiter als ein Rasterschritt, damit die Linie nirgends abreißt)
+    o.lineWidth = step * 1.3;
     o.setTransform(sx, 0, 0, 1, x0, 0);
+    o.fillStyle = '#f00';
+    o.fillText(opts.text, 0, H / 2 + fs * 0.04);
+    o.strokeStyle = '#0f0';
     o.strokeText(opts.text, 0, H / 2 + fs * 0.04);
     o.setTransform(1, 0, 0, 1, 0, 0);
     // Nur den Bereich um die Zahl auslesen, nicht das ganze Fenster
@@ -109,12 +115,20 @@ export function createDots360(
       if (y < by || y >= by + bh) continue;
       for (let x = step / 2; x < W; x += step) {
         if (x < bx || x >= bx + bw) continue;
-        const a = data[((Math.round(y) - by) * bw + (Math.round(x) - bx)) * 4 + 3]!;
-        if (a < 120) continue;
+        const i = ((Math.round(y) - by) * bw + (Math.round(x) - bx)) * 4;
+        const edge = data[i + 1]! > 110;
+        const inside = !edge && data[i]! > 110;
+        if (!edge && !inside) continue;
         const isAccent = x > accentX;
         const base = { src: null, x, y, delay: Math.random() * 0.35, lift: 0.6 + Math.random() * 1.8, ox: 0, oy: 0 };
-        targets.push({ ...base, z: 0, c: isAccent ? accent : front });
-        targets.push({ ...base, z: depth, c: isAccent ? accent : back });
+        if (inside) {
+          // Fläche nur als lockeres Raster (jeder zweite Punkt versetzt), vorne – deutet die Ziffer an, ohne sie zuzumachen
+          if ((Math.round(x / step) + Math.round(y / step)) % 2) continue;
+          targets.push({ ...base, z: 0, c: isAccent ? accent : front, fill: true });
+          continue;
+        }
+        targets.push({ ...base, z: 0, c: isAccent ? accent : front, fill: false });
+        targets.push({ ...base, z: depth, c: isAccent ? accent : back, fill: false });
       }
     }
 
@@ -238,7 +252,7 @@ export function createDots360(
       d.oy += (toy - d.oy) * 0.14;
       px += d.ox;
       py += d.oy;
-      let size = dotSize * k * (d.z ? 0.8 : 1);
+      let size = dotSize * k * (d.fill ? 0.7 : d.z ? 0.8 : 1);
       let c = d.c;
 
       if (d.src && fly < 1) {
@@ -258,7 +272,7 @@ export function createDots360(
         size *= 1 + arc * d.lift;
         if (f < 0.55) c = d.src.c;
       }
-      ctx.globalAlpha = alpha;
+      ctx.globalAlpha = d.fill ? alpha * 0.38 : alpha;
       ctx.fillStyle = c;
       ctx.fillRect(px - size / 2, py - size / 2, size, size);
     }

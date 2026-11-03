@@ -9,6 +9,7 @@ import { PwaRegister } from '@/components/layout/PwaRegister';
 import { Curtain } from '@/components/motion/Curtain';
 import { Reveals } from '@/components/motion/Reveals';
 import { SmoothScroll } from '@/components/motion/SmoothScroll';
+import { TicketTear } from '@/components/motion/TicketTear';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { JsonLd } from '@/components/JsonLd';
 import { asset, IS_DEMO, SITE_URL } from '@/lib/env';
@@ -69,6 +70,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <CartDrawer />
           <SmoothScroll />
           <Reveals />
+          <TicketTear />
           <PwaRegister />
           {IS_DEMO && <DemoBadge />}
         </SiteProvider>
