@@ -23,13 +23,16 @@ interface HeroProps {
   behind: string;
 }
 
-/** „CN“ als Blende (viewBox 1000): C-Ring links, N rechts. Zum Öffnen quellen die Buchstaben per Kontur auf, bis sie das ganze Fenster füllen. */
+/** „CN“ als Blende (viewBox 1000): C-Ring links, N rechts. Der Vorhang teilt sich zwischen C und N (SPLIT_X). */
 const CN_PATHS = [
   'M 510.2 390.7 A 170 170 0 1 0 510.2 609.3 L 456.6 564.3 A 100 100 0 1 1 456.6 435.7 Z',
   'M 580 330 H 646 L 714 488 V 330 H 780 V 670 H 714 L 646 512 V 670 H 580 Z',
 ];
-const ZOOM_ORIGIN = '495 500';
+const SPLIT_X = 545;
+/** Schwarze Fläche mit CN-Löchern als ein Pfad (evenodd) – keine SVG-Maske, damit nichts pro Frame neu gerechnet wird */
+const CURTAIN_PATH = `M-5000 -5000 H6000 V6000 H-5000 Z ${CN_PATHS.join(' ')}`;
 const INTRO_KEY = 'cev-intro-seen';
+const INTRO_DONE = 'cev:intro-done';
 
 /** Stücke, in die das Hero-Bild für den Übergang zerfällt: 1 Bild (Punkte, Blende), 2 Ticket-Hälften */
 const PIECES: Record<HeroTransition, number> = { punkte: 1, blende: 1, ticket: 2 };
@@ -109,7 +112,16 @@ export function Hero(p: HeroProps) {
     let resizeTimer = 0;
     // Punkte im Leerlauf vorberechnen (nach dem Laden des Bildes und der Schrift), nicht erst beim Scrollen
     const idle = (fn: () => void) => (typeof window.requestIdleCallback === 'function' ? window.requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 1200));
-    const prepare = () => void document.fonts?.ready.then(() => idle(() => field?.prepare()));
+    // erst nach dem Intro, sonst kostet die Rechnung Frames mitten im Vorhang
+    // (einen Frame warten: der Intro-Effekt setzt „intro-on“ erst nach diesem Effekt)
+    const afterIntro = () =>
+      new Promise<void>((r) =>
+        requestAnimationFrame(() => {
+          if (document.documentElement.classList.contains('intro-on')) window.addEventListener(INTRO_DONE, () => r(), { once: true });
+          else r();
+        }),
+      );
+    const prepare = () => void Promise.all([document.fonts?.ready, afterIntro()]).then(() => idle(() => field?.prepare()));
     const heroImg = el.querySelector<HTMLImageElement>('.hero__strip img');
     if (!heroImg || heroImg.complete) prepare();
     else heroImg.addEventListener('load', prepare, { once: true });
@@ -198,13 +210,14 @@ export function Hero(p: HeroProps) {
       window.scrollTo(0, 0);
       document.documentElement.classList.add('intro-on');
       const full = !seen;
-      const introTargets = '.intro, .intro__c, .intro__zoomc, .ch, .hero__eyebrow > *, .hero__foot > *, .hero__bar-in';
+      const introTargets = '.intro, .intro__half, .intro__veil, .intro__doors, .ch, .hero__eyebrow > *, .hero__foot > *, .hero__bar-in';
       const nav = document.querySelector('.nav');
       intro = gsap.timeline({
         paused: true,
         onComplete: () => {
           el.classList.remove('is-intro'); // vor clearProps, sonst greift die CSS-Verdeckung einen Frame lang
           document.documentElement.classList.remove('intro-on');
+          window.dispatchEvent(new Event(INTRO_DONE));
           gsap.set(q(introTargets), { clearProps: 'all' });
           // Nur transform zurücksetzen: next/image hält Layout-Styles (fill) inline am <img>.
           gsap.set(q('.hero__img'), { clearProps: 'transform,scale' });
@@ -217,28 +230,33 @@ export function Hero(p: HeroProps) {
           setIntroDone(true);
         },
       });
-      gsap.set(q('.hero__img'), { scale: 1.6 });
-      // Hochformat: Ausschnitt in Fensterform um das CN (x 210–780) legen, sonst schneidet „slice“ C und N am Rand ab
-      if (window.innerWidth < window.innerHeight) {
-        const h = (640 * window.innerHeight) / window.innerWidth;
-        q('.intro__svg')[0]?.setAttribute('viewBox', `175 ${500 - h / 2} 640 ${h}`);
+      gsap.set(q('.hero__img'), { scale: 1.3 });
+      // Ausschnitt: quer wie gehabt (slice), hochkant ein Fenster in Bildschirmform um das CN (x 210–780)
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      let vb = [0, 0, 1000, 1000];
+      if (W < H) {
+        const h = (640 * H) / W;
+        vb = [175, 500 - h / 2, 640, h];
+        q('.intro__half svg').forEach((svg) => svg.setAttribute('viewBox', vb.join(' ')));
       }
+      // Trennlinie zwischen C und N in Bildschirm-Pixeln (gleiche Rechnung wie preserveAspectRatio „xMidYMid slice“)
+      const k = Math.max(W / vb[2]!, H / vb[3]!);
+      const split = (W - vb[2]! * k) / 2 + (SPLIT_X - vb[0]!) * k;
+      q('.intro')[0]?.style.setProperty('--split', `${Math.round(split)}px`);
       // Titel, Eyebrow, Lead, CTA, Leiste und Navigation verdeckt bis zu ihrem Auftritt nur CSS (.is-intro / .intro-on).
 
-      // Nur das CN: ruhig aufblenden, kurz stehen, dann quellen die Buchstaben auf und öffnen das Foto
-      const swell = full ? 1.05 : 0.75;
+      // Vorhang: Schwarz → das CN taucht auf → „Doors open“ → der Vorhang teilt sich (C nach links, N nach rechts).
+      // Bewegt werden nur Deckkraft und transform ganzer Flächen: läuft auf der Grafikkarte, kein Ruckeln.
+      const open = full ? 1.15 : 0.8;
       intro
-        .set(q('.intro__c'), { visibility: 'visible' })
-        .fromTo(q('.intro__c'), { autoAlpha: 0, scale: 0.94, svgOrigin: '500 500' }, { autoAlpha: 1, scale: 1, svgOrigin: '500 500', duration: full ? 0.9 : 0.5, ease: 'power2.out' })
-        .fromTo(q('.intro__doors'), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '<0.25')
-        // Aufquellen statt Durchzoomen: die Kontur wächst, die Buchstaben verschmelzen zum vollen Foto (keine schwarzen Kanten)
-        .fromTo(q('.intro__c path'), { attr: { 'stroke-width': 0 } }, { attr: { 'stroke-width': 1500 }, duration: swell, ease: 'power3.inOut' }, full ? '+=0.35' : '+=0.05')
-        .fromTo(q('.intro__zoomc'), { scale: 1, svgOrigin: ZOOM_ORIGIN }, { scale: 1.2, svgOrigin: ZOOM_ORIGIN, duration: swell, ease: 'power2.inOut' }, '<')
-        .to(q('.hero__img'), { scale: 1.12, duration: swell + 1.2, ease: 'power2.out' }, '<')
-        .to(q('.intro__doors'), { autoAlpha: 0, y: -10, duration: 0.3, ease: 'power2.in' }, '<')
-        // Am Ende kurz ausblenden, falls in einer Ecke noch ein Rest Schwarz steht
-        .to(q('.intro'), { autoAlpha: 0, duration: 0.2, ease: 'power1.in' }, `<${swell - 0.2}`)
-        .fromTo(q('.ch'), { y: 0, yPercent: 125, rotate: 9 }, { y: 0, yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out', immediateRender: false }, '<-0.2')
+        .to(q('.intro__veil'), { autoAlpha: 0, duration: full ? 0.9 : 0.4, ease: 'power2.out' })
+        .fromTo(q('.intro__doors'), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' }, full ? '<0.35' : '<')
+        .to(q('.intro__doors'), { autoAlpha: 0, duration: 0.25, ease: 'power1.in' }, full ? '+=0.45' : '+=0.05')
+        .to(q('.intro__half--0'), { xPercent: -100, duration: open, ease: 'power4.inOut' }, '<0.1')
+        .to(q('.intro__half--1'), { xPercent: 100, duration: open, ease: 'power4.inOut' }, '<')
+        .to(q('.hero__img'), { scale: 1.12, duration: open + 0.9, ease: 'power2.out' }, '<')
+        .fromTo(q('.ch'), { y: 0, yPercent: 125, rotate: 9 }, { y: 0, yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.022, ease: 'expo.out', immediateRender: false }, `<${open * 0.45}`)
         .fromTo(q('.hero__eyebrow > *'), { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power3.out', immediateRender: false }, '<0.3')
         .fromTo(q('.hero__foot > *'), { autoAlpha: 0, y: 26 }, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out', immediateRender: false }, '<0.1')
         .fromTo(q('.hero__bar-in'), { autoAlpha: 0, yPercent: 110 }, { autoAlpha: 1, yPercent: 0, duration: 0.8, ease: 'expo.out', immediateRender: false }, '<0.1');
@@ -247,7 +265,8 @@ export function Hero(p: HeroProps) {
       const image = q('.hero__strip img')[0] as HTMLImageElement | undefined;
       const ready = image
         ? Promise.race([
-            image.complete ? Promise.resolve() : new Promise<void>((r) => image.addEventListener('load', () => r(), { once: true })),
+            // erst starten, wenn das Foto dekodiert ist: sonst taucht es mitten im Vorhang auf
+            (image.complete ? Promise.resolve() : new Promise<void>((r) => image.addEventListener('load', () => r(), { once: true }))).then(() => image.decode().catch(() => undefined)),
             new Promise<void>((r) => setTimeout(r, 2500)),
           ])
         : Promise.resolve();
@@ -373,21 +392,14 @@ export function Hero(p: HeroProps) {
 
         {!introDone && (
           <div className="intro" aria-hidden="true">
-            <svg className="intro__svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
-              <defs>
-                <mask id="intro-mask" maskUnits="userSpaceOnUse" x="-5000" y="-5000" width="11000" height="11000">
-                  <rect x="-5000" y="-5000" width="11000" height="11000" fill="white" />
-                  <g className="intro__zoomc">
-                    <g className="intro__c" style={{ visibility: 'hidden' }}>
-                      {CN_PATHS.map((d) => (
-                        <path key={d} d={d} fill="black" stroke="black" strokeWidth={0} strokeLinejoin="round" />
-                      ))}
-                    </g>
-                  </g>
-                </mask>
-              </defs>
-              <rect x="-5000" y="-5000" width="11000" height="11000" fill="var(--color-ink)" mask="url(#intro-mask)" />
-            </svg>
+            {[0, 1].map((i) => (
+              <div key={i} className={`intro__half intro__half--${i}`}>
+                <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+                  <path d={CURTAIN_PATH} fillRule="evenodd" fill="var(--color-ink)" />
+                </svg>
+              </div>
+            ))}
+            <div className="intro__veil" />
             <div className="intro__doors">{p.doors}</div>
           </div>
         )}
