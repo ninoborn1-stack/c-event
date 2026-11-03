@@ -2750,7 +2750,10 @@ a.rail__item:hover .rail__img img {
   transform: scale(1.05);
 }
 
-/* Hover während des Scrollens aus (Klasse setzt SmoothScroll) */
-html.is-scrolling main {
-  pointer-events: none;
+/* Hover während des Scrollens aus (Klasse setzt SmoothScroll). Nur mit Maus: auf Touch gibt es kein Hover,
+   dort würde es nur Tipps direkt nach dem Wischen verschlucken. */
+@media (hover: hover) and (pointer: fine) {
+  html.is-scrolling main {
+    pointer-events: none;
+  }
 }
